@@ -1,0 +1,36 @@
+@font-face {
+    font-family: 'Instrument Sans';
+    src: url('@/assets/fonts/instrument-sans/instrument-sans-latin-400-normal.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Instrument Sans';
+    src: url('@/assets/fonts/instrument-sans/instrument-sans-latin-500-normal.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Instrument Sans';
+    src: url('@/assets/fonts/instrument-sans/instrument-sans-latin-600-normal.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Instrument Sans';
+    src: url('@/assets/fonts/instrument-sans/instrument-sans-latin-700-normal.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Optional default usage */
+body {
+    font-family: 'Instrument Sans', sans-serif;
+}
