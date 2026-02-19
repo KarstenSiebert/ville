@@ -196,13 +196,15 @@ function totalUserBaseTokens(market: Market) {
 
     const liquidity = Number(market.currentLiquidity);
 
-    const b = Number(market.b);
+    // const b = Number(market.b);
 
     const decimals = market.base_token.decimals;
 
     // const userTokens = Math.max(liquidity - b, 0) / Math.pow(10, decimals);
 
-    const userTokens = Math.max(liquidity - b, 0);
+    // const userTokens = Math.max(liquidity - b, 0);
+
+    const userTokens = Math.max(liquidity, 0);
 
     return formatToken(userTokens, decimals);
 }

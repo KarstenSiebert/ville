@@ -201,7 +201,7 @@ class OutcomeService
 
         $baseTokenWallet = $marketWallet->tokenWallets->firstWhere('token_id', $baseToken->id);
 
-        $liquidity = $baseTokenWallet?->quantity ?? 0;
+        $liquidity = max($baseTokenWallet?->quantity - $market->b, 0)  ?? 0;
 
         $liquidity = bcdiv($liquidity, bcpow("10", (string) $baseToken->decimals, 0), $baseToken->decimals);
 
