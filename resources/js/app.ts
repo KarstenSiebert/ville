@@ -18,21 +18,10 @@ export function getAvailableLanguages() {
     return Object.keys(langs).map(k => k.match(/([^/]+)\.json$/)![1]);
 }
 
-type LangCode = keyof typeof langs extends `${infer L}.json` ? L : never;
-
 export function loadLanguage(lang: string): TranslationSchema {
     const fileKey = Object.keys(langs).find((k) => k.endsWith(`${lang}.json`));
     if (!fileKey) throw new Error(`Language file for "${lang}" not found`);
     return langs[fileKey].default;
-}
-
-function detectBrowserLang(): LangCode {
-    const navigatorLang = navigator.language.split('-')[0]; // z.B. "de" oder "en"
-    const availableLangs = Object.keys(langs).map(k => k.match(/([^/]+)\.json$/)![1]);
-
-    // const navigatorLang = 'en';
-
-    return (availableLangs.includes(navigatorLang) ? navigatorLang : 'en') as LangCode;
 }
 
 const supportedLocales = ['de', 'zh', 'en', 'es', 'fr', 'jp', 'bg', 'cz', 'dk', 'ee', 'fi', 'gr', 'hr', 'hu', 'ie', 'ir', 'it', 'lt', 'lv', 'mt', 'nl', 'pl', 'pt', 'ro', 'ru', 'sa', 'se', 'sk', 'sl', 'ua'];
@@ -43,7 +32,7 @@ if (!supportedLocales.includes(locale ?? '')) {
     locale = 'en';
 }
 
-function getCookie(name: String) {
+function getCookie(name: string) {
     return document.cookie
         .split('; ')
         .find(row => row.startsWith(name + '='))

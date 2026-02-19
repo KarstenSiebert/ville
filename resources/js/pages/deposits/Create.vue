@@ -63,7 +63,7 @@ async function searchUsers(query: string) {
 
     try {
 
-        var res;
+        let res;
 
         if (props.user_context.type === 'publisher') {
             res = await fetch(`/shadows/${props.user_context.id}/search?q=${encodeURIComponent(query)}`)
@@ -312,7 +312,7 @@ watch(() => editableAssets.value.map(a => a.token_number), () => {
 })
 
 function submitForm() {
-    const hasExceeded = editableAssets.value.some((asset, i) =>
+    const hasExceeded = editableAssets.value.some((asset) =>
         isQuantityExceeded(asset)
     )
 

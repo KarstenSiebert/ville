@@ -110,7 +110,7 @@ function saveLimitOrderSettings(market: Market) {
         preserveScroll: true,
         preserveState: true,
 
-        onSuccess: (page) => {
+        onSuccess: () => {
             const updatedMarket = props.assets.data.find(a => a.id === market.id);
             if (updatedMarket) {
                 const index = editableMints.value.findIndex(a => a.id === market.id);
@@ -198,8 +198,8 @@ function sort(field: keyof Market) {
 
 const sortedMarkets = computed(() => {
     return [...editableMints.value].sort((a, b) => {
-        let valA = a[sortField.value] ?? (sortField.value === "title" ? 0 : "")
-        let valB = b[sortField.value] ?? (sortField.value === "title" ? 0 : "")
+        const valA = a[sortField.value] ?? (sortField.value === "title" ? 0 : "")
+        const valB = b[sortField.value] ?? (sortField.value === "title" ? 0 : "")
 
         if (valA < valB) return sortAsc.value ? -1 : 1
         if (valA > valB) return sortAsc.value ? 1 : -1

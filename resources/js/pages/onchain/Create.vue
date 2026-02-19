@@ -94,9 +94,6 @@ const allSelected = computed({
     }
 })
 
-const isNumberInvalid = (asset: EditableAsset) =>
-    selected.value.includes(asset.id) && asset.token_number <= 0
-
 const isFormValid = computed(() => {
     return editableAssets.value
         .filter(a => selected.value.includes(a.id))
@@ -113,11 +110,6 @@ function deleteRow(index: number) {
         const nextIndex = index < editableAssets.value.length ? index : editableAssets.value.length - 1
         destinationRefs.value[nextIndex]?.focus()
     })
-}
-
-const isReadonly = (index: number) => {
-    const asset = editableAssets.value[index]
-    return asset?.readonlyFromBackend ?? false
 }
 
 const selectAllCheckbox = ref<HTMLInputElement | null>(null)

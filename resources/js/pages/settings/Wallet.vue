@@ -31,10 +31,10 @@ const props = defineProps({
                     <HeadingSmall :title="$t('wallet_information')" :description="$t('this_is_your_wallet_address')" />
                 </div>
 
-                <HeadingSmall :title="$t('deposit_wallet_address')" :description="address" />
+                <HeadingSmall :title="$t('deposit_wallet_address')" :description="props.address" />
 
                 <div class="gap-2">
-                    <img :src="qrcode" width="234" height="234">
+                    <img :src="props.qrcode" width="234" height="234">
                 </div>
 
             </div>

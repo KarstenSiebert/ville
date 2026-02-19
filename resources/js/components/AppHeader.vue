@@ -43,7 +43,6 @@ import { InertiaLinkProps, Link, usePage } from '@inertiajs/vue3';
 import { House, Archive, Landmark, History, Coins, Link as Chain, Logs, Menu, ChartLine, NotepadText, Book } from 'lucide-vue-next';
 import { computed, ref, watch, onMounted } from 'vue';
 import { is, permissionsLoaded, reloadRolesAndPermissions } from 'laravel-permission-to-vuejs'
-import analytics from '@/routes/analytics';
 
 interface Props {
     breadcrumbs?: BreadcrumbItem[];

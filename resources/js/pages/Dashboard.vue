@@ -227,7 +227,7 @@ function parseBigNumber(val: string | number) {
     return Number(val);
 }
 
-function canBuy(o: Outcome, market: Market) {
+function canBuy(o: Outcome) {
     const buyAmount = Number(o.buyAmount);
 
     if (!Number.isFinite(buyAmount)) return false;
@@ -401,7 +401,7 @@ async function buyOutcome(market: Market, outcome: Outcome) {
 
     if (outcome.buyAmount <= 0) return;
 
-    let price = Number(outcome.price);
+    const price = Number(outcome.price);
 
     if (isNaN(price) || price <= 0) return;
 
@@ -470,7 +470,7 @@ async function buyOutcome(market: Market, outcome: Outcome) {
         }
 
     } catch (e) {
-        //
+        console.log('error ' + e);
     }
 }
 
@@ -645,7 +645,7 @@ watch(
 
                                 <button
                                     class="px-2 py-1 text-xs rounded text-white transition bg-blue-600 hover:bg-blue-700 cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
-                                    :disabled="market.status !== 'OPEN' || o.buyAmount <= 0 || !canBuy(o, market) || !authUser"
+                                    :disabled="market.status !== 'OPEN' || o.buyAmount <= 0 || !canBuy(o) || !authUser"
                                     @click="buyOutcome(market, o)">
                                     {{ $t('vote') }}
                                 </button>

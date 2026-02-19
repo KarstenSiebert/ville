@@ -91,7 +91,7 @@ function savePublisherSettings(publisher: Publisher) {
         preserveScroll: true,
         preserveState: true,
 
-        onSuccess: (page) => {
+        onSuccess: () => {
             const updatedPublisher = props.publishers.data.find(a => a.id === publisher.id);
             if (updatedPublisher) {
                 const index = editablePublishers.value.findIndex(a => a.id === publisher.id);
@@ -148,8 +148,8 @@ function sort(field: keyof Publisher) {
 
 const sortedPublishers = computed(() => {
     return [...editablePublishers.value].sort((a, b) => {
-        let valA = a[sortField.value] ?? (sortField.value === "name" ? 0 : "")
-        let valB = b[sortField.value] ?? (sortField.value === "name" ? 0 : "")
+        const valA = a[sortField.value] ?? (sortField.value === "name" ? 0 : "")
+        const valB = b[sortField.value] ?? (sortField.value === "name" ? 0 : "")
 
         if (valA < valB) return sortAsc.value ? -1 : 1
         if (valA > valB) return sortAsc.value ? 1 : -1

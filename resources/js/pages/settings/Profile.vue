@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
 import { Form, Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
@@ -11,7 +10,6 @@ import { getInitials } from '@/composables/useInitials';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { User, type BreadcrumbItem, type SharedData } from '@/types';
@@ -59,7 +57,7 @@ const submit = () => {
     payload.append('name', form.name);
     payload.append('email', form.email);
     payload.append('payout', form.payout);
-    
+
     if (photoInput.value?.files?.length) {
         payload.append('photo', photoInput.value.files[0]);
     }
@@ -174,7 +172,7 @@ const clearPhotoFileInput = () => {
                             autocomplete="payout" :placeholder="$t('outgoing_payment_address')" />
                         <InputError class="mt-2" :message="form.errors.payout" />
                     </div>
-                  
+
                     <div class="flex items-center gap-4">
                         <Button :disabled="processing" data-test="update-profile-button">{{ $t('save') }}</Button>
 

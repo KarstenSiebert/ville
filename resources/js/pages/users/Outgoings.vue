@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import AppLayout from '@/layouts/AppLayout.vue';
 import { outgoings } from '@/routes/users';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, usePage, router } from '@inertiajs/vue3';
+import { Head, usePage, router } from '@inertiajs/vue3';
 import FlashMessage from '@/components/FlashMessage.vue';
 import debounce from "lodash/debounce";
 import "@inertiajs/core"
@@ -73,10 +73,6 @@ const sortAsc = ref(true)
 
 const selected = ref<string[]>([])
 
-const form = useForm({
-    selected_assets: [] as User[],
-})
-
 function sort(field: keyof User) {
     if (sortField.value === field) {
         sortAsc.value = !sortAsc.value
@@ -100,23 +96,6 @@ const sortedUsers = computed(() => {
         if (valA > valB) return sortAsc.value ? 1 : -1
         return 0
     })
-})
-
-const allSelected = computed({
-    get: () =>
-        sortedUsers.value.length > 0 &&
-        sortedUsers.value.every(
-            (a) => selected.value.includes(a.wallet_address)
-        ),
-    set: (val: boolean) => {
-        if (val) {
-            selected.value = sortedUsers.value.map(
-                (a) => a.wallet_address
-            )
-        } else {
-            selected.value = []
-        }
-    },
 })
 
 const urlParams = new URLSearchParams(window.location.search)
@@ -226,12 +205,12 @@ onMounted(() => {
     selectAllCheckbox.value.indeterminate = checked > 0 && checked < total
 })
 
-const users = ref(props.users)
-
 function parseTokens(tokensStr: string): Token[] {
     try {
         return JSON.parse(tokensStr) as Token[]
     } catch (e) {
+        console.error('Parse Token failed', e);
+
         return []
     }
 }

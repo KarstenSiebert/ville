@@ -117,13 +117,6 @@ interface Market {
     outcomes: Outcome[];
 }
 
-interface OrderRow {
-    limit_price: number
-    buy: number
-    p: string
-    sell: number
-}
-
 const props = defineProps<{
     market: Market;
 }>();
@@ -216,9 +209,6 @@ function totalUserBaseTokens(market: Market) {
 
     return formatToken(userTokens, decimals);
 }
-
-const successFlash = reactive<Record<number, boolean>>({});
-const errorFlash = reactive<Record<number, boolean>>({});
 
 interface PriceData {
     price: number;

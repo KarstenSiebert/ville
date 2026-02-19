@@ -39,11 +39,6 @@ interface Asset {
 
 const canSelectAssets = is('superadmin')
 
-const title = computed(() => {
-    if (canSelectAssets) return 'select_coins'
-    return 'coins_on_chain'
-})
-
 const props = defineProps<{
     assets: {
         data: Asset[]

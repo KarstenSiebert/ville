@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import AppLayout from '@/layouts/AppLayout.vue';
 import { index } from '@/routes/onchain';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, usePage, router } from '@inertiajs/vue3';
+import { Head, usePage, router } from '@inertiajs/vue3';
 import FlashMessage from '@/components/FlashMessage.vue';
 import debounce from "lodash/debounce";
 import "@inertiajs/core"
@@ -73,10 +73,6 @@ const sortAsc = ref(true)
 
 const selected = ref<string[]>([])
 
-const form = useForm({
-    selected_assets: [] as User[],
-})
-
 function sort(field: keyof User) {
     if (sortField.value === field) {
         sortAsc.value = !sortAsc.value
@@ -100,23 +96,6 @@ const sortedUsers = computed(() => {
         if (valA > valB) return sortAsc.value ? 1 : -1
         return 0
     })
-})
-
-const allSelected = computed({
-    get: () =>
-        sortedUsers.value.length > 0 &&
-        sortedUsers.value.every(
-            (a) => selected.value.includes(a.email)
-        ),
-    set: (val: boolean) => {
-        if (val) {
-            selected.value = sortedUsers.value.map(
-                (a) => a.email
-            )
-        } else {
-            selected.value = []
-        }
-    },
 })
 
 const urlParams = new URLSearchParams(window.location.search)
@@ -281,7 +260,7 @@ onMounted(() => {
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                            <tr v-for="(user, index) in sortedUsers" :key="user.user_id"
+                            <tr v-for="(user) in sortedUsers" :key="user.user_id"
                                 class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
                                 <td class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
                                     <img v-if="user.avatar" :src="user.avatar" alt="avatar"

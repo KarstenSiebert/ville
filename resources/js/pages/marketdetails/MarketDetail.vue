@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, usePage, router } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import { ref, reactive, onMounted, getCurrentInstance, watchEffect, watch, onUnmounted, toRaw } from 'vue';
 import { ZoomOut } from 'lucide-vue-next';
 import { type BreadcrumbItem } from '@/types';
@@ -21,7 +21,7 @@ import {
     registerables,
 } from 'chart.js';
 
-import type { ChartData, ChartOptions, ChartDataset } from 'chart.js';
+import type { ChartData, ChartDataset } from 'chart.js';
 
 import zoomPlugin from 'chartjs-plugin-zoom';
 
@@ -477,7 +477,7 @@ function parseBigNumber(val: string | number) {
     return Number(val);
 }
 
-function canBuy(o: Outcome, market: Market) {
+function canBuy(o: Outcome) {
     const buyAmount = Number(o.buyAmount);
 
     if (!Number.isFinite(buyAmount)) return false;
@@ -623,7 +623,7 @@ async function buyOutcome(market: Market, outcome: Outcome) {
 
     if (outcome.buyAmount <= 0) return;
 
-    let price = Number(outcome.price);
+    const price = Number(outcome.price);
 
     if (isNaN(price) || price <= 0) return;
 
@@ -836,7 +836,13 @@ async function fetchTrades(reset = false) {
 function renderPriceChart(lastLabels: string[]) {
     if (!chartPrice.value) return;
 
+
     const data = updatePriceChartWithLabels(lastLabels);
+
+    if (chartPriceInstance) {
+        // chartPriceInstance.destroy();
+        // chartPriceInstance = null;
+    }
 
     chartPriceInstance = new ChartJS(chartPrice.value, {
         type: 'line',
@@ -1213,7 +1219,7 @@ async function fetchFullMarketData() {
 
                                 <button
                                     class="px-2 py-1 text-sm rounded text-white transition bg-blue-600 hover:bg-blue-700 cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
-                                    :disabled="marketData.status !== 'OPEN' || o.buyAmount <= 0 || !canBuy(o, marketData) || !authUser"
+                                    :disabled="marketData.status !== 'OPEN' || o.buyAmount <= 0 || !canBuy(o) || !authUser"
                                     @click="buyOutcome(marketData, o)">
                                     {{ $t('vote') }}
                                 </button>
@@ -1297,13 +1303,13 @@ async function fetchFullMarketData() {
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTC"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTC')
-                                    }}</span>
+                                        }}</span>
                                 </label>
                                 <label class="flex items-center gap-1 cursor-pointer">
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTD"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTD')
-                                    }}</span>
+                                        }}</span>
                                 </label>
                             </div>
 

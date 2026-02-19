@@ -4,7 +4,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { confirm } from '@/routes/onchain';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import FlashMessage from "@/components/FlashMessage.vue";
 import "@inertiajs/core"

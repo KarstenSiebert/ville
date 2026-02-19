@@ -62,18 +62,10 @@ const searchQuery = ref(urlParams.get("search") || "")
 const sortField = ref<keyof Order>("id")
 const sortAsc = ref(true)
 
-function sort(field: keyof Order) {
-    if (sortField.value === field) sortAsc.value = !sortAsc.value
-    else {
-        sortField.value = field
-        sortAsc.value = true
-    }
-}
-
 const sortedOrders = computed(() => {
     return [...editableOrders.value].sort((a, b) => {
-        let valA = a[sortField.value] ?? (sortField.value === "id" ? 0 : "")
-        let valB = b[sortField.value] ?? (sortField.value === "id" ? 0 : "")
+        const valA = a[sortField.value] ?? (sortField.value === "id" ? 0 : "")
+        const valB = b[sortField.value] ?? (sortField.value === "id" ? 0 : "")
 
         if (valA < valB) return sortAsc.value ? -1 : 1
         if (valA > valB) return sortAsc.value ? 1 : -1
@@ -326,7 +318,7 @@ function goTo(page: number) {
                                 <td class="px-4 py-2 text-right cursor-default">
                                     <button @click="openMarket(order.market_id)"
                                         class="relative group text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 p-1 cursor-pointer">
-                                        <svg xmlns=" http://www.w3.org/2000/svg" width="24" height="24"
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
                                             class="lucide lucide-link-icon lucide-link h-4 w-4">
