@@ -66,7 +66,9 @@ class ProfileController extends Controller
        
         $user->fill($data);
 
-        $user->payout = $data['payout'];
+        if (isset($data['payout'])) {
+            $user->payout = $data['payout'];
+        }
         
         $user->save();
 
