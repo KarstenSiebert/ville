@@ -311,19 +311,6 @@ function timeLeft(market: Market) {
     return `${minutes}m`;
 }
 
-function formatToken(val: number, decimals: number) {
-    const afterComma = 6;
-
-    if (decimals === 0) {
-        return Math.round(val).toLocaleString("en-US");
-    }
-
-    return val.toLocaleString("en-US", {
-        minimumFractionDigits: Math.min(decimals, afterComma),
-        maximumFractionDigits: afterComma
-    });
-}
-
 function parseBigNumber(val: string | number) {
     if (typeof val === 'string') {
         return Number(val.replace(/,/g, ''));

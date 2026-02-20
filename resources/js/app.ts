@@ -2,7 +2,7 @@ import '../css/app.css';
 
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import type { DefineComponent } from 'vue';
+import { DefineComponent, ref } from 'vue';
 import { createApp, h } from 'vue';
 import { i18nVue } from 'laravel-vue-i18n';
 import LaravelPermissionToVueJS from 'laravel-permission-to-vuejs'
@@ -40,6 +40,8 @@ function getCookie(name: string) {
 }
 
 const initialLang = getCookie('locale') || 'en';
+
+export const permissionsLoaded = ref(false)
 
 // const initialLang = document.documentElement.lang || 'en';
 
