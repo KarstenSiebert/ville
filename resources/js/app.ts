@@ -10,7 +10,7 @@ import type { TranslationSchema } from './types/lang';
 import { initializeTheme } from './composables/useAppearance';
 import axios from 'axios';
 
-const appName = import.meta.env.VITE_APP_NAME || 'AccessPay';
+const appName = import.meta.env.VITE_APP_NAME || 'TokenVille';
 
 const langs = import.meta.glob<{ default: TranslationSchema }>('../../lang/*.json', { eager: true });
 

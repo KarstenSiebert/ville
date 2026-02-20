@@ -196,17 +196,12 @@ function totalUserBaseTokens(market: Market) {
 
     const liquidity = Number(market.currentLiquidity);
 
-    // const b = Number(market.b);
-
-    const decimals = market.base_token.decimals;
-
-    // const userTokens = Math.max(liquidity - b, 0) / Math.pow(10, decimals);
-
-    // const userTokens = Math.max(liquidity - b, 0);
+    // const decimals = market.base_token.decimals;
 
     const userTokens = Math.max(liquidity, 0);
 
-    return formatToken(userTokens, decimals);
+    return Math.round(userTokens).toLocaleString("en-US");
+    // return formatToken(userTokens, decimals);
 }
 
 function formatToken(val: number, decimals: number) {
@@ -727,7 +722,7 @@ watch(
                                     class="w-5 h-5 rounded" />
                                 <span class="font-mono">
                                     {{
-                                        isNaN(market.currentLiquidity)
+                                        isNaN(market.currentLiquidity) || (market.currentLiquidity == null)
                                             ? ''
                                             : totalUserBaseTokens(market) + ' ' + market.base_token.name
                                     }}

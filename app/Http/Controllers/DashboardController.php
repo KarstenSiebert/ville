@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Helpers\CardanoCliWrapper;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use App\Http\Services\OutcomeService;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class DashboardController extends Controller
@@ -36,8 +37,10 @@ class DashboardController extends Controller
                   
                 $marketWallet = $market->wallet;
                 $baseTokenWallet = $marketWallet->tokenWallets->firstWhere('token_id', $market->baseToken->id);
-        
-                $market->currentLiquidity = $baseTokenWallet ? $baseTokenWallet->quantity : 0;
+                        
+                // $market->currentLiquidity = $baseTokenWallet ? $baseTokenWallet->quantity : 0;
+
+                $liquidity = app(OutcomeService::class)->getLiquidity($market);
           
                 return [
                     'id' => $market->id,

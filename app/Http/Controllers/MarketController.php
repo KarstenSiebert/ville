@@ -155,6 +155,8 @@ class MarketController extends Controller
             return back()->with(['error' => __('token_is_not_available')]);
         }
         
+        // Token with decimals are multiple of their real value
+        
         $tokenLiquidity = bcmul($validated['liquidity_b'], bcpow("10", (string) $currencyToken->decimals));
                 
         $availableTotal = DB::table('token_wallet')
@@ -167,6 +169,10 @@ class MarketController extends Controller
             return back()->with(['error' => __('you_do_not_have_enough_tokens_to_provide_this_liquidity')]);
         }
         
+        // Reduce liquidity to normal value
+
+        $tokenLiquidity = $validated['liquidity_b'];
+
         $marketWalletAmount = $tokenLiquidity;
 
         $b = $tokenLiquidity;

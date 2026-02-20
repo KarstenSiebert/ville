@@ -244,17 +244,13 @@ function totalUserBaseTokens(market: Market) {
 
     const liquidity = Number(market.currentLiquidity);
 
-    // const b = props.market.b;
-
-    const decimals = market.base_token.decimals;
-
-    // const userTokens = Math.max(liquidity - b, 0) / Math.pow(10, decimals);
-
-    // const userTokens = Math.max(liquidity - b, 0);
+    // const decimals = market.base_token.decimals;
 
     const userTokens = Math.max(liquidity, 0);
 
-    return formatToken(userTokens, decimals);
+    return Math.round(userTokens).toLocaleString("en-US");
+
+    // return formatToken(userTokens, decimals);
 }
 
 function getLimit(o: Outcome) {
@@ -717,7 +713,7 @@ function onlyNumber(event: KeyboardEvent) {
 
 function updatePriceChart(lastLabels: string[]) {
     if (!chartPriceInstance) {
-        renderPriceChart(lastLabels);
+        // renderPriceChart(lastLabels);
         return;
     }
 
@@ -1307,13 +1303,13 @@ async function fetchFullMarketData() {
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTC"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTC')
-                                    }}</span>
+                                        }}</span>
                                 </label>
                                 <label class="flex items-center gap-1 cursor-pointer">
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTD"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTD')
-                                    }}</span>
+                                        }}</span>
                                 </label>
                             </div>
 

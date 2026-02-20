@@ -170,14 +170,14 @@ function goTo(page: number) {
                                 class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
                                 <td
                                     class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200 min-w-[100px] whitespace-nowrap">
-                                    <component :is="tx.market"
+                                    <div
                                         class=" flex items-center space-x-2 group transition-shadow duration-200 rounded">
                                         <img v-if="tx.market.logo" :src="tx.market.logo" alt="logo"
                                             class="w-8 h-8 rounded transition-transform duration-200" />
                                         <span class="transition-colors duration-200 truncate cursor-default">
                                             {{ tx.market.title }}
                                         </span>
-                                    </component>
+                                    </div>
                                 </td>
                                 <td class=" px-4 py-2 text-center truncate max-w-xs cursor-default">
                                     {{ tx.outcome }}

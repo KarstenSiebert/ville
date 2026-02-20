@@ -200,10 +200,10 @@ class OutcomeService
         $marketWallet = Wallet::findOrFail($market->wallet_id);
 
         $baseTokenWallet = $marketWallet->tokenWallets->firstWhere('token_id', $baseToken->id);
+        
+        // Liquidity is the real value (not the token value including decimals)
 
-        $liquidity = max($baseTokenWallet?->quantity - $market->b, 0)  ?? 0;
-
-        $liquidity = bcdiv($liquidity, bcpow("10", (string) $baseToken->decimals, 0), $baseToken->decimals);
+        $liquidity = bcdiv($baseTokenWallet?->quantity, bcpow("10", (string) $baseToken->decimals, 0), $baseToken->decimals);
 
         return $liquidity;
     }
