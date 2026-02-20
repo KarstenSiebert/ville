@@ -105,6 +105,7 @@ class OnChainController extends Controller
                     $predefined = [
                         'USDM'          => ['policy' => 'c48cbb3d5e57ed56e276bc45f99ab39abe94e6cd7ac39fb402da47ad', 'logo' => '/storage/logos/usdm-coin.png', 'decimals' => 6],
                         'USDA'          => ['policy' => 'fe7c786ab321f41c654ef6c1af7b3250a613c24e4213e0425a7ae456', 'logo' => '/storage/logos/usda-coin.png', 'decimals' => 6],
+                        'USDCx'         => ['policy' => '1f3aec8bfe7ea4fe14c5f121e2a92e301afe414147860d557cac7e34', 'logo' => '/storage/logos/usdcx-coin.png', 'decimals' => 6],
                         'HOSKY'         => ['policy' => 'a0028f350aaabe0545fdcb56b039bfb08e4bb4d8c4d7c3c7d481c235', 'logo' => '/storage/logos/hosky-coin.png', 'decimals' => 0],
                         'NIGHT'         => ['policy' => '0691b2fecca1ac4f53cb6dfb00b7013e561d1f34403b957cbb5af1fa', 'logo' => '/storage/logos/night-coin.png', 'decimals' => 6],
                         'SNEK'          => ['policy' => '279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f', 'logo' => '/storage/logos/snek-coin.png', 'decimals' => 0],

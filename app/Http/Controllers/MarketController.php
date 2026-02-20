@@ -195,7 +195,11 @@ class MarketController extends Controller
             $product['fingerprint'] = 'asset12ffdj8kk2w485sr7a5ekmjjdyecz8ps2cm5zed';
             $product['decimals'] = 6;
 
-        }  else if ($product['currency'] == 'USDA') {
+        } else if ($product['currency'] == 'USDCx') {
+            $product['fingerprint'] = 'asset1e7eewpjw8ua3f2gpfx7y34ww9vjl63hayn80kl';
+            $product['decimals'] = 6;
+
+        } else if ($product['currency'] == 'USDA') {
             $product['fingerprint'] = 'asset16fq594uun90f2jajmecjcdt4jnsnq7r3jdqsw5';
             $product['decimals'] = 6;
 

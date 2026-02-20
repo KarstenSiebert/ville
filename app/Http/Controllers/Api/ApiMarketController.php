@@ -184,6 +184,10 @@ class ApiMarketController extends Controller
             $product['fingerprint'] = 'asset1xhl76ah9cgj4cw8ystsuk5he3ltdr4f85vs3zu';
             $product['decimals'] = 6;
         
+        } else if ($product['currency'] == 'USDCx') {
+            $product['fingerprint'] = 'asset1e7eewpjw8ua3f2gpfx7y34ww9vjl63hayn80kl';
+            $product['decimals'] = 6;
+                
         }  else if ($product['currency'] == 'ADA') {
             $product['fingerprint'] = '';
             $product['decimals'] = 6;
