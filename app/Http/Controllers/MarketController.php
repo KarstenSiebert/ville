@@ -64,9 +64,9 @@ class MarketController extends Controller
                 ->limit(100)
                 ->get();
         }
-        
-        $market = Market::find(7);
-        
+             
+        // dd($markets);
+
         if (empty($markets)) {
             $paginated = new LengthAwarePaginator([], 0, $perPage, $page);
         
@@ -501,7 +501,7 @@ class MarketController extends Controller
             'price' => ['required', 'numeric', 'min:0.000001'],
         ]);
 
-        $user = auth()->user();
+        $user = auth()->user();        
     
         $buyAmount = $request->buy_amount;
 
@@ -523,6 +523,8 @@ class MarketController extends Controller
         $outcomeId = $request->outcome_id;
 
         if (($buyAmount < $market->min_trade_amount) || ($buyAmount > $market->max_trade_amount)) {
+            
+            Log::debug('buy '.$buyAmount . ' - ' . $market->min_trade_amount . ' - ' . $market->max_trade_amount);
 
             $q = $this->getOutcomeQuantities($market); 
 
@@ -533,7 +535,10 @@ class MarketController extends Controller
             return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q]);
         }    
 
-        if ($priceInt < $currentPriceInt) {            
+        if ($priceInt < $currentPriceInt) {     
+            
+            Log::debug('buy '.$buyAmount . ' - ' . $priceInt . ' - ' . $currentPriceInt);
+
             $q = $this->getOutcomeQuantities($market); 
 
             $liquidity = app(OutcomeService::class)->getLiquidity($market);
@@ -552,6 +557,8 @@ class MarketController extends Controller
 
         if (empty($marketWallet) || empty($userWallet) || empty($adminWallet)) {
 
+            Log::debug('buy wallet empty');
+
             $liquidity = app(OutcomeService::class)->getLiquidity($market);
             
             $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);
@@ -567,6 +574,9 @@ class MarketController extends Controller
         $available = $userTokenWallet->quantity - $userTokenWallet->reserved_quantity;
                               
         if ($available < $priceInt) {
+            
+            Log::debug('buy '.$available . ' - ' . $priceInt);
+
             $q = $this->getOutcomeQuantities($market); 
 
             $liquidity = app(OutcomeService::class)->getLiquidity($market);
@@ -593,7 +603,7 @@ class MarketController extends Controller
         $marketId = $market->id;
 
         $outcomeId = $request->outcome_id;
-        
+                
         DB::transaction(function () use ($userWallet, $marketWallet, $adminWallet, $baseToken, $priceInt, $token, $buyAmount, $marketId, $outcomeId) {
                                 
             Transfer::execute($userWallet, $marketWallet, $baseToken, $priceInt, 'internal', 0, 'PBUY', false);
@@ -814,12 +824,17 @@ class MarketController extends Controller
     {                
         $data = $request->validate([            
             'allow_limit_orders' => 'required|boolean',
+            'max_trade_amount' => 'required|int|min:1|max:1000',
         ]);
         
         $market = Market::findOrFail($marketId);
         
-        if ($this->authorize('update', $market)) {            
-            $market->update(['allow_limit_orders' => $data['allow_limit_orders']]);
+        if ($this->authorize('update', $market)) {
+
+            Market::where('id', $market->id)->update([
+                'allow_limit_orders' => $data['allow_limit_orders'], 
+                'max_trade_amount'   => $data['max_trade_amount']
+            ]);
         }
 
         return redirect()->back();

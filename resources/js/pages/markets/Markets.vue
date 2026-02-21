@@ -38,6 +38,7 @@ type Market = {
     close_time: string
     liquidity_b: number
     outcomes_count: number
+    max_trade_amount: number
     logo_url?: string
     allow_limit_orders: boolean
     status: string
@@ -102,10 +103,11 @@ function confirmResolve(market: Market) {
     resolveDialogOpen.value = true
 }
 
-function saveLimitOrderSettings(market: Market) {
+function saveParameterSettings(market: Market) {
 
     router.post(`/markets/${market.id}/orders`, {
         allow_limit_orders: market.allow_limit_orders,
+        max_trade_amount: market.max_trade_amount,
     }, {
         preserveScroll: true,
         preserveState: true,
@@ -116,6 +118,7 @@ function saveLimitOrderSettings(market: Market) {
                 const index = editableMints.value.findIndex(a => a.id === market.id);
                 if (index !== -1) {
                     editableMints.value[index].allow_limit_orders = updatedMarket.allow_limit_orders;
+                    editableMints.value[index].max_trade_amount = updatedMarket.max_trade_amount;
                 }
             }
         }
@@ -166,8 +169,9 @@ watch(
             category: a.category,
             description: a.description,
             close_time: a.close_time,
-            liquidity_b: Number(a.liquidity_b),
-            outcomes_count: Number(a.outcomes_count),
+            liquidity_b: a.liquidity_b,
+            outcomes_count: a.outcomes_count,
+            max_trade_amount: a.max_trade_amount,
             status: a.status,
             allow_limit_orders: a.allow_limit_orders,
             logo_url: a.logo_url,
@@ -288,6 +292,10 @@ function submitForm() {
                                     class="hidden md:table-cell px-4 px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('orders') }}
                                 </th>
+                                <th
+                                    class="pr-8 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    {{ $t('limit') }}
+                                </th>
                                 <th class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('status')">
                                     {{ $t('status') }}
@@ -328,7 +336,14 @@ function submitForm() {
                                 <td class="hidden md:table-cell px-4 px-4 py-2 text-center">
                                     <Checkbox v-model="asset.allow_limit_orders" binary
                                         class="w-4 h-4 dark:bg-gray-900 text-gray-900 dark:text-gray-200 dark:border-gray-600"
-                                        @update:modelValue="saveLimitOrderSettings(asset)" />
+                                        @update:modelValue="saveParameterSettings(asset)" />
+                                </td>
+                                <td
+                                    class="px-4 py-2 text-right text-gray-900 dark:text-gray-200 cursor-default max-w-xs overflow-hidden">
+
+                                    <input type="number" v-model.number="asset.max_trade_amount" min="1" max="1000"
+                                        step="1" @blur="saveParameterSettings(asset)"
+                                        class="w-20 px-2 py-1 border rounded text-right" />
                                 </td>
                                 <td class="hidden md:table-cell px-4 py-2 text-sm text-center text-gray-900 dark:text-gray-200 truncate text-ellipsis 
                                             cursor-default max-w-xs overflow-hidden">

@@ -409,7 +409,7 @@ async function buyOutcome(market: Market, outcome: Outcome) {
         buy_amount: outcome.buyAmount,
         price: price
     });
- 
+
     return;
     */
 
