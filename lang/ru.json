@@ -381,6 +381,12 @@
   "active_users": "Активные пользователи",
   "market_opinion": "Мнение рынка",
   "volume": "Объем",
-  "users": "Пользователи"
+  "users": "Пользователи",
+  "link": "Ссылка",
+  "no_winning_wallet_shares": "Нет выигрышных долей кошелька",
+  "no_winning_wallets": "Нет выигрышных кошельков",
+  "no_winning_outcome": "Нет выигрышного результата",
+  "latitude": "Широта",
+  "longitude": "Долгота"
 
 }

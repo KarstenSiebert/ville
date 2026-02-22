@@ -369,6 +369,12 @@
     "active_users": "Aktív felhasználók",
     "market_opinion": "Piaci vélemény",
     "volume": "Forgalom",
-    "users": "Felhasználók"
+    "users": "Felhasználók",
+    "link": "Link",
+    "no_winning_wallet_shares": "Nincs nyertes pénztárcamegosztás",
+    "no_winning_wallets": "Nincsenek nyertes pénztárcák",
+    "no_winning_outcome": "Nincs nyertes eredmény",
+    "latitude": "Szélesség",
+    "longitude": "Hosszúság"
 
 }

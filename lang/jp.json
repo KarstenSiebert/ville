@@ -382,6 +382,12 @@
   "active_users": "アクティブユーザー",
   "market_opinion": "市場の意見",
   "volume": "ボリューム",
-  "users": "ユーザー"
+  "users": "ユーザー",
+  "link": "リンク",
+  "no_winning_wallet_shares": "当選したウォレットシェアはありません",
+  "no_winning_wallets": "当選したウォレットはありません",
+  "no_winning_outcome": "当選結果はありません",
+  "latitude": "緯度",
+  "longitude": "経度"
 
 }

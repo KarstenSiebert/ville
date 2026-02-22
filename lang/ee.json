@@ -369,6 +369,12 @@
     "active_users": "Aktiivsed kasutajad",
     "market_opinion": "Turuarvamus",
     "volume": "Maht",
-    "users": "Kasutajad"
+    "users": "Kasutajad",
+    "link": "Link",
+    "no_winning_wallet_shares": "Ükski võitnud rahakoti osa",
+    "no_winning_wallets": "Ükski võitnud rahakott",
+    "no_winning_outcome": "Ükski võitnud tulemus",
+    "latitude": "Laiuskraad",
+    "longitude": "Pikkuskraad"
     
 }

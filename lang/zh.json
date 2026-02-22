@@ -381,6 +381,12 @@
   "active_users": "活跃用户",
   "market_opinion": "市场观点",
   "volume": "交易量",
-  "users": "用户"
+  "users": "用户",
+  "link": "链接",
+  "no_winning_wallet_shares": "没有获胜的钱包份额",
+  "no_winning_wallets": "没有获胜的钱包",
+  "no_winning_outcome": "没有获胜结果",
+  "latitude": "纬度",
+  "longitude": "经度"
 
 }

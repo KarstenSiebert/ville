@@ -396,8 +396,12 @@
     "active_users": "Aktive Benutzer",
     "market_opinion": "Marktmeinung",
     "volume": "Volumen",
-    "users": "Benutzer",
-
-    "link": "Link"
+    "users": "Benutzer",    
+    "link": "Link",
+    "no_winning_wallet_shares": "Keine gewinnenden Wallet-Anteile",
+    "no_winning_wallets": "Keine gewinnenden Wallets",
+    "no_winning_outcome": "Kein Gewinn-Ergebnis",
+    "latitude": "Breitengrad",
+    "longitude": "Längengrad"
 
 }

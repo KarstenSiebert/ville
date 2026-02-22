@@ -373,6 +373,12 @@
     "active_users": "Aktivní uživatelé",
     "market_opinion": "Názor trhu",
     "volume": "Objem",
-    "users": "Uživatelé"
+    "users": "Uživatelé",
+    "link": "Odkaz",
+    "no_winning_wallet_shares": "Žádné výherní podíly peněženky",
+    "no_winning_wallets": "Žádné výherní peněženky",
+    "no_winning_outcome": "Žádný výherní výsledek",
+    "latitude": "Zeměpisná šířka",
+    "longitude": "Zeměpisná délka"
 
 }

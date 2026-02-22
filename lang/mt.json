@@ -369,6 +369,12 @@
     "active_users": "Utenti attivi",
     "market_opinion": "Opinjoni tas-suq",
     "volume": "Volum",
-    "users": "Utenti"
+    "users": "Utenti",
+    "link": "Rabta",
+    "no_winning_wallet_shares": "L-ebda sehem ta’ wallet rebbieħ",
+    "no_winning_wallets": "L-ebda wallets rebbieħa",
+    "no_winning_outcome": "L-ebda riżultat rebbieħ",
+    "latitude": "Latitudni",
+    "longitude": "Longitudni"
 
 }

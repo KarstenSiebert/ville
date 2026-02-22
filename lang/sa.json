@@ -280,6 +280,12 @@
     "active_users": "المستخدمون النشطون",
     "market_opinion": "رأي السوق",
     "volume": "الحجم",
-    "users": "المستخدمون"
+    "users": "المستخدمون",
+    "link": "رابط",
+    "no_winning_wallet_shares": "لا توجد حصص محفظة فائزة",
+    "no_winning_wallets": "لا توجد محافظ فائزة",
+    "no_winning_outcome": "لا توجد نتيجة فائزة",
+    "latitude": "خط العرض",
+    "longitude": "خط الطول"
     
 }

@@ -369,6 +369,12 @@
     "active_users": "Aktiva användare",
     "market_opinion": "Marknadsåsikt",
     "volume": "Volym",
-    "users": "Användare"
+    "users": "Användare",
+    "link": "Länk",
+    "no_winning_wallet_shares": "Inga vinnande plånboksandelar",
+    "no_winning_wallets": "Inga vinnande plånböcker",
+    "no_winning_outcome": "Inget vinnande resultat",
+    "latitude": "Latitud",
+    "longitude": "Longitud"
 
 }

@@ -393,6 +393,8 @@
     "link": "Link",
     "no_winning_wallet_shares": "No winning wallet shares",
     "no_winning_wallets": "No winning wallets",
-    "no_winning_outcome": "No winning outcome"
+    "no_winning_outcome": "No winning outcome",
+    "latitude": "Latitude",
+    "longitude": "Longitude"
 
 }

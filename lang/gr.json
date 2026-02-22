@@ -369,6 +369,12 @@
     "active_users": "Ενεργοί χρήστες",
     "market_opinion": "Άποψη αγοράς",
     "volume": "Όγκος",
-    "users": "Χρήστες"
+    "users": "Χρήστες",
+    "link": "Σύνδεσμος",
+    "no_winning_wallet_shares": "Καμία νικήτρια μερίδα πορτοφολιού",
+    "no_winning_wallets": "Κανένα νικηφόρο πορτοφόλι",
+    "no_winning_outcome": "Κανένα νικηφόρο αποτέλεσμα",
+    "latitude": "Γεωγραφικό πλάτος",
+    "longitude": "Γεωγραφικό μήκος"
 
 }

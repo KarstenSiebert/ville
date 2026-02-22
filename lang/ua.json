@@ -381,6 +381,12 @@
   "active_users": "Активні користувачі",
   "market_opinion": "Думка ринку",
   "volume": "Обсяг",
-  "users": "Користувачі"
+  "users": "Користувачі",
+  "link": "Посилання",
+  "no_winning_wallet_shares": "Немає виграшних часток гаманця",
+  "no_winning_wallets": "Немає виграшних гаманців",
+  "no_winning_outcome": "Немає виграшного результату",
+  "latitude": "Широта",
+  "longitude": "Довгота"
 
 }

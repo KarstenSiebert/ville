@@ -369,6 +369,12 @@
     "active_users": "Aktivni korisnici",
     "market_opinion": "Mišljenje tržišta",
     "volume": "Volumen",
-    "users": "Korisnici"
+    "users": "Korisnici",
+    "link": "Poveznica",
+    "no_winning_wallet_shares": "Nema dobitnih udjela u novčaniku",
+    "no_winning_wallets": "Nema dobitnih novčanika",
+    "no_winning_outcome": "Nema dobitnog ishoda",
+    "latitude": "Geografska širina",
+    "longitude": "Geografska dužina"
 
 }

@@ -369,6 +369,12 @@
     "active_users": "Utilizatori activi",
     "market_opinion": "Opinia pieței",
     "volume": "Volum",
-    "users": "Utilizatori"
+    "users": "Utilizatori",
+    "link": "Link",
+    "no_winning_wallet_shares": "Nicio cotă de portofel câștigătoare",
+    "no_winning_wallets": "Niciun portofel câștigător",
+    "no_winning_outcome": "Niciun rezultat câștigător",
+    "latitude": "Latitudine",
+    "longitude": "Longitudine"
 
 }

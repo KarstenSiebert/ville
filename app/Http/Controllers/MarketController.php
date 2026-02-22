@@ -138,6 +138,8 @@ class MarketController extends Controller
             'liquidity_b' => ['required', 'integer', 'min:1', 'max:1000000000'],
             'currency' => ['required', 'string'],        
             'description' => ['nullable', 'string', 'max:384'],
+            'latitude' => ['nullable', 'numeric', 'min:-90.0', 'max:90.0'],
+            'longitude' => ['nullable', 'numeric', 'min:-180.0', 'max:180.0'],
             'logo_url' => ['nullable', 'image', 'max:2048'],
             'outcomes.*.name' => ['required', 'string', 'max:255'],
             'outcomes.*.link' => ['nullable', 'url:https', 'max:255'],
@@ -286,6 +288,8 @@ class MarketController extends Controller
                     'b' => $b,
                     'start_time' => $validated['start_date'] ? $validated['start_date'] : now(),
                     'close_time' => $validated['end_date'],
+                    'latitude' => $validated['latitude'] ? round($validated['latitude'], 4) : null,
+                    'longitude' => $validated['longitude'] ? round($validated['longitude'], 4) : null,
                     'liquidity_b' => $marketWalletAmount,
                     'base_token_fingerprint' => $fingerprint,
                 ]);

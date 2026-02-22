@@ -373,6 +373,12 @@
     "active_users": "Активни потребители",
     "market_opinion": "Пазарно мнение",
     "volume": "Обем",
-    "users": "Потребители"
+    "users": "Потребители",
+    "link": "Връзка",
+    "no_winning_wallet_shares": "Няма печеливши дялове на портфейли",
+    "no_winning_wallets": "Няма печеливши портфейли",
+    "no_winning_outcome": "Няма печеливш резултат",
+    "latitude": "Ширина",
+    "longitude": "Дължина"
 
 }

@@ -369,6 +369,12 @@
     "active_users": "Aktīvie lietotāji",
     "market_opinion": "Tirgus viedoklis",
     "volume": "Apjoms",
-    "users": "Lietotāji"
+    "users": "Lietotāji",
+    "link": "Saite",
+    "no_winning_wallet_shares": "Nav uzvarējušo maku daļu",
+    "no_winning_wallets": "Nav uzvarējušu maku",
+    "no_winning_outcome": "Nav uzvarējuša rezultāta",
+    "latitude": "Platums",
+    "longitude": "Garums"
 
 }

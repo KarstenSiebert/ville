@@ -369,6 +369,12 @@
     "active_users": "Aktywni użytkownicy",
     "market_opinion": "Opinia rynku",
     "volume": "Wolumen",
-    "users": "Użytkownicy"
+    "users": "Użytkownicy",
+    "link": "Link",
+    "no_winning_wallet_shares": "Brak wygranych udziałów portfela",
+    "no_winning_wallets": "Brak wygranych portfeli",
+    "no_winning_outcome": "Brak wygranego wyniku",
+    "latitude": "Szerokość geograficzna",
+    "longitude": "Długość geograficzna"
 
 }

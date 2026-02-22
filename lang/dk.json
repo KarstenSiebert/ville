@@ -370,6 +370,12 @@
     "active_users": "Aktive brugere",
     "market_opinion": "Markedsopfattelse",
     "volume": "Volumen",
-    "users": "Brugere"
+    "users": "Brugere",
+    "link": "Link",
+    "no_winning_wallet_shares": "Ingen vindende wallet-andele",
+    "no_winning_wallets": "Ingen vindende wallets",
+    "no_winning_outcome": "Ingen vindende resultat",
+    "latitude": "Breddegrad",
+    "longitude": "Længdegrad"
 
 }

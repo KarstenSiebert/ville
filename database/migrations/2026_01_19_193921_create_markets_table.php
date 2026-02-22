@@ -35,6 +35,8 @@ return new class extends Migration
             $table->timestamp('canceled_at')->nullable();
             $table->string('cancel_reason')->nullable();
             $table->boolean('allow_limit_orders')->default(false);
+            $table->float('latitude')->nullable();
+            $table->float('longitude')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

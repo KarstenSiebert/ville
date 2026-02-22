@@ -369,6 +369,12 @@
     "active_users": "Actieve gebruikers",
     "market_opinion": "Marktopinie",
     "volume": "Volume",
-    "users": "Gebruikers"
+    "users": "Gebruikers",
+    "link": "Link",
+    "no_winning_wallet_shares": "Geen winnende portefeuilleverdelingen",
+    "no_winning_wallets": "Geen winnende wallets",
+    "no_winning_outcome": "Geen winnend resultaat",
+    "latitude": "Breedtegraad",
+    "longitude": "Lengtegraad"
 
 }

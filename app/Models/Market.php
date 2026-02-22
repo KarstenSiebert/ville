@@ -32,6 +32,8 @@ class Market extends Model
         'resolved_outcome_id',
         'min_trade_amount',
         'max_trade_amount',
+        'latitude',
+        'longitude',
         'is_active',
         'allow_limit_orders'
     ];

@@ -369,6 +369,12 @@
     "active_users": "Aktiiviset käyttäjät",
     "market_opinion": "Markkina-arvio",
     "volume": "Volyymi",
-    "users": "Käyttäjät"
+    "users": "Käyttäjät",
+    "link": "Linkki",
+    "no_winning_wallet_shares": "Ei voittavia lompakko-osuuksia",
+    "no_winning_wallets": "Ei voittavia lompakoita",
+    "no_winning_outcome": "Ei voittavaa tulosta",
+    "latitude": "Leveyspiiri",
+    "longitude": "Pituuspiiri"
     
 }

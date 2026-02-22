@@ -369,6 +369,12 @@
     "active_users": "Úsáideoirí gníomhacha",
     "market_opinion": "Tuairim an mhargaidh",
     "volume": "Toirte",
-    "users": "Úsáideoirí"
+    "users": "Úsáideoirí",
+    "link": "Nasc",
+    "no_winning_wallet_shares": "Níl aon scaireanna sparán buaite",
+    "no_winning_wallets": "Níl aon sparáin bhuaite",
+    "no_winning_outcome": "Níl aon toradh buaite",
+    "latitude": "Leithead",
+    "longitude": "Fad"
 
 }

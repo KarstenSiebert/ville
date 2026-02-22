@@ -368,6 +368,12 @@
     "active_users": "Aktyvūs vartotojai",
     "market_opinion": "Rinkos nuomonė",
     "volume": "Tūris",
-    "users": "Vartotojai"
+    "users": "Vartotojai",
+    "link": "Nuoroda",
+    "no_winning_wallet_shares": "Nėra laimėjusių piniginės dalių",
+    "no_winning_wallets": "Nėra laimėjusių piniginių",
+    "no_winning_outcome": "Nėra laimėjusio rezultato",
+    "latitude": "Platuma",
+    "longitude": "Ilguma"
 
 }
