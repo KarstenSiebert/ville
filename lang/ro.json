@@ -375,6 +375,8 @@
     "no_winning_wallets": "Niciun portofel câștigător",
     "no_winning_outcome": "Niciun rezultat câștigător",
     "latitude": "Latitudine",
-    "longitude": "Longitudine"
+    "longitude": "Longitudine",
+    "qr_code": "Cod QR",
+    "scan_QR_code_to_see_market_details": "Scanează codul QR pentru a vedea detaliile pieței"
 
 }

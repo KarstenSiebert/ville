@@ -375,6 +375,8 @@
     "no_winning_wallets": "L-ebda wallets rebbieħa",
     "no_winning_outcome": "L-ebda riżultat rebbieħ",
     "latitude": "Latitudni",
-    "longitude": "Longitudni"
+    "longitude": "Longitudni",
+    "qr_code": "Kodiċi QR",
+    "scan_QR_code_to_see_market_details": "Iskenja l-kodiċi QR biex tara d-dettalji tas-suq"
 
 }

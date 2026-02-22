@@ -376,6 +376,8 @@
     "no_winning_wallets": "Ingen vindende wallets",
     "no_winning_outcome": "Ingen vindende resultat",
     "latitude": "Breddegrad",
-    "longitude": "Længdegrad"
+    "longitude": "Længdegrad",
+    "qr_code": "QR-kode",
+    "scan_QR_code_to_see_market_details": "Scan QR-koden for at se markedets oplysninger"
 
 }

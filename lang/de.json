@@ -402,6 +402,8 @@
     "no_winning_wallets": "Keine gewinnenden Wallets",
     "no_winning_outcome": "Kein Gewinn-Ergebnis",
     "latitude": "Breitengrad",
-    "longitude": "Längengrad"
+    "longitude": "Längengrad",
+    "qr_code": "QR-Code",
+    "scan_QR_code_to_see_market_details": "Scannen Sie den QR-Code, um Marktdetails zu sehen"
 
 }

@@ -375,6 +375,8 @@
     "no_winning_wallets": "Nema dobitnih novčanika",
     "no_winning_outcome": "Nema dobitnog ishoda",
     "latitude": "Geografska širina",
-    "longitude": "Geografska dužina"
+    "longitude": "Geografska dužina",
+    "qr_code": "QR kod",
+    "scan_QR_code_to_see_market_details": "Skenirajte QR kod za prikaz detalja o tržištu"
 
 }

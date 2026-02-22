@@ -375,6 +375,8 @@
     "no_winning_wallets": "Nincsenek nyertes pénztárcák",
     "no_winning_outcome": "Nincs nyertes eredmény",
     "latitude": "Szélesség",
-    "longitude": "Hosszúság"
+    "longitude": "Hosszúság",
+    "qr_code": "QR-kód",
+    "scan_QR_code_to_see_market_details": "Olvassa be a QR-kódot a piac részleteinek megtekintéséhez"
 
 }

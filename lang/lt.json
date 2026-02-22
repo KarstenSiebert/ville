@@ -375,6 +375,8 @@
     "no_winning_wallets": "Nav uzvarējušu maku",
     "no_winning_outcome": "Nav uzvarējuša rezultāta",
     "latitude": "Platums",
-    "longitude": "Garums"
+    "longitude": "Garums",
+    "qr_code": "QR kods",
+    "scan_QR_code_to_see_market_details": "Skenējiet QR kodu, lai redzētu tirgus informāciju"
 
 }

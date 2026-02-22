@@ -387,6 +387,8 @@
   "no_winning_wallets": "Нет выигрышных кошельков",
   "no_winning_outcome": "Нет выигрышного результата",
   "latitude": "Широта",
-  "longitude": "Долгота"
+  "longitude": "Долгота",
+  "qr_code": "QR-код",
+  "scan_QR_code_to_see_market_details": "Сканируйте QR-код, чтобы увидеть детали рынка"
 
 }

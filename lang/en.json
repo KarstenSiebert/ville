@@ -395,6 +395,8 @@
     "no_winning_wallets": "No winning wallets",
     "no_winning_outcome": "No winning outcome",
     "latitude": "Latitude",
-    "longitude": "Longitude"
+    "longitude": "Longitude",
+    "qr_code": "QR Code",
+    "scan_QR_code_to_see_market_details": "Scan QR code to see Market details"
 
 }

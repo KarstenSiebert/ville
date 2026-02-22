@@ -375,6 +375,8 @@
     "no_winning_wallets": "Brak wygranych portfeli",
     "no_winning_outcome": "Brak wygranego wyniku",
     "latitude": "Szerokość geograficzna",
-    "longitude": "Długość geograficzna"
+    "longitude": "Długość geograficzna",
+    "qr_code": "Kod QR",
+    "scan_QR_code_to_see_market_details": "Zeskanuj kod QR, aby zobaczyć szczegóły rynku"
 
 }

@@ -860,13 +860,19 @@ class MarketController extends Controller
 
         $fill = Fill::uniformColor($foregroundColor, $backgroundColor);
 
-        $title = $market->title;
+        $marketData = [];
+
+        $marketData['market']    = $market->id;
+        $marketData['latitude']  = $market->latitude;
+        $marketData['longitude'] = $market->longitude;
+        
+        $data = json_encode($marketData);
                             
         $renderer = new ImageRenderer(new RendererStyle(400, 1, null, null, $fill), new ImagickImageBackEnd());
         
-        $qrcode = 'data:image/png;base64,'.base64_encode((new Writer($renderer))->writeString($title));            
+        $qrcode = 'data:image/png;base64,'.base64_encode((new Writer($renderer))->writeString($data));
                                     
-        return response()->json(['qrcode' => $qrcode], 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);        
+        return response()->json($qrcode, 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);        
     }
     
 }

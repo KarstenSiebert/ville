@@ -286,6 +286,8 @@
     "no_winning_wallets": "لا توجد محافظ فائزة",
     "no_winning_outcome": "لا توجد نتيجة فائزة",
     "latitude": "خط العرض",
-    "longitude": "خط الطول"
+    "longitude": "خط الطول",
+    "qr_code": "رمز QR",
+    "scan_QR_code_to_see_market_details": "امسح رمز QR لرؤية تفاصيل السوق"
     
 }

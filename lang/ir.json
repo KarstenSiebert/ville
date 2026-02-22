@@ -386,6 +386,8 @@
   "no_winning_wallets": "هیچ کیف پول برنده‌ای وجود ندارد",
   "no_winning_outcome": "هیچ نتیجه برنده‌ای وجود ندارد",
   "latitude": "عرض جغرافیایی",
-  "longitude": "طول جغرافیایی"
+  "longitude": "طول جغرافیایی",
+  "qr_code": "کد QR",
+  "scan_QR_code_to_see_market_details": "کد QR را اسکن کنید تا جزئیات بازار را ببینید"
 
 }

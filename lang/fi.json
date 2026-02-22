@@ -375,6 +375,8 @@
     "no_winning_wallets": "Ei voittavia lompakoita",
     "no_winning_outcome": "Ei voittavaa tulosta",
     "latitude": "Leveyspiiri",
-    "longitude": "Pituuspiiri"
+    "longitude": "Pituuspiiri",
+    "qr_code": "QR-koodi",
+    "scan_QR_code_to_see_market_details": "Skannaa QR-koodi nähdäksesi markkinatiedot"
     
 }

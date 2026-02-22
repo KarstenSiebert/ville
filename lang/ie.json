@@ -375,6 +375,8 @@
     "no_winning_wallets": "Níl aon sparáin bhuaite",
     "no_winning_outcome": "Níl aon toradh buaite",
     "latitude": "Leithead",
-    "longitude": "Fad"
+    "longitude": "Fad",
+    "qr_code": "Cód QR",
+    "scan_QR_code_to_see_market_details": "Scanáil an cód QR chun sonraí an mhargaidh a fheiceáil"
 
 }

@@ -388,6 +388,8 @@
   "no_winning_wallets": "当選したウォレットはありません",
   "no_winning_outcome": "当選結果はありません",
   "latitude": "緯度",
-  "longitude": "経度"
+  "longitude": "経度",
+  "qr_code": "QRコード",
+  "scan_QR_code_to_see_market_details": "QRコードをスキャンして市場の詳細を確認してください"
 
 }

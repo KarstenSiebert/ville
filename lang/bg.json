@@ -379,6 +379,8 @@
     "no_winning_wallets": "Няма печеливши портфейли",
     "no_winning_outcome": "Няма печеливш резултат",
     "latitude": "Ширина",
-    "longitude": "Дължина"
+    "longitude": "Дължина",
+    "qr_code": "QR код",
+    "scan_QR_code_to_see_market_details": "Сканирайте QR кода, за да видите подробности за пазара"
 
 }

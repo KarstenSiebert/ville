@@ -379,6 +379,8 @@
     "no_winning_wallets": "Žádné výherní peněženky",
     "no_winning_outcome": "Žádný výherní výsledek",
     "latitude": "Zeměpisná šířka",
-    "longitude": "Zeměpisná délka"
+    "longitude": "Zeměpisná délka",
+    "qr_code": "QR kód",
+    "scan_QR_code_to_see_market_details": "Naskenujte QR kód pro zobrazení podrobností o trhu"
 
 }

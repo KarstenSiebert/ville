@@ -375,6 +375,8 @@
     "no_winning_wallets": "Inga vinnande plånböcker",
     "no_winning_outcome": "Inget vinnande resultat",
     "latitude": "Latitud",
-    "longitude": "Longitud"
+    "longitude": "Longitud",
+    "qr_code": "QR-kod",
+    "scan_QR_code_to_see_market_details": "Skanna QR-koden för att se marknadsdetaljer"
 
 }

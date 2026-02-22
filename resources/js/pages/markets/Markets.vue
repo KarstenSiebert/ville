@@ -187,6 +187,39 @@ const form = useForm({
     selected_assets: [] as Market[],
 })
 
+const qrDialogOpen = ref(false)
+const qrBase64 = ref<string | null>(null)
+
+async function fetchQRCodeBase64(url: string): Promise<string> {
+    const response = await fetch(url)
+
+    if (!response.ok) throw new Error('Failed to fetch QR code')
+
+    let base64String = await response.text()
+
+    base64String = base64String.replace(/^"(.*)"$/, '$1');
+
+    if (!base64String.startsWith('data:image')) {
+        base64String = `data:image/png;base64,${base64String}`;
+    }
+
+    return base64String;
+}
+
+async function openQRCodeDialog(market: Market) {
+    try {
+        const url = `markets/${market.id}/qrcode`
+
+        const base64 = await fetchQRCodeBase64(url)
+
+        qrBase64.value = base64
+        qrDialogOpen.value = true
+
+    } catch (error) {
+        console.error('Failed to fetch QR code:', error)
+    }
+}
+
 const searchQuery = ref("")
 
 const sortField = ref<keyof Market>("title")
@@ -319,10 +352,10 @@ function submitForm() {
                                             <img v-if="asset.logo_url" :src="asset.logo_url" alt="logo"
                                                 class="w-8 h-8 rounded transition-transform duration-200 hover:scale-105" />
                                         </a>
-                                        <a :href="`/marketdetails/${asset.id}`"
-                                            class="transition-colors duration-200 truncate max-w-xs overflow-hidden text-ellipsis hover:text-blue-600">
+                                        <span @click="openQRCodeDialog(asset)"
+                                            class="transition-colors duration-200 truncate max-w-xs overflow-hidden cursor-pointer text-ellipsis hover:text-blue-600">
                                             {{ asset.title }}
-                                        </a>
+                                        </span>
                                     </div>
                                 </td>
                                 <td class="hidden md:table-cell px-4 py-2 text-sm text-left text-gray-900
@@ -604,5 +637,17 @@ function submitForm() {
                 </div>
             </form>
         </div>
+        <Dialog v-model:open="qrDialogOpen">
+            <DialogContent class="max-w-sm flex flex-col items-center justify-center">
+                <DialogHeader>
+                    <DialogTitle>{{ $t('qr_code') }}</DialogTitle>
+                    <DialogDescription>{{ $t('scan_QR_code_to_see_market_details') }}</DialogDescription>
+                </DialogHeader>
+
+                <div v-if="qrBase64" class="flex justify-center items-center p-4">
+                    <img :src="qrBase64" :alt="$t('qr_code')" class="max-w-xs rounded-lg shadow-lg" />
+                </div>
+            </DialogContent>
+        </Dialog>
     </AppLayout>
 </template>

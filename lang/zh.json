@@ -387,6 +387,8 @@
   "no_winning_wallets": "没有获胜的钱包",
   "no_winning_outcome": "没有获胜结果",
   "latitude": "纬度",
-  "longitude": "经度"
+  "longitude": "经度",
+  "qr_code": "二维码",
+  "scan_QR_code_to_see_market_details": "扫描二维码以查看市场详情"
 
 }

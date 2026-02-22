@@ -375,6 +375,8 @@
     "no_winning_wallets": "Κανένα νικηφόρο πορτοφόλι",
     "no_winning_outcome": "Κανένα νικηφόρο αποτέλεσμα",
     "latitude": "Γεωγραφικό πλάτος",
-    "longitude": "Γεωγραφικό μήκος"
+    "longitude": "Γεωγραφικό μήκος",
+    "qr_code": "Κωδικός QR",
+    "scan_QR_code_to_see_market_details": "Σαρώστε τον κωδικό QR για να δείτε λεπτομέρειες της αγοράς"
 
 }

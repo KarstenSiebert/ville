@@ -392,6 +392,8 @@
     "no_winning_wallets": "Aucun portefeuille gagnant",
     "no_winning_outcome": "Aucun résultat gagnant",
     "latitude": "Latitude",
-    "longitude": "Longitude"
+    "longitude": "Longitude",
+    "qr_code": "Code QR",
+    "scan_QR_code_to_see_market_details": "Scannez le code QR pour voir les détails du marché"
 
 }

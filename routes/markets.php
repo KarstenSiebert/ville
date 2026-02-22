@@ -20,6 +20,8 @@ Route::middleware('auth', 'verified')->group(function () {
     
     Route::get('/markets/{market}/full', [MarketController::class, 'fullData'])->name('markets.full');
 
+    Route::get('/markets/{market}/qrcode', [MarketController::class, 'qrcode'])->name('markets.qrcode');
+
     Route::prefix('admin')->group(function () {
         Route::post('/markets/{market}/close', [MarketAdminController::class, 'close'])->name('admin.markets.close');
 
@@ -31,6 +33,3 @@ Route::middleware('auth', 'verified')->group(function () {
 });
 
 Route::post('/markets/prices', [MarketController::class, 'prices'])->name('markets.prices');
-
-Route::get('/markets/{market}/qrcode', [MarketController::class, 'qrcode'])->name('markets.qrcode');
-
