@@ -31,15 +31,19 @@ class CreateNewUser implements CreatesNewUsers
                 'max:255',
                 Rule::unique(User::class),
             ],
+            'public_key' => ['nullable', 'string', 'max:2048'],
             'password' => $this->passwordRules(),
         ])->validate();
 
         $parent = DB::transaction(function () use ($input) {
         
+            $publicKey = isset($input['public_key']) ? $input['public_key'] : null;
+
             $parent = User::create([
                 'name' => $input['name'],
                 'email' => $input['email'],                
-                'password' => $input['password']
+                'password' => $input['password'],
+                'public_key' => $publicKey
             ]);
 
             if (!Permission::where('name', 'create_markets')->where('guard_name', 'web')->exists()) {

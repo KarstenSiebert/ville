@@ -20,5 +20,12 @@ class VaultService
     {        
         return base64_decode(Storage::disk('transactions')->get('root.key'));
     }
+
+    public static function verifyString(User $user, string $message, string $signature = null): bool
+    {        
+        if (!$user?->public_key || !$signature || !$message) return false;
+        
+        return openssl_verify($message, base64_decode($signature), $user->public_key, OPENSSL_ALGO_SHA256);
+    }
     
 }

@@ -67,7 +67,9 @@ class VerifyPublisher
 
         if ($externalId) {
 
-            $shadowUser = DB::transaction(function () use ($externalId, $publisher) {
+            $publicKey = $request->input('public_key') ? $request->input('public_key') : null;
+
+            $shadowUser = DB::transaction(function () use ($externalId, $publisher, $publicKey) {
                 
                 $existingShadow = User::where('external_user_id', $externalId)->where('publisher_id', $publisher->id)->first();
 
@@ -80,12 +82,13 @@ class VerifyPublisher
                 if ($currentCount >= $publisher->max_shadows) {
                     return response()->json(['message' => 'Reached maximum number of users']);
                 }
-        
+                        
                 $shadow = User::create([
                     'external_user_id' => $externalId,
                     'publisher_id'     => $publisher->id,
                     'name'             => strval($externalId),
                     'type'             => 'SHADOW',
+                    'public_key'       => $publicKey
                 ]);
 
                 Wallet::create([

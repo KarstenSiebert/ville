@@ -36,7 +36,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_path',
         'payout',
         'type',
-        'is_system'
+        'is_system',
+        'public_key',
     ];
 
     /**
@@ -52,7 +53,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at',
         'created_at',
         'updated_at',
-        'two_factor_confirmed_at',    
+        'two_factor_confirmed_at',
+        'public_key',
     ];
 
     /**

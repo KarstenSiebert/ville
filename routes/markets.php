@@ -15,7 +15,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/markets/{market}/limit-order', [MarketController::class, 'order'])->name('markets.order');
 
     Route::post('/markets/{market}/orders', [MarketController::class, 'orders'])->name('markets.orders');
-
+    
     Route::post('/markets/{market}/trades', [MarketDetailController::class, 'trades'])->name('marketdetails.trades');    
     
     Route::get('/markets/{market}/full', [MarketController::class, 'fullData'])->name('markets.full');
@@ -31,3 +31,6 @@ Route::middleware('auth', 'verified')->group(function () {
 });
 
 Route::post('/markets/prices', [MarketController::class, 'prices'])->name('markets.prices');
+
+Route::get('/markets/{market}/qrcode', [MarketController::class, 'qrcode'])->name('markets.qrcode');
+

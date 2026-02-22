@@ -45,7 +45,7 @@ class WalletController extends Controller
     /**
      * Display the specified resource.
      */
-     public function show(): Response
+    public function show(): Response
     {        
         $user = User::find(Auth::user()->id);
 

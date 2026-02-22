@@ -27,6 +27,7 @@ return new class extends Migration
             $table->text('two_factor_recovery_codes')->nullable();
             $table->timestamp('two_factor_confirmed_at')->nullable();
             $table->rememberToken();            
+            $table->string('public_key', 2048)->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->string('payout')->nullable();
             $table->boolean('is_system')->default(false);

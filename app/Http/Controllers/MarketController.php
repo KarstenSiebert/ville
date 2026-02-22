@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Token;
 use App\Models\Market;
 use App\Models\Wallet;
+use BaconQrCode\Writer;
 use App\Models\Outcome;
 use App\Models\Transfer;
 use App\Models\MarketTrade;
@@ -20,13 +21,18 @@ use Illuminate\Http\Request;
 use App\Models\MarketLimitOrder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
+use BaconQrCode\Renderer\Color\Rgb;
 use App\Http\Services\OutcomeService;
+use BaconQrCode\Renderer\ImageRenderer;
 use App\Http\Services\LimitOrderService;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Services\MarketTradesService;
+use BaconQrCode\Renderer\RendererStyle\Fill;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Services\LimitOrderMatchingService;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class MarketController extends Controller
@@ -840,5 +846,23 @@ class MarketController extends Controller
         return redirect()->back();
     }
 
+    public function qrcode(Request $request, $id)
+    {
+        $market = Market::findOrFail($id);
+            
+        $foregroundColor = new Rgb(148, 164, 163);
+
+        $backgroundColor = new Rgb(255, 255, 255);
+
+        $fill = Fill::uniformColor($foregroundColor, $backgroundColor);
+
+        $title = $market->title;
+                            
+        $renderer = new ImageRenderer(new RendererStyle(400, 1, null, null, $fill), new ImagickImageBackEnd());
+        
+        $qrcode = 'data:image/png;base64,'.base64_encode((new Writer($renderer))->writeString($title));            
+                                    
+        return response()->json(['qrcode' => $qrcode], 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);        
+    }
     
 }
