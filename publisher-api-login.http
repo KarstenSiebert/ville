@@ -1,11 +1,8 @@
-curl --http2 --request POST --url https://www.tokenville.fun/api/clients \
+curl --http2 --request POST --url https://www.tokenville.fun/api/webview/2 \
     --header 'content-type: application/json' \
-    --header 'X-KEY: 7510744d-4e40-4fae-9207-d9efbd3d8f91' \
-    --header 'X-SIGNATURE: 	c9rMqT93IaO5VyoNXCswCUo159v9NFrO' \
-    --header 'X-TIMESTAMP: 12345678' \
+    --header 'X-SHADOW: 6' \
+    --header 'X-DEVICE: 10' \
+    --header 'X-SMARKT: 2' \
     --data   '{
-                "market_id": "2",
-                "device_id": "10",
-                "public_id": "6"
                 
               }' 

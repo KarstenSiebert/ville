@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use DB;
+use Auth;
 use Closure;
 use App\Models\User;
 use App\Models\Wallet;
@@ -17,8 +18,16 @@ class VerifyMobileClient
 {
     public function handle(Request $request, Closure $next): Response
     {        
-        $marketId = $request->input('market_id') ? $request->input('market_id') : null;
+        $publicId = $request->header('X-SHADOW') ?? null;
 
+        $deviceId = $request->header('X-DEVICE') ?? null;
+
+        $marketId = $request->header('X-SMARKT') ?? null;
+                
+        if (empty($marketId)) {
+            $marketId = $request->input('market_id') ?? null;
+        }
+        
         if (!$marketId) {
             return  response()->json(['message' => 'Missing market id'], 401);
         }
@@ -37,10 +46,14 @@ class VerifyMobileClient
 
         $request->merge(['publisher' => $publisher]);
                 
-        $publicId = $request->input('public_id') ? $request->input('public_id') : null;
+        if (empty($publicId)) {
+            $publicId = $request->input('public_id') ?? null;
+        }
 
-        $deviceId = $request->input('device_id') ? $request->input('device_id') : null;
-
+        if (empty($deviceId)) {
+            $deviceId = $request->input('device_id') ?? null;
+        }
+        
         if (empty($deviceId) || empty($publicId)) {
             return  response()->json(['message' => 'Device or public id missing'], 401);
         }
@@ -101,7 +114,7 @@ class VerifyMobileClient
         });
 
         $request->merge(['shadow_user' => $shadowUser]);
-      
+
         return $next($request);
     }
 

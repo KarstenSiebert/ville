@@ -1,9 +1,11 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MarketController;
 use App\Http\Controllers\MarketAdminController;
 use App\Http\Controllers\MarketDetailController;
+use App\Http\Controllers\Api\ApiMobileClientController;
 
 Route::middleware('auth', 'verified')->group(function () {
     Route::resource('markets', MarketController::class)->except(['show']);
@@ -32,4 +34,33 @@ Route::middleware('auth', 'verified')->group(function () {
 
 });
 
+Route::get('/clients/{market}', [ApiMobileClientController::class, 'detail'])->name('clients.detail');
+
+Route::get('webview-login', function (Request $request) {
+
+ \Log::error('WEBVIEW DEBUG', [
+        'full_url' => $request->fullUrl(),
+        'path' => $request->path(),
+        'route_name' => optional($request->route())->getName(),
+        'middleware' => optional($request->route())->gatherMiddleware(),
+        'user_agent' => $request->userAgent(),
+    ]);
+
+
+        if (! $request->hasValidSignature()) {
+             abort(403);
+        }
+
+        $user = \App\Models\User::findOrFail($request->user);
+        
+        Auth::login($user);
+
+        $id = $request->market;
+        
+        // return redirect('clients/'.$id)->with(['user' => $user]);
+
+        return redirect('clients/'.$id);
+
+})->name('webview.login');
+   
 Route::post('/markets/prices', [MarketController::class, 'prices'])->name('markets.prices');

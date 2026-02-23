@@ -47,6 +47,8 @@ export const permissionsLoaded = ref(false)
 
 axios.defaults.headers.common['X-User-Locale'] = initialLang
 
+axios.defaults.withCredentials = true
+
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) =>

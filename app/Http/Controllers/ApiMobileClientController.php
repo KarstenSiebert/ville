@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use Auth;
 use Inertia\Inertia;
@@ -8,7 +8,6 @@ use App\Models\Market;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Api\ApiMobileClientController;
 
 class ApiMobileClientController extends Controller
 {
@@ -25,8 +24,8 @@ class ApiMobileClientController extends Controller
              return redirect('dashboard');
         }
 
-        $user = $request->user;
-                                
+        $user = $request->shadow_user;
+      
         $market = Market::with(['baseToken:id,name,decimals,token_type,fingerprint,logo_url', 'outcomes:id,market_id,name,link,logo_url'])
                 ->where('markets.id', $id)
                 ->first();
@@ -43,8 +42,8 @@ class ApiMobileClientController extends Controller
     public function webview(Request $request, $id)
     {
         $shadowUser = $request->shadow_user;
-
-        $loginUrl = URL::temporarySignedRoute('webview.login', now()->addMinutes(60), ['user' => $shadowUser->id, 'market' => $id]);
+        
+        $loginUrl = URL::temporarySignedRoute('webview.login', now()->addMinutes(5), ['user' => $shadowUser->id, 'market' => $id]);
 
         return  response()->json(['access' => $loginUrl], 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); 
     }

@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Cookie;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\DashboardController;
-
 use App\Http\Services\MarketSettlementService;
 
 Route::get('/', function () {    

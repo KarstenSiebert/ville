@@ -3,8 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MarketController;
 use App\Http\Services\MarketSettlementService;
 use App\Http\Controllers\Api\ApiUserController;
+use App\Http\Controllers\MarketDetailController;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiMarketController;
 use App\Http\Controllers\Api\ApiPublisherController;
@@ -79,9 +81,11 @@ Route::middleware(['verify.publisher', 'throttle:publisher-api'])->group(functio
     Route::get('/markets/{id}/winners',  [MarketSettlementService::class, 'winners'])->name('api.markets.winners');
 });
 
-
 Route::middleware(['verify.mobileclient', 'throttle:mobileclient-api'])->group(function () {
 
-    Route::post('/clients', [ApiMobileClientController::class, 'index'])->name('api.clients');
+    Route::post('/webview/{market}', [ApiMobileClientController::class, 'webview'])->name('api.webview');
 });
+
+
+
 
