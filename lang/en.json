@@ -389,7 +389,6 @@
     "market_opinion": "Market Opinion",
     "volume": "Volume",
     "users": "Users",
-
     "link": "Link",
     "no_winning_wallet_shares": "No winning wallet shares",
     "no_winning_wallets": "No winning wallets",
@@ -397,6 +396,10 @@
     "latitude": "Latitude",
     "longitude": "Longitude",
     "qr_code": "QR Code",
-    "scan_QR_code_to_see_market_details": "Scan QR code to see Market details"
+    "scan_QR_code_to_see_market_details": "Scan QR code to see Market details",
+
+    "subscribers": "Subscribers",
+    "max_subscribers": "Max. subscribers"
+
 
 }

@@ -150,6 +150,7 @@ interface FormData {
     publisher_id: number | null;
     category: string | null;
     liquidity_b: number | null;
+    max_subscribers: number | null;
     currency: string;
     start_date: string;
     end_date: string;
@@ -166,6 +167,7 @@ const form = useForm<FormData>({
     publisher_id: null,
     category: 'General',
     liquidity_b: null,
+    max_subscribers: null,
     currency: 'ADA',
     start_date: '',
     end_date: '',
@@ -317,6 +319,16 @@ function submitForm() {
                         <input v-model.number="form.liquidity_b" type="number" min="1" step="1"
                             class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
                         <div class="h-5 text-red-500 text-sm">{{ errors.liquidity_b || form.errors.liquidity_b }}</div>
+                    </div>
+
+                    <div class=" flex-1">
+                        <label id="subscribersLabel" class="block text-sm text-left font-medium mb-1">{{
+                            $t('max_subscribers')
+                        }}</label>
+                        <input v-model.number="form.max_subscribers" type="number" min="1" max="100000" step="1"
+                            class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
+                        <div class="h-5 text-red-500 text-sm">{{ errors.max_subscribers || form.errors.max_subscribers
+                        }}</div>
                     </div>
 
                     <div class="flex-1">

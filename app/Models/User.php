@@ -139,6 +139,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(InputOutput::class);
     }
+
+    public function subscribedMarkets()
+    {
+        return $this->belongsToMany(Market::class, 'market_subscribers', 'user_id', 'market_id')->whereNull('markets.deleted_at');
+    }
     
     /**
      * Create a custody wallet for the user.

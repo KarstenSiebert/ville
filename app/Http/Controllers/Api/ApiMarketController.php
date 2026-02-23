@@ -99,6 +99,7 @@ class ApiMarketController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:255'],
             'liquidity_b' => ['required', 'integer', 'min:1', 'max:1000000000'],
+            'max_subscribers' => ['nullable', 'integer', 'min:1', 'max:100000'],
             'currency' => ['required', 'string', 'max:10'],
             'description' => ['nullable', 'string', 'max:384'],
             'latitude' => ['nullable', 'numeric', 'min:-90.0', 'max:90.0'],
@@ -141,6 +142,10 @@ class ApiMarketController extends Controller
         }
 
         $marketWalletAmount = $tokenLiquidity;
+
+        // Reduce liquidity to normal value
+
+        $tokenLiquidity = $validated['liquidity_b'];
         
         $b = $tokenLiquidity;
         
@@ -246,6 +251,7 @@ class ApiMarketController extends Controller
                     'logo_url' => $validated['logo_url'],
                     'description' => $validated['description'],
                     'status' => 'OPEN',
+                    'max_subscribers' => $validated['max_subscribers'] ? $validated['max_subscribers'] : 100000,
                     'b' => $b,                    
                     'start_time' => $startTime,
                     'close_time' => $closeTime,

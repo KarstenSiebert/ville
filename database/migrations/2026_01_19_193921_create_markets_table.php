@@ -27,6 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('liquidity_b')->default(100);
             $table->string('base_token_fingerprint')->nullable();
             $table->unsignedBigInteger('b');
+            $table->unsignedBigInteger('max_subscribers')->nullable();
             $table->unsignedBigInteger('min_trade_amount')->default(1);
             $table->unsignedBigInteger('max_trade_amount')->default(1000);
             $table->unsignedBigInteger('resolved_outcome_id')->nullable();

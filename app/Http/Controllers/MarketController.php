@@ -55,14 +55,14 @@ class MarketController extends Controller
         $isAdmin = ($user->email == config('chimera.admin_user')) ? true : false;
                               
         if ($isAdmin) {
-            $markets = Market::with(['baseToken', 'outcomes'])
-                ->withCount('outcomes')
+            $markets = Market::with(['baseToken', 'outcomes'])                
+                ->withCount(['outcomes', 'subscribers'])
                 // ->running()
                 ->limit(500)
                 ->get();
         } else {
             $markets = Market::with(['baseToken', 'outcomes'])
-                ->withCount('outcomes')
+                ->withCount(['outcomes', 'subscribers'])
                 ->whereHas('user', function ($q) use ($user) {
                     $q->where('parent_user_id', $user->id);
                 })                
@@ -136,6 +136,7 @@ class MarketController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:255'],
             'liquidity_b' => ['required', 'integer', 'min:1', 'max:1000000000'],
+            'max_subscribers' => ['nullable', 'integer', 'min:1', 'max:100000'],
             'currency' => ['required', 'string'],        
             'description' => ['nullable', 'string', 'max:384'],
             'latitude' => ['nullable', 'numeric', 'min:-90.0', 'max:90.0'],
@@ -176,12 +177,12 @@ class MarketController extends Controller
         if (bccomp($availableTotal, $tokenLiquidity) < 0) {        
             return back()->with(['error' => __('you_do_not_have_enough_tokens_to_provide_this_liquidity')]);
         }
-        
+      
+        $marketWalletAmount = $tokenLiquidity;
+
         // Reduce liquidity to normal value
 
         $tokenLiquidity = $validated['liquidity_b'];
-
-        $marketWalletAmount = $tokenLiquidity;
 
         $b = $tokenLiquidity;
 
@@ -285,7 +286,8 @@ class MarketController extends Controller
                     'logo_url' => $validated['logo_url'],
                     'description' => $validated['description'],
                     'status' => 'OPEN',
-                    'b' => $b,
+                    'b' => $b,                    
+                    'max_subscribers' => $validated['max_subscribers'] ? $validated['max_subscribers'] : 100000,
                     'start_time' => $validated['start_date'] ? $validated['start_date'] : now(),
                     'close_time' => $validated['end_date'],
                     'latitude' => $validated['latitude'] ? round($validated['latitude'], 4) : null,
@@ -342,7 +344,7 @@ class MarketController extends Controller
                 // Finally transfer the amount to the new wallet
 
                 $fromWallet = Wallet::where('user_id', $user->id)->where('type', 'available')->first();
-
+                
                 if (!empty($fromWallet) && $mUser->can('credit', $toWallet) && $mUser->can('debit', $fromWallet)) {
                     Transfer::execute($fromWallet, $toWallet, $currencyToken, $marketWalletAmount, 'internal', 0, 'PLTM', false);
                 }                                 
@@ -489,6 +491,8 @@ class MarketController extends Controller
                 Wallet::where('user_id', $market->user_id)->where('id', $market->wallet_id)->delete();                
 
                 // Delete the market itself and the market user, who was just for the market
+                
+                $market->subscribers()->detach();  
 
                 $market->delete();
 
@@ -638,6 +642,8 @@ class MarketController extends Controller
 
             MarketTrade::create($tradeData);
         });
+
+        $market->subscribers()->syncWithoutDetaching([$user->id]);
         
         $q = $this->getOutcomeQuantities($market); 
                         

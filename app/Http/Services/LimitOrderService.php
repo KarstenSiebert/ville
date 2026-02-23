@@ -418,8 +418,10 @@ class LimitOrderService
                 'tx_type'           => 'BUY'
             ];
 
-            MarketTrade::create($tradeData);
+            MarketTrade::create($tradeData);            
         });
+
+        $market->subscribers()->syncWithoutDetaching([$userId]);
         
         $q = $this->getOutcomeQuantities($market); 
 

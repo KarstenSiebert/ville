@@ -4,7 +4,7 @@ curl --http2 --request POST --url https://www.tokenville.fun/api/clients \
     --header 'X-SIGNATURE: 	c9rMqT93IaO5VyoNXCswCUo159v9NFrO' \
     --header 'X-TIMESTAMP: 12345678' \
     --data   '{
-                "market_id": "1",
+                "market_id": "2",
                 "device_id": "10",
                 "public_id": "6"
                 

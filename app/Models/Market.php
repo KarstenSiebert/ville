@@ -23,6 +23,7 @@ class Market extends Model
         'close_time', 
         'liquidity_b',
         'b',
+        'max_subscribers',
         'base_token_fingerprint',
         'resolved_at',
         'settled_at',
@@ -170,6 +171,11 @@ class Market extends Model
     public function limitOrdersForOutcome($outcomeId)
     {
         return $this->hasMany(MarketLimitOrder::class, 'market_id')->where('outcome_id', $outcomeId);
+    }
+
+    public function subscribers()
+    {
+        return $this->belongsToMany(User::class, 'market_subscribers', 'market_id', 'user_id')->whereNull('users.deleted_at');
     }
 
 }

@@ -38,6 +38,7 @@ type Market = {
     close_time: string
     liquidity_b: number
     outcomes_count: number
+    subscribers_count: number
     max_trade_amount: number
     logo_url?: string
     allow_limit_orders: boolean
@@ -171,6 +172,7 @@ watch(
             close_time: a.close_time,
             liquidity_b: a.liquidity_b,
             outcomes_count: a.outcomes_count,
+            subscribers_count: a.subscribers_count,
             max_trade_amount: a.max_trade_amount,
             status: a.status,
             allow_limit_orders: a.allow_limit_orders,
@@ -322,6 +324,10 @@ function submitForm() {
                                     {{ $t('description') }}
                                 </th>
                                 <th
+                                    class="hidden md:table-cell px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    {{ $t('subscribers') }}
+                                </th>
+                                <th
                                     class="hidden md:table-cell px-4 px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('orders') }}
                                 </th>
@@ -365,6 +371,10 @@ function submitForm() {
                                 <td class="hidden md:table-cell px-4 py-2 text-sm text-left text-gray-900 dark:text-gray-200
                                             truncate max-w-xs overflow-hidden text-ellipsis cursor-default">
                                     {{ asset.description }}
+                                </td>
+                                <td class="hidden md:table-cell pr-8 py-2 text-sm text-right text-gray-900 dark:text-gray-200
+                                            truncate max-w-xs overflow-hidden text-ellipsis cursor-default">
+                                    {{ asset.subscribers_count }}
                                 </td>
                                 <td class="hidden md:table-cell px-4 px-4 py-2 text-center">
                                     <Checkbox v-model="asset.allow_limit_orders" binary
