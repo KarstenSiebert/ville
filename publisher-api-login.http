@@ -1,8 +1,11 @@
-curl --http2 --request GET --url https://www.tokenville.fun/api/markets/5/winners \
+curl --http2 --request POST --url https://www.tokenville.fun/api/clients \
     --header 'content-type: application/json' \
     --header 'X-KEY: 7510744d-4e40-4fae-9207-d9efbd3d8f91' \
     --header 'X-SIGNATURE: 	c9rMqT93IaO5VyoNXCswCUo159v9NFrO' \
     --header 'X-TIMESTAMP: 12345678' \
     --data   '{
+                "market_id": "1",
+                "device_id": "10",
+                "public_id": "6"
                 
               }' 

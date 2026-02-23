@@ -27,7 +27,8 @@ return new class extends Migration
             $table->text('two_factor_recovery_codes')->nullable();
             $table->timestamp('two_factor_confirmed_at')->nullable();
             $table->rememberToken();            
-            $table->string('public_key', 2048)->nullable();
+            $table->string('device_id', 255)->nullable();
+            $table->string('public_id', 2048)->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->string('payout')->nullable();
             $table->boolean('is_system')->default(false);
@@ -55,9 +56,9 @@ return new class extends Migration
 
             DB::statement("CREATE UNIQUE INDEX users_publisher_name_unique ON users (name) WHERE type = 'OPERATOR'");
 
-            DB::statement('CREATE UNIQUE INDEX users_type_external_unique ON users (external_user_id, type) WHERE deleted_at IS NULL');
+            DB::statement('CREATE UNIQUE INDEX users_type_external_unique ON users (external_user_id, type) WHERE deleted_at IS NULL AND external_user_id IS NOT NULL');
 
-            DB::statement('CREATE UNIQUE INDEX users_publisher_external_unique ON users (publisher_id, external_user_id) WHERE deleted_at IS NULL');
+            DB::statement('CREATE UNIQUE INDEX users_publisher_external_unique ON users (publisher_id, external_user_id) WHERE deleted_at IS NULL AND external_user_id IS NOT NULL');
         }        
     }
 

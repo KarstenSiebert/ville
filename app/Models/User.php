@@ -37,7 +37,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'payout',
         'type',
         'is_system',
-        'public_key',
+        'public_id',
+        'device_id'
     ];
 
     /**
@@ -54,7 +55,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'created_at',
         'updated_at',
         'two_factor_confirmed_at',
-        'public_key',
+        'public_id',
+        'device_id'
     ];
 
     /**

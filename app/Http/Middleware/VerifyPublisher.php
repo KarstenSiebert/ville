@@ -67,9 +67,7 @@ class VerifyPublisher
 
         if ($externalId) {
 
-            $publicKey = $request->input('public_key') ? $request->input('public_key') : null;
-
-            $shadowUser = DB::transaction(function () use ($externalId, $publisher, $publicKey) {
+            $shadowUser = DB::transaction(function () use ($externalId, $publisher) {
                 
                 $existingShadow = User::where('external_user_id', $externalId)->where('publisher_id', $publisher->id)->first();
 
@@ -88,7 +86,8 @@ class VerifyPublisher
                     'publisher_id'     => $publisher->id,
                     'name'             => strval($externalId),
                     'type'             => 'SHADOW',
-                    'public_key'       => $publicKey
+                    'device_id'        => null,
+                    'public_id'        => null
                 ]);
 
                 Wallet::create([

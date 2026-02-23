@@ -72,6 +72,14 @@ class AppServiceProvider extends ServiceProvider
             ];
         });
 
+        RateLimiter::for('mobileclient-api', function (Request $request) {
+            $operatorApiKey = $request->header('X-KEY');
+
+            return [
+                Limit::perMinute(60)->by($operatorApiKey ?: $request->ip()),
+            ];
+        });
+
         Gate::define('admin', fn (User $user) => $user->hasRole('admin'));      
         
         MarketLimitOrder::observe(MarketLimitOrderObserver::class);

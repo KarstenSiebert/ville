@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ApiUserController;
 use App\Http\Controllers\Api\ApiOrderController;
 use App\Http\Controllers\Api\ApiMarketController;
 use App\Http\Controllers\Api\ApiPublisherController;
+use App\Http\Controllers\Api\ApiMobileClientController;
 
 Route::middleware(['verify.publisher', 'throttle:publisher-api'])->group(function () {
     
@@ -41,10 +42,9 @@ Route::middleware(['verify.publisher', 'throttle:publisher-api'])->group(functio
     Route::post('/markets/{id}/resolve', [ApiMarketController::class, 'resolve'])->name('api.markets.resolve');
     Route::get('/markets/{id}/resolve', function () { return response()->json(null, 405); })->where('id', '[0-9]+');
 
-        // Place prediction orders of a user of an operator
+    // Place prediction orders of a user of an operator
     Route::post('/markets/{id}/full', [ApiMarketController::class, 'full'])->name('api.markets.full');
     Route::get('/markets/{id}/full', function () { return response()->json(null, 405); })->where('id', '[0-9]+');
-
 
     // Get all users of a market, or a specific user
     Route::get('/users', [ApiUserController::class, 'index'])->name('api.users');
@@ -53,7 +53,6 @@ Route::middleware(['verify.publisher', 'throttle:publisher-api'])->group(functio
     // Get the wallet and token values of a user of an operator
     Route::get('/users/wallet', [ApiUserController::class, 'wallet'])->name('api.users.wallet');
     Route::post('/users/wallet', function () { return response()->json(null, 405); });
-
 
     // Get the orders of a user of an operator
     Route::get('/orders', [ApiOrderController::class, 'index'])->name('api.orders');
@@ -73,11 +72,16 @@ Route::middleware(['verify.publisher', 'throttle:publisher-api'])->group(functio
     Route::post('/orders/buy', [ApiOrderController::class, 'buy'])->name('api.orders.buy');
     Route::get('/orders/buy', function () { return response()->json(null, 405); });
 
-
     // Place prediction orders of a user of an operator
     Route::post('/orders/price', [ApiOrderController::class, 'price'])->name('api.orders.price');
     Route::get('/orders/price', function () { return response()->json(null, 405); });
 
-     
     Route::get('/markets/{id}/winners',  [MarketSettlementService::class, 'winners'])->name('api.markets.winners');
 });
+
+
+Route::middleware(['verify.mobileclient', 'throttle:mobileclient-api'])->group(function () {
+
+    Route::post('/clients', [ApiMobileClientController::class, 'index'])->name('api.clients');
+});
+

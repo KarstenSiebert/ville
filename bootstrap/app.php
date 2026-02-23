@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Middleware\VerifyPublisher;
 use App\Exceptions\WrongMethodException;
 use App\Http\Middleware\HandleAppearance;
+use App\Http\Middleware\VerifyMobileClient;
 use App\Http\Middleware\HandleInertiaRequests;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -38,7 +39,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,            
-            'verify.publisher' => VerifyPublisher::class,            
+            'verify.publisher' => VerifyPublisher::class,
+            'verify.mobileclient' => VerifyMobileClient::class,
         ]);
         
         $middleware->validateCsrfTokens(except: [
