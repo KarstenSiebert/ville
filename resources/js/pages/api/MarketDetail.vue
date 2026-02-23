@@ -217,73 +217,8 @@ function totalUserBaseTokens(market: Market) {
     // return formatToken(userTokens, decimals);
 }
 
-function getLimit(o: Outcome) {
-
-    if (!limitOrders[o.id]) {
-
-        limitOrders[o.id] = {
-            side: 'buy',
-            price: null,
-            amount: null,
-            expiry: 'GTC',
-            expiry_date: null
-        }
-    }
-
-    return limitOrders[o.id]
-}
-
-function canPlaceLimit(o: Outcome) {
-    const l = getLimit(o)
-
-    return (
-        activeOutcomeId.value === o.id &&
-        l.amount !== null &&
-        l.amount > 0 &&
-        l.price !== null &&
-        l.price > 0 &&
-        marketData.status === 'OPEN' &&
-        authUser.value
-    )
-}
-
 const successFlash = reactive<Record<number, boolean>>({});
 const errorFlash = reactive<Record<number, boolean>>({});
-
-async function placeLimitOrder(market: Market, outcome: Outcome) {
-    const l = getLimit(outcome)
-
-    try {
-        const response = await axios.post(`/markets/${market.id}/limit-order`, {
-            outcome_id: outcome.id,
-            side: l.side,
-            price: roundByDecimals(l.price!, market.base_token.decimals),
-            expire: l.expiry,
-            expire_date: l.expiry_date,
-            amount: l.amount,
-        })
-
-        if (response.data.success) {
-            successFlash[outcome.id] = true;
-            setTimeout(() => successFlash[outcome.id] = false, 800);
-
-        } else {
-            errorFlash[outcome.id] = true;
-            setTimeout(() => errorFlash[outcome.id] = false, 800);
-        }
-
-        l.amount = null
-        l.price = null
-
-        await fetchTrades();
-
-    } catch (e) {
-        console.error('Limit order failed', e)
-
-        errorFlash[outcome.id] = true;
-        setTimeout(() => errorFlash[outcome.id] = false, 800);
-    }
-}
 
 interface PriceData {
     price: number;
@@ -350,8 +285,6 @@ function outcomeNameBarStyleByShare(market: Market, outcome: Outcome) {
 
 const authUser = useAuth();
 
-console.log(JSON.stringify(authUser.value))
-
 const activeOutcomeId = ref<number | null>(null);
 
 const DEFAULT_COLORS = ['#3b82f6', '#10b981', '#ef4444', '#f59e0b', '#ec4899', '#8b5cf6', '#ff9f40'];
@@ -391,11 +324,6 @@ function timeLeft(market: Market) {
     }
 
     return `${minutes}m`;
-}
-
-function roundByDecimals(val: number, decimals: number): number {
-    const factor = Math.pow(10, decimals);
-    return Math.round(val * factor) / factor;
 }
 
 function formatToLess(val: number | undefined | null, decimals: number) {
@@ -584,17 +512,6 @@ async function buyOutcome(market: Market, outcome: Outcome) {
     const price = Number(outcome.price);
 
     if (isNaN(price) || price <= 0) return;
-
-    /*
-    router.post(`/markets/${market.id}/buy`, {
-        market_id: market.id,
-        outcome_id: outcome.id,
-        buy_amount: outcome.buyAmount,
-        price: price
-    });
-
-    return;
-    */
 
     try {
         const response = await axios.post(`/markets/${market.id}/buy`, {
@@ -1121,11 +1038,37 @@ async function fetchFullMarketData() {
                         ⏳ {{ $t(timeLeft(marketData)) }}
                     </span>
                 </div>
+
+                <!-- Base Token / Liquidity -->
+                <div
+                    class="flex justify-between items-center mt-auto pt-2 border-t border-gray-200 dark:border-gray-700 text-sm">
+
+                    <div class="flex items-center gap-4 cursor-default text-xs">
+
+                    </div>
+
+                    <div class="flex flex-col text-xs">
+                        <div class="flex flex-wrap gap-2">
+                            <div v-for="(o, index) in market.outcomes" :key="o.id" :class="[
+                                'flex flex-col items-center px-2 py-1 rounded text-center min-w-[60px]',
+                                outcomeColor(index)
+                            ]">
+                                <span class="text-[10px] font-medium truncate max-w-[70px]">
+                                    {{ o.name }}
+                                </span>
+                                <span class="inline-block transition-transform duration-200"
+                                    :class="{ 'scale-125 text-blue-600 dark:text-blue-300 font-bold': popId.id === o.id }">
+                                    {{ outcomeTokenSums[o.id] ?? 0 }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Outcomes List -->
             <div v-for="o in marketData.outcomes" :key="o.id"
-                class="bg-white dark:bg-gray-800 p-4 outcome-hover rounded-lg shadow flex flex-col gap-2 transition-all duration-200"
+                class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow flex flex-col gap-2 transition-all duration-200"
                 :class="{
                     'bg-green-100 dark:bg-green-700 animate-flash': successFlash[o.id],
                     'bg-red-100 dark:bg-red-700 animate-flash-error': errorFlash[o.id]
@@ -1235,102 +1178,11 @@ async function fetchFullMarketData() {
                         {{ market.base_token.name }}
                     </span>
                 </div>
-
-                <div v-if="market.allow_limit_orders"
-                    class="border-t border-gray-200 dark:border-gray-700 mt-2 pt-2 text-xs">
-
-                    <div class="px-2 flex items-center justify-between gap-2">
-                        <!-- Linker Text -->
-                        <span class="text-gray-500 dark:text-gray-400 font-semibold truncate">
-                            {{ $t('limit_order') }}:
-                        </span>
-
-                        <div class="px-2 flex items-center gap-2">
-                            <label class="flex items-center gap-1 cursor-pointer">
-                                <input type="radio" :name="`expiry-${o.id}`" value="GTC" v-model="getLimit(o).expiry"
-                                    class="accent-gray-600" />
-                                <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTC')
-                                    }}</span>
-                            </label>
-                            <label class="flex items-center gap-1 cursor-pointer">
-                                <input type="radio" :name="`expiry-${o.id}`" value="GTD" v-model="getLimit(o).expiry"
-                                    class="accent-gray-600" />
-                                <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTD')
-                                    }}</span>
-                            </label>
-                        </div>
-
-                        <!-- Rechter Container für Radio Buttons -->
-                        <div class="flex items-center gap-2">
-                            <label class="flex items-center gap-1 cursor-pointer">
-                                <input type="radio" :name="`side-${o.id}`" value="buy" v-model="getLimit(o).side"
-                                    @change="activeOutcomeId = o.id" class="accent-blue-600" />
-                                <span class="text-xs text-blue-600 font-semibold">{{ $t('buy') }}</span>
-                            </label>
-
-                            <label class="flex items-center gap-1 cursor-pointer">
-                                <input type="radio" :name="`side-${o.id}`" value="sell" v-model="getLimit(o).side"
-                                    @change="activeOutcomeId = o.id" class="accent-red-600" />
-                                <span class="text-xs text-red-600 font-semibold">{{ $t('sell') }}</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class=" flex items-center justify-between mt-2 gap-2 w-full min-w-0">
-                        <!-- Inputs -->
-                        <div class="flex gap-2 flex-1 min-w-0 max-w-[50%]">
-                            <input type="number" :placeholder="$t('amount')" v-model.number="getLimit(o).amount" min="1"
-                                step="1" @focus="activeOutcomeId = o.id" @keypress="onlyNumber($event)"
-                                class="flex-1 px-2 py-1 border rounded text-xs dark:bg-gray-700 dark:text-gray-200 min-w-0" />
-
-
-                            <input type="text" :placeholder="$t('token')"
-                                :value="getLimit(o).price !== null ? getLimit(o).price?.toString() : ''"
-                                @focus="activeOutcomeId = o.id" @input="(event: Event) => {
-                                    const input = event.target as HTMLInputElement;
-                                    let val = input.value;
-
-                                    val = val.replace(/[^0-9,\.]/g, '');
-
-                                    const separator = val.includes(',') ? ',' : val.includes('.') ? '.' : null;
-
-                                    if (separator) {
-                                        const parts = val.split(separator);
-                                        parts[1] = parts[1].slice(0, props.market.base_token.decimals);
-                                        val = parts.join(separator);
-                                    }
-
-                                    getLimit(o).price = parseFloat(val.replace(',', '.')) || null;
-
-                                    input.value = val;
-                                }"
-                                class="flex-1 px-2 py-1 border rounded text-xs dark:bg-gray-700 dark:text-gray-200 min-w-0" />
-
-                        </div>
-
-                        <!-- GTD DatePicker -->
-                        <div v-if="getLimit(o).expiry === 'GTD'" class="flex-none">
-                            <input type="datetime-local" v-model="getLimit(o).expiry_date"
-                                :min="new Date().toISOString().slice(0, 16)"
-                                class="px-2 py-1 border rounded text-xs dark:bg-gray-700 dark:text-gray-200 w-30" />
-                        </div>
-
-                        <!-- Button -->
-                        <button
-                            class="px-2 py-1 text-xs rounded text-white transition disabled:bg-gray-400 disabled:cursor-not-allowed flex-shrink-0"
-                            :class="getLimit(o).side === 'sell' ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'"
-                            :disabled="!canPlaceLimit(o)" @click="placeLimitOrder(marketData, o)">
-                            {{ getLimit(o).side === 'sell' ? $t('sell') : $t('buy') }}
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <div
-            :class="market.allow_limit_orders ? 'grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-4' : 'bg-white dark:bg-gray-800 p-4 rounded-lg shadow flex flex-col gap-2 transition-all duration-200'">
-            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg"
-                :class="market.allow_limit_orders ? 'rounded-lg shadow flex flex-col gap-2 transition-all duration-200' : ''">
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow flex flex-col gap-2 transition-all duration-200">
+            <div class="bg-white dark:bg-gray-800 p-4 rounded-lg">
 
                 <div class="flex items-center justify-between mb-2">
                     <button @click="resetZoom" :disabled="!isZoomed" class="px-2 py-1 rounded transition" :class="isZoomed
@@ -1349,7 +1201,7 @@ async function fetchFullMarketData() {
                     </div>
                 </div>
                 <div
-                    class="w-full flex items-center justify-center text-gray-400 dark:text-gray-500 border rounded h-64 sm:h-128 overflow-hidden">
+                    class="w-full flex items-center justify-center text-gray-400 dark:text-gray-500 border rounded h-48 sm:h-128 overflow-hidden">
                     <canvas ref="chartPrice" class="w-full h-full opacity-0 transition-opacity duration-500"></canvas>
                 </div>
             </div>

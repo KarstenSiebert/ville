@@ -1402,7 +1402,7 @@ async function fetchFullMarketData() {
                         </div>
                     </div>
                     <div
-                        class="w-full flex items-center justify-center text-gray-400 dark:text-gray-500 border rounded h-64 sm:h-128 overflow-hidden">
+                        class="w-full flex items-center justify-center text-gray-400 dark:text-gray-500 border rounded h-48 sm:h-128 overflow-hidden">
                         <canvas ref="chartPrice"
                             class="w-full h-full opacity-0 transition-opacity duration-500"></canvas>
                     </div>
