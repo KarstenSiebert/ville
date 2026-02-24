@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use DB;
 use Auth;
 use Closure;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Models\Market;
@@ -57,62 +58,74 @@ class VerifyMobileClient
         if (empty($deviceId) || empty($publicId)) {
             return  response()->json(['message' => 'Device or public id missing'], 401);
         }
-                 
+
         $shadowUser = DB::transaction(function () use ($publisher, $market, $publicId, $deviceId) {
-                
-            $existingShadow = User::where('name', $deviceId)->where('device_id', $deviceId)->where('publisher_id', $publisher->id)->first();
+    
+            // Check for existence of user
 
-            if ($existingShadow) {
-                return $existingShadow;
+            $shadow = User::where('device_id', $deviceId)->where('publisher_id', $publisher->id)->first();
+
+            $isNewUser = false;
+
+            if (!$shadow) {
+
+                try {
+                    $shadow = User::create([
+                        'external_user_id'  => null,
+                        'publisher_id'      => $publisher->id,
+                        'name'              => strval($deviceId),
+                        'type'              => 'SHADOW',
+                        'device_id'         => $deviceId,
+                        'public_id'         => $publicId                        
+                    ]);
+
+                } catch (\Illuminate\Database\QueryException $e) {
+    
+                }
+
+                Wallet::create([
+                    'user_id'          => $shadow->id,
+                    'parent_wallet_id' => null,
+                    'address'          => 'avaaddr1' . bin2hex(random_bytes(27)),
+                    'type'             => 'available',
+                    'user_type'        => 'SHADOW',
+                ]);
+
+                $isNewUser = true;
             }
-                                
-            $shadow = User::create([
-                'external_user_id' => null,
-                'publisher_id'     => $publisher->id,
-                'name'             => strval($deviceId),
-                'type'             => 'SHADOW',
-                'device_id'        => $deviceId,
-                'public_id'        => $publicId
-            ]);
 
-            $shadowWallet = Wallet::create([
-                'user_id'          => $shadow->id,
-                'parent_wallet_id' => null,
-                'address'          => 'avaaddr1' . bin2hex(random_bytes(27)),
-                'type'             => 'available',
-                'user_type'        => 'SHADOW',
-            ]);
+            // Check for existance of subscription
 
-            $admin = User::where('id', 1)->first();
+            $isNewSubscriber = !$market->subscribers()->where('user_id', $shadow->id)->exists();
 
-            if ($admin && $shadow) {
-                $admin->notify(new NewUserRegistered($shadow));
+            if ($isNewSubscriber) {
+                $market->subscribers()->attach($shadow->id);
             }
 
-            $market->subscribers()->syncWithoutDetaching([$shadow->id]);
+            // Only transfer to users, if they have been created and new to the market
 
-            // Trasfer token values to subscribers
+            if ($isNewUser || $isNewSubscriber) {
 
-            $marketWallet = Wallet::find($market->wallet_id); 
+                if ($market->max_subscribers && $market->max_subscribers > $market->subscribers()->count()) {
 
-            $baseToken = $market->baseToken;
+                    $marketWallet = Wallet::find($market->wallet_id);                    
+                    $shadowWallet = Wallet::where('user_id', $shadow->id)->where('user_type', 'SHADOW')->where('type', 'available')->first();
+                    
+                    $baseToken    = $market->baseToken;
 
-            if ($market->max_subscribers && ($market->max_subscribers > $market->subscribers_count)) {
-                
-                // b is given in standard numbers, not including decimals
-                
-                $userValue = Intval(floor($market->b / $market->max_subscribers));
+                    $userValue = intval(floor($market->b / $market->max_subscribers));
 
-                // tokens (sum) are transferred including their decimals
+                    $sum = bcmul($userValue, bcpow("10", (string) $baseToken->decimals));
 
-                $sum = bcmul($userValue, bcpow("10", (string) $baseToken->decimals));
-            
-                Transfer::execute($marketWallet, $shadowWallet, $baseToken, $sum, 'internal', 0, 'NEW SUBSCRIBER', false);                
+                    if (!empty($marketWallet) && !empty($shadowWallet) && ($sum > 0)) {
+                        Transfer::execute($marketWallet, $shadowWallet, $baseToken, $sum, 'internal', 0, 'FIRST MARKET ACCESS', false);
+                    }
+                }
             }
 
             return $shadow;
         });
-
+                 
         $request->merge(['shadow_user' => $shadowUser]);
 
         return $next($request);

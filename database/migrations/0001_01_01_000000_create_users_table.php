@@ -56,6 +56,8 @@ return new class extends Migration
 
             DB::statement("CREATE UNIQUE INDEX users_publisher_name_unique ON users (name) WHERE type = 'OPERATOR' AND deleted_at IS NULL");
 
+            DB::statement('CREATE UNIQUE INDEX users_publisher_device_unique ON users (publisher_id, device_id) WHERE deleted_at IS NULL AND device_id IS NOT NULL');
+
             DB::statement('CREATE UNIQUE INDEX users_type_external_unique ON users (external_user_id, type) WHERE deleted_at IS NULL AND external_user_id IS NOT NULL');
 
             DB::statement('CREATE UNIQUE INDEX users_publisher_external_unique ON users (publisher_id, external_user_id) WHERE deleted_at IS NULL AND external_user_id IS NOT NULL');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use App\Helpers\CardanoCliWrapper;
 use App\Http\Services\VaultService;
@@ -291,6 +292,16 @@ class User extends Authenticatable implements MustVerifyEmail
                 ->pluck('name')
                 ->values(),
         ];
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+                
+            if ($user->type === 'SHADOW' && is_null($user->email_verified_at)) {
+                $user->email_verified_at = Carbon::now();
+            }
+        });
     }
 
 }
