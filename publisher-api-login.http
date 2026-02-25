@@ -1,8 +1,8 @@
-curl --http2 --request POST --url https://www.tokenville.fun/api/deposit/2 \
+curl --http2 --request POST --url https://www.tokenville.fun/api/deposit/3 \
     --header 'content-type: application/json' \
     --header 'X-SHADOW: 6' \
     --header 'X-DEVICE: 10' \
-    --header 'X-SMARKT: 2' \
+    --header 'X-SMARKT: 3' \
     --data   '{
                 
               }' 
