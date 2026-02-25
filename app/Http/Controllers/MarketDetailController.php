@@ -7,8 +7,10 @@ use Str;
 use Storage;
 use Exception;
 use Carbon\Carbon;
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Market;
+use App\Models\TokenWallet;
 use App\Models\MarketDetail;
 use Illuminate\Http\Request;
 use App\Models\MarketLimitOrder;
@@ -34,10 +36,13 @@ class MarketDetailController extends Controller
              return redirect('dashboard');
         }
 
+        $user = auth()->user();        
+
         $orderTable = $market->allow_limit_orders ? app(LimitOrderService::class)->get($market) : [];        
-        
+                
         return Inertia::render('marketdetails/MarketDetail', [
             'market' => $market,
+            'tokenValue' => $this->getAvailableTokens($market, $user),
             'orderTable' => $orderTable
         ]);
     }
@@ -99,4 +104,18 @@ class MarketDetailController extends Controller
     {
         //
     }
+
+    private function getAvailableTokens(Market $market, User $user)
+    {
+        $baseToken = $market->baseToken;
+
+        $wallet = TokenWallet::where('wallet_id', $user?->avaWallet?->id)->where('token_id', $baseToken->id)->first();
+
+        $tokenValue = $wallet?->available ?? 0;
+                
+        $availableTokens = bcdiv($tokenValue, bcpow("10", (string) $baseToken->decimals, $baseToken->decimals), $baseToken->decimals);
+
+        return $availableTokens;
+    }
+    
 }

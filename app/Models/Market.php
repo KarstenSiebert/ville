@@ -25,6 +25,7 @@ class Market extends Model
         'b',
         'max_subscribers',
         'base_token_fingerprint',
+        'token_ratio',
         'resolved_at',
         'settled_at',
         'canceled_at',

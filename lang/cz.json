@@ -381,6 +381,11 @@
     "latitude": "Zeměpisná šířka",
     "longitude": "Zeměpisná délka",
     "qr_code": "QR kód",
-    "scan_QR_code_to_see_market_details": "Naskenujte QR kód pro zobrazení podrobností o trhu"
+    "scan_QR_code_to_see_market_details": "Naskenujte QR kód pro zobrazení podrobností o trhu",
+    "subscribers": "Odběratelé",
+    "max_subscribers": "Max. odběratelů",
+    "link_to_outcome": "Odkaz na výsledek (např. produkt, služba)",
+    "token_ratio": "Poměr tokenů",
+    "select_token": "Vyberte token"
 
 }

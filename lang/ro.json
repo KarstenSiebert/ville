@@ -377,6 +377,11 @@
     "latitude": "Latitudine",
     "longitude": "Longitudine",
     "qr_code": "Cod QR",
-    "scan_QR_code_to_see_market_details": "Scanează codul QR pentru a vedea detaliile pieței"
+    "scan_QR_code_to_see_market_details": "Scanează codul QR pentru a vedea detaliile pieței",
+    "subscribers": "Abonați",
+    "max_subscribers": "Max. abonați",
+    "link_to_outcome": "Link către rezultat (ex. produs, serviciu)",
+    "token_ratio": "Raport token",
+    "select_token": "Selectează token"
 
 }

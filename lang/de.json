@@ -404,6 +404,11 @@
     "latitude": "Breitengrad",
     "longitude": "Längengrad",
     "qr_code": "QR-Code",
-    "scan_QR_code_to_see_market_details": "Scannen Sie den QR-Code, um Marktdetails zu sehen"
+    "scan_QR_code_to_see_market_details": "Scannen Sie den QR-Code, um Marktdetails zu sehen",
+    "subscribers": "Abonnenten",
+    "max_subscribers": "Max. Abonnenten",
+    "link_to_outcome": "Link zum Ergebnis (z. B. Produkt, Dienstleistung)",
+    "token_ratio": "Token-Verhältnis",
+    "select_token": "Token auswählen"
 
 }

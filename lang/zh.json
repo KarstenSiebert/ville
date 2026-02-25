@@ -389,6 +389,11 @@
   "latitude": "纬度",
   "longitude": "经度",
   "qr_code": "二维码",
-  "scan_QR_code_to_see_market_details": "扫描二维码以查看市场详情"
+  "scan_QR_code_to_see_market_details": "扫描二维码以查看市场详情",
+  "subscribers": "订阅者",
+  "max_subscribers": "最多订阅者",
+  "link_to_outcome": "结果链接（例如产品、服务）",
+  "token_ratio": "代币比例",
+  "select_token": "选择代币"
 
 }

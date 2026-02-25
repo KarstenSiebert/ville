@@ -377,6 +377,11 @@
     "latitude": "Laiuskraad",
     "longitude": "Pikkuskraad",
     "qr_code": "QR-kood",
-    "scan_QR_code_to_see_market_details": "Skaneerige QR-kood, et näha turu andmeid"
+    "scan_QR_code_to_see_market_details": "Skaneerige QR-kood, et näha turu andmeid",
+    "subscribers": "Tellijad",
+    "max_subscribers": "Maks. tellijad",
+    "link_to_outcome": "Link tulemusele (nt toode, teenus)",
+    "token_ratio": "Tokeni suhe",
+    "select_token": "Vali token"
     
 }

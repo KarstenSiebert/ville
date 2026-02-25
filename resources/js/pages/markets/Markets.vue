@@ -40,6 +40,7 @@ type Market = {
     outcomes_count: number
     subscribers_count: number
     max_trade_amount: number
+    token_ratio: number
     logo_url?: string
     allow_limit_orders: boolean
     status: string
@@ -109,6 +110,7 @@ function saveParameterSettings(market: Market) {
     router.post(`/markets/${market.id}/orders`, {
         allow_limit_orders: market.allow_limit_orders,
         max_trade_amount: market.max_trade_amount,
+        token_ratio: market.token_ratio,
     }, {
         preserveScroll: true,
         preserveState: true,
@@ -120,6 +122,7 @@ function saveParameterSettings(market: Market) {
                 if (index !== -1) {
                     editableMints.value[index].allow_limit_orders = updatedMarket.allow_limit_orders;
                     editableMints.value[index].max_trade_amount = updatedMarket.max_trade_amount;
+                    editableMints.value[index].token_ratio = updatedMarket.token_ratio;
                 }
             }
         }
@@ -174,6 +177,7 @@ watch(
             outcomes_count: a.outcomes_count,
             subscribers_count: a.subscribers_count,
             max_trade_amount: a.max_trade_amount,
+            token_ratio: a.token_ratio,
             status: a.status,
             allow_limit_orders: a.allow_limit_orders,
             logo_url: a.logo_url,
@@ -335,6 +339,10 @@ function submitForm() {
                                     class="pr-8 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('limit') }}
                                 </th>
+                                <th
+                                    class="pr-8 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    {{ $t('token_ratio') }}
+                                </th>
                                 <th class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('status')">
                                     {{ $t('status') }}
@@ -380,6 +388,13 @@ function submitForm() {
                                     <Checkbox v-model="asset.allow_limit_orders" binary
                                         class="w-4 h-4 dark:bg-gray-900 text-gray-900 dark:text-gray-200 dark:border-gray-600"
                                         @update:modelValue="saveParameterSettings(asset)" />
+                                </td>
+                                <td
+                                    class="px-4 py-2 text-right text-gray-900 dark:text-gray-200 cursor-default max-w-xs overflow-hidden">
+
+                                    <input type="number" v-model.number="asset.token_ratio" min="1" max="1000" step="1"
+                                        @blur="saveParameterSettings(asset)"
+                                        class="w-20 px-2 py-1 border rounded text-right" />
                                 </td>
                                 <td
                                     class="px-4 py-2 text-right text-gray-900 dark:text-gray-200 cursor-default max-w-xs overflow-hidden">

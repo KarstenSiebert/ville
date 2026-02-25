@@ -377,6 +377,11 @@
     "latitude": "Geografska širina",
     "longitude": "Geografska dužina",
     "qr_code": "QR kod",
-    "scan_QR_code_to_see_market_details": "Skenirajte QR kod za prikaz detalja o tržištu"
+    "scan_QR_code_to_see_market_details": "Skenirajte QR kod za prikaz detalja o tržištu",
+    "subscribers": "Pretplatnici",
+    "max_subscribers": "Maks. pretplatnika",
+    "link_to_outcome": "Poveznica na rezultat (npr. proizvod, usluga)",
+    "token_ratio": "Omjer tokena",
+    "select_token": "Odaberite token"
 
 }

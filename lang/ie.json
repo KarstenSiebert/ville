@@ -377,6 +377,11 @@
     "latitude": "Leithead",
     "longitude": "Fad",
     "qr_code": "Cód QR",
-    "scan_QR_code_to_see_market_details": "Scanáil an cód QR chun sonraí an mhargaidh a fheiceáil"
+    "scan_QR_code_to_see_market_details": "Scanáil an cód QR chun sonraí an mhargaidh a fheiceáil",
+    "subscribers": "Liotálaithe",
+    "max_subscribers": "Liotálaithe uasta",
+    "link_to_outcome": "Nasc chuig an toradh (m.sh. táirge, seirbhís)",
+    "token_ratio": "Cóimheas ticéad",
+    "select_token": "Roghnaigh ticéad"
 
 }

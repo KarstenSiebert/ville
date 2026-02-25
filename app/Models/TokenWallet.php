@@ -41,6 +41,11 @@ class TokenWallet extends Model
 
         return $this->hasOne(User::class);
     }
+
+    public function getAvailableAttribute()
+    {           
+        return max($this->quantity - ($this->reserved_quantity ?? 0), 0);
+    }
      
     public function scopeForWallet($query, int $walletId)
     {

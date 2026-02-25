@@ -26,6 +26,7 @@ return new class extends Migration
             $table->timestamp('close_time')->nullable();
             $table->unsignedBigInteger('liquidity_b')->default(100);
             $table->string('base_token_fingerprint')->nullable();
+            $table->unsignedInteger('token_ratio')->default(1);
             $table->unsignedBigInteger('b');
             $table->unsignedBigInteger('max_subscribers')->nullable();
             $table->unsignedBigInteger('min_trade_amount')->default(1);

@@ -377,6 +377,11 @@
     "latitude": "Γεωγραφικό πλάτος",
     "longitude": "Γεωγραφικό μήκος",
     "qr_code": "Κωδικός QR",
-    "scan_QR_code_to_see_market_details": "Σαρώστε τον κωδικό QR για να δείτε λεπτομέρειες της αγοράς"
+    "scan_QR_code_to_see_market_details": "Σαρώστε τον κωδικό QR για να δείτε λεπτομέρειες της αγοράς",
+    "subscribers": "Συνδρομητές",
+    "max_subscribers": "Μέγ. συνδρομητές",
+    "link_to_outcome": "Σύνδεσμος στο αποτέλεσμα (π.χ. προϊόν, υπηρεσία)",
+    "token_ratio": "Αναλογία token",
+    "select_token": "Επιλέξτε token"
 
 }

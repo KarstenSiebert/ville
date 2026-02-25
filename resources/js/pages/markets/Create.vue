@@ -152,6 +152,7 @@ interface FormData {
     liquidity_b: number | null;
     max_subscribers: number | null;
     currency: string;
+    token_ratio: number;
     start_date: string;
     end_date: string;
     latitude: number | null;
@@ -169,6 +170,7 @@ const form = useForm<FormData>({
     liquidity_b: null,
     max_subscribers: null,
     currency: 'ADA',
+    token_ratio: 1,
     start_date: '',
     end_date: '',
     latitude: null,
@@ -277,7 +279,7 @@ function submitForm() {
 
                     <div class="flex-1">
                         <label id="titleLabel" class="block text-sm text-left font-medium mb-1">{{ $t('title')
-                            }}*</label>
+                        }}*</label>
                         <input v-model="form.title" type="text" maxlength="255"
                             class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
                         <div class="h-5 text-red-500 text-sm"> {{ errors.title || form.errors.title }}</div>
@@ -285,7 +287,7 @@ function submitForm() {
 
                     <div class="flex-1">
                         <label id="latitudeLabel" class="block text-sm text-left font-medium mb-1">{{ $t('latitude')
-                            }}</label>
+                        }}</label>
                         <input v-model="form.latitude" type="number" step="0.00001" min="-90" max="90"
                             class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
                         <div class="h-5 text-red-500 text-sm"> {{ errors.latitude || form.errors.latitude }}</div>
@@ -293,7 +295,7 @@ function submitForm() {
 
                     <div class="flex-1">
                         <label id="longitudeLabel" class="block text-sm text-left font-medium mb-1">{{ $t('longitude')
-                            }}</label>
+                        }}</label>
                         <input v-model="form.longitude" type="number" step="0.00001" min="-180" max="180"
                             class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
                         <div class="h-5 text-red-500 text-sm"> {{ errors.longitude || form.errors.longitude }}</div>
@@ -301,7 +303,7 @@ function submitForm() {
 
                     <div class="flex-1">
                         <label id="categoryLabel" class="block text-sm text-left font-medium mb-1">{{ $t('category')
-                        }}*</label>
+                            }}*</label>
                         <select v-model="form.category"
                             class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2">
                             <option value="">{{ $t('select_category') }}</option>
@@ -315,7 +317,7 @@ function submitForm() {
 
                     <div class=" flex-1">
                         <label id="liquidityLabel" class="block text-sm text-left font-medium mb-1">{{ $t('liquidity')
-                            }}*</label>
+                        }}*</label>
                         <input v-model.number="form.liquidity_b" type="number" min="1" step="1"
                             class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
                         <div class="h-5 text-red-500 text-sm">{{ errors.liquidity_b || form.errors.liquidity_b }}</div>
@@ -324,27 +326,37 @@ function submitForm() {
                     <div class=" flex-1">
                         <label id="subscribersLabel" class="block text-sm text-left font-medium mb-1">{{
                             $t('max_subscribers')
-                        }}</label>
+                            }}</label>
                         <input v-model.number="form.max_subscribers" type="number" min="1" max="100000" step="1"
                             class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
                         <div class="h-5 text-red-500 text-sm">{{ errors.max_subscribers || form.errors.max_subscribers
-                        }}</div>
+                            }}</div>
                     </div>
 
                     <div class="flex-1">
-                        <label id="currencyLabel" class="block text-sm text-left font-medium mb-1">{{ $t('currency')
-                        }}*</label>
+                        <label id="currencyLabel" class="block text-sm text-left font-medium mb-1">{{ $t('token')
+                            }}*</label>
                         <select v-model="form.currency"
                             class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2">
-                            <option value="">{{ $t('select_currency') }}</option>
+                            <option value="">{{ $t('select_token') }}</option>
                             <option v-for="s in currencyOptions" :key="s" :value="s">{{ s }}</option>
                         </select>
+                    </div>
+
+                    <div class=" flex-1">
+                        <label id="ratioLabel" class="block text-sm text-left font-medium mb-1">{{
+                            $t('token_ratio')
+                            }}</label>
+                        <input v-model.number="form.token_ratio" type="number" min="1" max="1000" step="1"
+                            class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
+                        <div class="h-5 text-red-500 text-sm">{{ errors.token_ratio || form.errors.token_ratio
+                            }}</div>
                     </div>
 
                     <div class="relative flex-1">
                         <label id="publisher" class="block text-sm text-left font-medium mb-1 mt-3 md:mt-0">{{
                             $t('select_operator')
-                            }}*</label>
+                        }}*</label>
                         <input type="text" :placeholder="$t('type_to_search_operator')" v-model="publisherInput"
                             @input="handleInput(publisherInput)"
                             class="w-full px-2 py-1.5 text-sm rounded border bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2" />
@@ -373,7 +385,7 @@ function submitForm() {
 
                     <div class="space-y-5">
                         <label id="outcomesLabel" class="block text-sm text-left font-medium mb-1">{{ $t('outcomes')
-                        }}*</label>
+                            }}*</label>
 
                         <div v-for="(outcome, index) in form.outcomes" :key="index"
                             class="flex flex-col gap-4 md:flex-row md:gap-4 mt-3 md:mt-0">
@@ -391,7 +403,7 @@ function submitForm() {
                                 </span>
                             </div>
                             <div class="w-full flex gap-2 items-center">
-                                <input v-model="outcome.link" type="text" :placeholder="$t('link')"
+                                <input v-model="outcome.link" type="text" :placeholder="$t('link_to_outcome')"
                                     class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
                             </div>
 
@@ -421,7 +433,7 @@ function submitForm() {
 
                 <label id="editorLabel" class="block text-sm mt-4 text-left font-medium mb-1">{{
                     $t('market_image')
-                }}</label>
+                    }}</label>
 
                 <div class="flex gap-3 items-center">
                     <input ref="marketLogoInput" type="file" accept="image/*" class="hidden"

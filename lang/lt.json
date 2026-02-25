@@ -377,6 +377,11 @@
     "latitude": "Platums",
     "longitude": "Garums",
     "qr_code": "QR kods",
-    "scan_QR_code_to_see_market_details": "Skenējiet QR kodu, lai redzētu tirgus informāciju"
+    "scan_QR_code_to_see_market_details": "Skenējiet QR kodu, lai redzētu tirgus informāciju",
+    "subscribers": "Abonenti",
+    "max_subscribers": "Maks. abonentu skaits",
+    "link_to_outcome": "Saite uz rezultātu (piem., produkts, pakalpojums)",
+    "token_ratio": "Tokenu attiecība",
+    "select_token": "Izvēlieties tokenu"
 
 }

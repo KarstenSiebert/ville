@@ -309,9 +309,13 @@ class LimitOrderService
 
         $market = Market::findOrFail($marketId);
 
+        $user = User::findOrFail($userId);
+
         $baseToken = $market->baseToken;
 
         $decimals  = $baseToken->decimals;
+
+        $wallet = TokenWallet::where('wallet_id', $user?->avaWallet?->id)->where('token_id', $baseToken->id)->first();
     
         $marketWallet = Wallet::find($market->wallet_id); 
 
@@ -319,13 +323,13 @@ class LimitOrderService
 
             $liquidity = app(OutcomeService::class)->getLiquidity($market);
             
-            return ['liquidity' => $liquidity,  'price' => [], 'outcomes' => []];
+            return ['liquidity' => $liquidity,  'price' => [], 'outcomes' => [], 'tokenValue' => 0];
         }    
         
         if (empty($market)) {            
             $liquidity = app(OutcomeService::class)->getLiquidity($market);
 
-            return ['liquidity' => $liquidity,  'price' => [], 'outcomes' => []];
+            return ['liquidity' => $liquidity,  'price' => [], 'outcomes' => [], 'tokenValue' => 0];
         }
                
         $currentPriceFloat = round($this->getCurrentOutcomePrice($market, $outcomeId, $buyAmount), $decimals);
@@ -345,7 +349,11 @@ class LimitOrderService
             
             $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);
             
-            return ['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q];
+            $wallet = TokenWallet::where('wallet_id', $user?->avaWallet?->id)->where('token_id', $baseToken->id)->first();
+
+            $tokenValue = $wallet?->available ?? 0;
+            
+            return ['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q, 'tokenValue' => $tokenValue];
 
         } else {
             // $priceInt = $currentPriceInt;            
@@ -360,9 +368,13 @@ class LimitOrderService
             
             $liquidity = app(OutcomeService::class)->getLiquidity($market);
 
-            $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);            
+            $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);      
 
-            return ['liquidity' => $liquidity, 'price' => $calc, 'outcomes' =>$q];
+            $wallet = TokenWallet::where('wallet_id', $user?->avaWallet?->id)->where('token_id', $baseToken->id)->first();
+
+            $tokenValue = $wallet?->available ?? 0;      
+
+            return ['liquidity' => $liquidity, 'price' => $calc, 'outcomes' =>$q, 'tokenValue' => $tokenValue];
         }
 
         $userTokenWallet = TokenWallet::firstOrCreate(
@@ -370,7 +382,7 @@ class LimitOrderService
             ['quantity' => 0, 'reserved_quantity' => 0]
         );
 
-        $available = $userTokenWallet->quantity - $userTokenWallet->reserved_quantity;
+        $available = max($userTokenWallet->quantity - $userTokenWallet->reserved_quantity, 0);
         
         if ($available < $priceInt) {
             $q = $this->getOutcomeQuantities($market); 
@@ -378,8 +390,8 @@ class LimitOrderService
             $liquidity = app(OutcomeService::class)->getLiquidity($market);
             
             $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);
-
-            return ['liquidity' => $liquidity, 'price' => $calc, 'outcomes' =>$q];
+                        
+            return ['liquidity' => $liquidity, 'price' => $calc, 'outcomes' =>$q, 'tokenValue' => $available];
         }
 
         $outcome = $market->outcomes()->with('outcomeToken.token')->find($outcomeId);
@@ -391,7 +403,11 @@ class LimitOrderService
             
             $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);
 
-            return ['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q];
+            $wallet = TokenWallet::where('wallet_id', $user?->avaWallet?->id)->where('token_id', $baseToken->id)->first();
+
+            $tokenValue = $wallet?->available ?? 0;  
+
+            return ['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q, 'tokenValue' => $tokenValue];
         }
 
         $token = $outcome?->outcomeToken?->token;
@@ -436,8 +452,12 @@ class LimitOrderService
         $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);
 
         $outcomes = app(OutcomeService::class)->get($market);
+
+        $wallet = TokenWallet::where('wallet_id', $user?->avaWallet?->id)->where('token_id', $baseToken->id)->first();
+
+        $tokenValue = $wallet?->available ?? 0;
             
-        return ['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $outcomes];
+        return ['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $outcomes, 'tokenValue' => $tokenValue];
     }
     
     private function getCurrentOutcomePrice($market, $outcomeId, $buyAmount)

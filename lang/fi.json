@@ -377,6 +377,11 @@
     "latitude": "Leveyspiiri",
     "longitude": "Pituuspiiri",
     "qr_code": "QR-koodi",
-    "scan_QR_code_to_see_market_details": "Skannaa QR-koodi nähdäksesi markkinatiedot"
+    "scan_QR_code_to_see_market_details": "Skannaa QR-koodi nähdäksesi markkinatiedot",
+    "subscribers": "Tilaajat",
+    "max_subscribers": "Max. tilaajat",
+    "link_to_outcome": "Linkki tulokseen (esim. tuote, palvelu)",
+    "token_ratio": "Token-suhde",
+    "select_token": "Valitse token"
     
 }

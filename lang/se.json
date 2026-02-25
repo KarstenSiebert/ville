@@ -377,6 +377,11 @@
     "latitude": "Latitud",
     "longitude": "Longitud",
     "qr_code": "QR-kod",
-    "scan_QR_code_to_see_market_details": "Skanna QR-koden för att se marknadsdetaljer"
+    "scan_QR_code_to_see_market_details": "Skanna QR-koden för att se marknadsdetaljer",
+    "subscribers": "Prenumeranter",
+    "max_subscribers": "Max. prenumeranter",
+    "link_to_outcome": "Länk till resultat (t.ex. produkt, tjänst)",
+    "token_ratio": "Tokenförhållande",
+    "select_token": "Välj token"
 
 }

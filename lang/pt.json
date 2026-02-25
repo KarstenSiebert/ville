@@ -377,6 +377,11 @@
     "latitude": "Latitude",
     "longitude": "Longitude",
     "qr_code": "Código QR",
-    "scan_QR_code_to_see_market_details": "Escaneie o código QR para ver os detalhes do mercado"
+    "scan_QR_code_to_see_market_details": "Escaneie o código QR para ver os detalhes do mercado",
+    "subscribers": "Assinantes",
+    "max_subscribers": "Máx. assinantes",
+    "link_to_outcome": "Link para o resultado (ex. produto, serviço)",
+    "token_ratio": "Proporção de tokens",
+    "select_token": "Selecionar token"
 
 }

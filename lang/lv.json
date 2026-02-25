@@ -376,6 +376,11 @@
     "latitude": "Platuma",
     "longitude": "Ilguma",
     "qr_code": "QR kodas",
-    "scan_QR_code_to_see_market_details": "Nuskaitykite QR kodą, kad pamatytumėte rinkos informaciją"
+    "scan_QR_code_to_see_market_details": "Nuskaitykite QR kodą, kad pamatytumėte rinkos informaciją",
+    "subscribers": "Prenumeratoriai",
+    "max_subscribers": "Maks. prenumeratorių",
+    "link_to_outcome": "Nuoroda į rezultatą (pvz., produktas, paslauga)",
+    "token_ratio": "Žetonų santykis",
+    "select_token": "Pasirinkite žetoną"
 
 }

@@ -390,6 +390,11 @@
   "latitude": "緯度",
   "longitude": "経度",
   "qr_code": "QRコード",
-  "scan_QR_code_to_see_market_details": "QRコードをスキャンして市場の詳細を確認してください"
+  "scan_QR_code_to_see_market_details": "QRコードをスキャンして市場の詳細を確認してください",
+  "subscribers": "購読者",
+  "max_subscribers": "最大購読者数",
+  "link_to_outcome": "成果へのリンク（例：製品、サービス）",
+  "token_ratio": "トークン比率",
+  "select_token": "トークンを選択"
 
 }

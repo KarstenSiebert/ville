@@ -153,6 +153,7 @@ interface OrderTable {
 
 const props = defineProps<{
     market: Market;
+    tokenValue: number;
     orderTable: OrderTable;
 }>();
 
@@ -233,24 +234,6 @@ async function fetchOrderBook() {
     } catch (e) {
         console.error('Failed to fetch order book', e);
     }
-}
-
-function totalUserBaseTokens(market: Market) {
-    if (
-        market.currentLiquidity == null ||
-        market.b == null ||
-        !market.base_token
-    ) return '';
-
-    const liquidity = Number(market.currentLiquidity);
-
-    // const decimals = market.base_token.decimals;
-
-    const userTokens = Math.max(liquidity, 0);
-
-    return Math.round(userTokens).toLocaleString("en-US");
-
-    // return formatToken(userTokens, decimals);
 }
 
 function getLimit(o: Outcome) {
@@ -412,6 +395,8 @@ const marketData = reactive({
 });
 
 const outcomeTokenSums = reactive<Record<number, number>>({});
+
+const tokenValue = ref<number>(props.tokenValue);
 
 const popId = reactive<{ id: number | null }>({ id: null });
 
@@ -694,6 +679,12 @@ async function buyOutcome(market: Market, outcome: Outcome) {
             outcome.beforeProb = rprice.before_probs ?? 0;
             outcome.afterProb = rprice.after_probs ?? 0;
             outcome.chanceIncrease = (outcome.afterProb ?? 0) - (outcome.beforeProb ?? 0);
+        }
+
+        const token = response.data.tokenValue ?? 0;
+
+        if (token !== undefined && token !== null) {
+            tokenValue.value = Number(token);
         }
 
         await fetchOrderBook();
@@ -1163,9 +1154,9 @@ async function fetchFullMarketData() {
                         <div class="flex items-center gap-2">
                             <img v-if="marketData.base_token.logo_url" :src="marketData.base_token.logo_url" alt=""
                                 class="w-5 h-5 rounded" />
-                            <span class="font-mono"
-                                v-if="marketData.currentLiquidity != null && marketData.b != null && marketData.base_token">
-                                {{ totalUserBaseTokens(marketData) + ' ' + marketData.base_token.name }}
+                            <span class="font-mono" v-if="tokenValue">
+                                {{ formatToken(Number(tokenValue), market.base_token.decimals) + ' ' +
+                                    marketData.base_token.name }}
                             </span>
                         </div>
 
@@ -1303,13 +1294,13 @@ async function fetchFullMarketData() {
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTC"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTC')
-                                        }}</span>
+                                    }}</span>
                                 </label>
                                 <label class="flex items-center gap-1 cursor-pointer">
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTD"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTD')
-                                        }}</span>
+                                    }}</span>
                                 </label>
                             </div>
 

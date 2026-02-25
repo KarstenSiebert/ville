@@ -378,6 +378,11 @@
     "latitude": "Breddegrad",
     "longitude": "Længdegrad",
     "qr_code": "QR-kode",
-    "scan_QR_code_to_see_market_details": "Scan QR-koden for at se markedets oplysninger"
+    "scan_QR_code_to_see_market_details": "Scan QR-koden for at se markedets oplysninger",
+    "subscribers": "Abonnenter",
+    "max_subscribers": "Maks. abonnenter",
+    "link_to_outcome": "Link til resultat (f.eks. produkt, tjeneste)",
+    "token_ratio": "Token-forhold",
+    "select_token": "Vælg token"
 
 }

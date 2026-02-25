@@ -397,9 +397,10 @@
     "longitude": "Longitude",
     "qr_code": "QR Code",
     "scan_QR_code_to_see_market_details": "Scan QR code to see Market details",
-
     "subscribers": "Subscribers",
-    "max_subscribers": "Max. subscribers"
-
+    "max_subscribers": "Max. subscribers",
+    "link_to_outcome": "Link to outcome (e.g. product, service)",
+    "token_ratio": "Token ratio",
+    "select_token": "Select token"
 
 }

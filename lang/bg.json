@@ -381,6 +381,11 @@
     "latitude": "Ширина",
     "longitude": "Дължина",
     "qr_code": "QR код",
-    "scan_QR_code_to_see_market_details": "Сканирайте QR кода, за да видите подробности за пазара"
+    "scan_QR_code_to_see_market_details": "Сканирайте QR кода, за да видите подробности за пазара",
+    "subscribers": "Абонати",
+    "max_subscribers": "Макс. брой абонати",
+    "link_to_outcome": "Връзка към резултата (напр. продукт, услуга)",
+    "token_ratio": "Съотношение на токена",
+    "select_token": "Изберете токен"
 
 }

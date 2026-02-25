@@ -388,6 +388,11 @@
   "latitude": "عرض جغرافیایی",
   "longitude": "طول جغرافیایی",
   "qr_code": "کد QR",
-  "scan_QR_code_to_see_market_details": "کد QR را اسکن کنید تا جزئیات بازار را ببینید"
+  "scan_QR_code_to_see_market_details": "کد QR را اسکن کنید تا جزئیات بازار را ببینید",
+  "subscribers": "مشترکین",
+  "max_subscribers": "حداکثر مشترکین",
+  "link_to_outcome": "لینک به نتیجه (مثلاً محصول، خدمت)",
+  "token_ratio": "نسبت توکن",
+  "select_token": "انتخاب توکن"
 
 }

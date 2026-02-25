@@ -137,7 +137,8 @@ class MarketController extends Controller
             'category' => ['nullable', 'string', 'max:255'],
             'liquidity_b' => ['required', 'integer', 'min:1', 'max:1000000000'],
             'max_subscribers' => ['nullable', 'integer', 'min:1', 'max:100000'],
-            'currency' => ['required', 'string'],        
+            'currency' => ['required', 'string'],
+            'token_ratio' => ['nullable', 'integer', 'min:1', 'max:1000'],        
             'description' => ['nullable', 'string', 'max:384'],
             'latitude' => ['nullable', 'numeric', 'min:-90.0', 'max:90.0'],
             'longitude' => ['nullable', 'numeric', 'min:-180.0', 'max:180.0'],
@@ -288,6 +289,7 @@ class MarketController extends Controller
                     'status' => 'OPEN',
                     'b' => $b,                    
                     'max_subscribers' => $validated['max_subscribers'] ? $validated['max_subscribers'] : 100000,
+                    'token_ratio' => $validated['token_ratio'] ? $validated['token_ratio'] : 1,
                     'start_time' => $validated['start_date'] ? $validated['start_date'] : now(),
                     'close_time' => $validated['end_date'],
                     'latitude' => $validated['latitude'] ? round($validated['latitude'], 4) : null,
@@ -544,9 +546,9 @@ class MarketController extends Controller
 
             $liquidity = app(OutcomeService::class)->getLiquidity($market);
 
-            $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);         
-            
-            return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q]);
+            $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);
+                        
+            return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q, 'tokenValue' => $this->getAvailableTokens($market, $user)]);
         }    
 
         if ($priceInt < $currentPriceInt) {     
@@ -557,9 +559,13 @@ class MarketController extends Controller
 
             $liquidity = app(OutcomeService::class)->getLiquidity($market);
 
-            $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);         
+            $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);   
             
-            return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q]);            
+            $wallet = TokenWallet::where('wallet_id', $user?->avaWallet?->id)->where('token_id', $baseToken->id)->first();
+
+            $tokenValue = $wallet?->available ?? 0;
+                      
+            return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q, 'tokenValue' => $this->getAvailableTokens($market, $user)]);
 
         } else {
             // $priceInt = $currentPriceInt;            
@@ -577,7 +583,7 @@ class MarketController extends Controller
             
             $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);
             
-            return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q]); 
+            return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q, 'tokenValue' => $this->getAvailableTokens($market, $user)]);
         }
 
         $userTokenWallet = TokenWallet::firstOrCreate(
@@ -585,7 +591,7 @@ class MarketController extends Controller
             ['quantity' => 0, 'reserved_quantity' => 0]
         );
 
-        $available = $userTokenWallet->quantity - $userTokenWallet->reserved_quantity;
+        $available = max($userTokenWallet->quantity - $userTokenWallet->reserved_quantity, 0);
                               
         if ($available < $priceInt) {
             
@@ -597,7 +603,7 @@ class MarketController extends Controller
             
             $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);
             
-            return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q]);
+            return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q, 'tokenValue' => $this->getAvailableTokens($market, $user)]);
         }
 
         $outcome = $market->outcomes()->with('outcomeToken.token')->find($request->outcome_id);
@@ -609,7 +615,7 @@ class MarketController extends Controller
             
             $calc = app(OutcomeService::class)->calculateLmsrPrice($market, $outcomeId, $buyAmount);
             
-            return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q]);
+            return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $q, 'tokenValue' => $this->getAvailableTokens($market, $user)]);
         }
 
         $token = $outcome?->outcomeToken?->token;
@@ -657,7 +663,7 @@ class MarketController extends Controller
 
         $outcomes = app(OutcomeService::class)->get($market);        
             
-        return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $outcomes]);
+        return response()->json(['liquidity' => $liquidity, 'price' => $calc, 'outcomes' => $outcomes, 'tokenValue' => $this->getAvailableTokens($market, $user)]);
     }
 
     private function getCurrentOutcomePrice($market, $outcomeId, $buyAmount)
@@ -841,6 +847,7 @@ class MarketController extends Controller
         $data = $request->validate([            
             'allow_limit_orders' => 'required|boolean',
             'max_trade_amount' => 'required|int|min:1|max:1000',
+            'token_ratio' => 'required|int|min:1|max:1000',
         ]);
         
         $market = Market::findOrFail($marketId);
@@ -849,7 +856,8 @@ class MarketController extends Controller
 
             Market::where('id', $market->id)->update([
                 'allow_limit_orders' => $data['allow_limit_orders'], 
-                'max_trade_amount'   => $data['max_trade_amount']
+                'max_trade_amount'   => $data['max_trade_amount'],
+                'token_ratio'   => $data['token_ratio']
             ]);
         }
 
@@ -879,6 +887,19 @@ class MarketController extends Controller
         $qrcode = 'data:image/png;base64,'.base64_encode((new Writer($renderer))->writeString($data));
                                     
         return response()->json($qrcode, 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);        
+    }
+
+    private function getAvailableTokens(Market $market, User $user)
+    {
+        $baseToken = $market->baseToken;
+
+        $wallet = TokenWallet::where('wallet_id', $user?->avaWallet?->id)->where('token_id', $baseToken->id)->first();
+
+        $tokenValue = $wallet?->available ?? 0;
+                
+        $availableTokens = bcdiv($tokenValue, bcpow("10", (string) $baseToken->decimals, $baseToken->decimals), $baseToken->decimals);
+
+        return $availableTokens;
     }
     
 }

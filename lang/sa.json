@@ -288,6 +288,11 @@
     "latitude": "خط العرض",
     "longitude": "خط الطول",
     "qr_code": "رمز QR",
-    "scan_QR_code_to_see_market_details": "امسح رمز QR لرؤية تفاصيل السوق"
+    "scan_QR_code_to_see_market_details": "امسح رمز QR لرؤية تفاصيل السوق",
+    "subscribers": "المشتركين",
+    "max_subscribers": "أقصى عدد للمشتركين",
+    "link_to_outcome": "رابط إلى النتيجة (مثال: منتج، خدمة)",
+    "token_ratio": "نسبة الرموز",
+    "select_token": "اختر الرمز"
     
 }

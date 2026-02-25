@@ -377,6 +377,11 @@
     "latitude": "Latitudni",
     "longitude": "Longitudni",
     "qr_code": "Kodiċi QR",
-    "scan_QR_code_to_see_market_details": "Iskenja l-kodiċi QR biex tara d-dettalji tas-suq"
+    "scan_QR_code_to_see_market_details": "Iskenja l-kodiċi QR biex tara d-dettalji tas-suq",
+    "subscribers": "Abbonati",
+    "max_subscribers": "Massimu abbonati",
+    "link_to_outcome": "Rabta mar-riżultat (eż. prodott, servizz)",
+    "token_ratio": "Proporzjon tal-token",
+    "select_token": "Agħżel token"
 
 }

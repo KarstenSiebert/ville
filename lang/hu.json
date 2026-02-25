@@ -377,6 +377,11 @@
     "latitude": "Szélesség",
     "longitude": "Hosszúság",
     "qr_code": "QR-kód",
-    "scan_QR_code_to_see_market_details": "Olvassa be a QR-kódot a piac részleteinek megtekintéséhez"
+    "scan_QR_code_to_see_market_details": "Olvassa be a QR-kódot a piac részleteinek megtekintéséhez",
+    "subscribers": "Feliratkozók",
+    "max_subscribers": "Max. feliratkozók",
+    "link_to_outcome": "Hivatkozás az eredményhez (pl. termék, szolgáltatás)",
+    "token_ratio": "Token arány",
+    "select_token": "Token kiválasztása"
 
 }

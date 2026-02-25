@@ -389,6 +389,11 @@
   "latitude": "Широта",
   "longitude": "Довгота",
   "qr_code": "QR-код",
-  "scan_QR_code_to_see_market_details": "Скануйте QR-код, щоб побачити деталі ринку"
+  "scan_QR_code_to_see_market_details": "Скануйте QR-код, щоб побачити деталі ринку",
+  "subscribers": "Підписники",
+  "max_subscribers": "Макс. підписників",
+  "link_to_outcome": "Посилання на результат (наприклад, продукт, послуга)",
+  "token_ratio": "Співвідношення токенів",
+  "select_token": "Вибрати токен"
 
 }

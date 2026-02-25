@@ -377,6 +377,11 @@
     "latitude": "Breedtegraad",
     "longitude": "Lengtegraad",
     "qr_code": "QR-code",
-    "scan_QR_code_to_see_market_details": "Scan de QR-code om marktgegevens te bekijken"
+    "scan_QR_code_to_see_market_details": "Scan de QR-code om marktgegevens te bekijken",
+    "subscribers": "Abonnees",
+    "max_subscribers": "Max. abonnees",
+    "link_to_outcome": "Link naar resultaat (bijv. product, dienst)",
+    "token_ratio": "Token-verhouding",
+    "select_token": "Selecteer token"
 
 }

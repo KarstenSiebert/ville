@@ -52,13 +52,15 @@ Route::get('webview-login', function (Request $request) {
         }
 
         $user = \App\Models\User::findOrFail($request->user);
-        
-        Auth::login($user);
+                
+        Auth::login($user, true);
+
+        if ($request->user != $user->id) {
+           abort(403);
+        }
 
         $id = $request->market;
         
-        // return redirect('clients/'.$id)->with(['user' => $user]);
-
         return redirect('clients/'.$id);
 
 })->name('webview.login');

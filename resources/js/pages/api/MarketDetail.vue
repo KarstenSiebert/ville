@@ -141,6 +141,7 @@ interface Market {
 
 const props = defineProps<{
     market: Market;
+    tokenValue: number;
     user: User;
 }>();
 
@@ -199,24 +200,6 @@ const limitOrders = reactive<Record<number, {
     expiry_date: null
 }>>({})
 
-function totalUserBaseTokens(market: Market) {
-    if (
-        market.currentLiquidity == null ||
-        market.b == null ||
-        !market.base_token
-    ) return '';
-
-    const liquidity = Number(market.currentLiquidity);
-
-    // const decimals = market.base_token.decimals;
-
-    const userTokens = Math.max(liquidity, 0);
-
-    return Math.round(userTokens).toLocaleString("en-US");
-
-    // return formatToken(userTokens, decimals);
-}
-
 const successFlash = reactive<Record<number, boolean>>({});
 const errorFlash = reactive<Record<number, boolean>>({});
 
@@ -234,6 +217,8 @@ interface PriceData {
 }
 
 const prices = reactive<Record<number, PriceData>>({});
+
+const tokenValue = ref<number>(props.tokenValue);
 
 function outcomeShare(market: Market, outcome: Outcome) {
     if (!prices || Object.keys(prices).length === 0) return 0;
@@ -569,6 +554,12 @@ async function buyOutcome(market: Market, outcome: Outcome) {
             outcome.beforeProb = rprice.before_probs ?? 0;
             outcome.afterProb = rprice.after_probs ?? 0;
             outcome.chanceIncrease = (outcome.afterProb ?? 0) - (outcome.beforeProb ?? 0);
+        }
+
+        const token = response.data.tokenValue ?? 0;
+
+        if (token !== undefined && token !== null) {
+            tokenValue.value = Number(token);
         }
 
         await fetchTrades();
@@ -1027,9 +1018,9 @@ async function fetchFullMarketData() {
                     <div class="flex items-center gap-2">
                         <img v-if="marketData.base_token.logo_url" :src="marketData.base_token.logo_url" alt=""
                             class="w-5 h-5 rounded" />
-                        <span class="font-mono"
-                            v-if="marketData.currentLiquidity != null && marketData.b != null && marketData.base_token">
-                            {{ totalUserBaseTokens(marketData) + ' ' + marketData.base_token.name }}
+                        <span class="font-mono" v-if="tokenValue">
+                            {{ formatToken(Number(tokenValue), market.base_token.decimals) + ' ' +
+                                marketData.base_token.name }}
                         </span>
                     </div>
 
