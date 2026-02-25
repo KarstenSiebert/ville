@@ -326,6 +326,8 @@ function outcomeShare(market: Market, outcome: Outcome) {
 
     const totalPrice = Object.values(prices).reduce((sum, data) => sum + data.realPrice, 0);
 
+    // const totalPrice = market.outcomes.reduce((sum, o) => sum + (o.realPrice ?? 0), 0);
+
     if (totalPrice === 0) return 0;
 
     return prices[outcome.id] ? prices[outcome.id].realPrice / totalPrice : 0;
@@ -927,8 +929,10 @@ onMounted(async () => {
 
         renderPriceChart(lastLabels);
 
-        intervalId.value = setInterval(() => {
-            fetchFullMarketData();
+        intervalId.value = setInterval(async () => {
+            await fetchFullMarketData();
+
+            await updateAllPrices();
 
         }, 10_000);
 
@@ -1039,6 +1043,7 @@ async function fetchFullMarketData() {
 
         marketData.currentLiquidity = response.data.outcomes.liquidity;
 
+        /*
         marketData.outcomes.forEach(o => {
             const priceData = response.data.outcomes.prices[o.id];
             if (!priceData) return;
@@ -1051,6 +1056,7 @@ async function fetchFullMarketData() {
             o.chance = priceData.chance ?? 1;
             o.chanceIncrease = priceData.after_probs - priceData.before_probs;
         });
+        */
 
         const receivedTrades = response.data.trades as BackendTradesResponse;
 
@@ -1090,7 +1096,6 @@ async function fetchFullMarketData() {
             if (trades.value.length > getMaxPoints() * marketData.outcomes.length) {
                 trades.value = trades.value.slice(-getMaxPoints() * marketData.outcomes.length);
             }
-
 
             const labels = [...new Set(trades.value.map(t => t.created_at))].sort(
                 (a, b) => new Date(a).getTime() - new Date(b).getTime()
@@ -1294,13 +1299,13 @@ async function fetchFullMarketData() {
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTC"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTC')
-                                    }}</span>
+                                        }}</span>
                                 </label>
                                 <label class="flex items-center gap-1 cursor-pointer">
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTD"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTD')
-                                    }}</span>
+                                        }}</span>
                                 </label>
                             </div>
 
