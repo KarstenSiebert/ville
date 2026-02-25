@@ -95,7 +95,7 @@ class VerifyMobileClient
             }
 
             // Check for existance of subscription
-
+            
             $isNewSubscriber = !$market->subscribers()->where('user_id', $shadow->id)->exists();
 
             if ($isNewSubscriber) {
@@ -121,7 +121,7 @@ class VerifyMobileClient
                         Transfer::execute($marketWallet, $shadowWallet, $baseToken, $sum, 'internal', 0, 'FIRST MARKET ACCESS', false);
                     }
                 }
-            }
+            }            
 
             return $shadow;
         });

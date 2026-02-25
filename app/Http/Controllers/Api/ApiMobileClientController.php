@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use Auth;
+use DB;
 use App\Models\User;
 use Inertia\Inertia;
+use App\Models\Wallet;
 use App\Models\Market;
 use App\Models\TokenWallet;
 use Illuminate\Http\Request;
+use App\Helpers\ImageStorage;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\ApiMobileClientController;
@@ -51,7 +53,7 @@ class ApiMobileClientController extends Controller
     {
         $shadowUser = $request->shadow_user;
 
-        $loginUrl = URL::temporarySignedRoute('webview.login', now()->addMinutes(60), ['user' => $shadowUser->id, 'market' => $id]);
+        $loginUrl = URL::temporarySignedRoute('webview.login', now()->addMinutes(5), ['user' => $shadowUser->id, 'market' => $id]);
 
         return  response()->json(['access' => $loginUrl], 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); 
     }
@@ -67,6 +69,77 @@ class ApiMobileClientController extends Controller
         $availableTokens = bcdiv($tokenValue, bcpow("10", (string) $baseToken->decimals, $baseToken->decimals), $baseToken->decimals);
 
         return $availableTokens;
+    }
+
+    public function deposit(Request $request, $id)
+    {
+        $shadowUser = $request->shadow_user;
+
+        $loginUrl = URL::temporarySignedRoute('deposit.wallet', now()->addMinutes(5), ['user' => $shadowUser->id, 'market' => $id]);
+
+        return  response()->json(['access' => $loginUrl], 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }
+
+    public function wallet(Request $request, $id)
+    {                
+        $user = auth()->user();
+        
+        if (!$user) {
+            return redirect('login');
+        }
+
+        if (!empty($user)) {    
+            
+            if ($usrWallet = Wallet::where('user_id', $user->id)->where('type', 'available')->first()) {
+                                      
+                $tokens = TokenWallet::with(['token.outcomes.market'])->forWallet($usrWallet->id)
+                    ->withQuantity()
+                    ->withActiveToken()
+                    ->loadTokenData()
+                    ->limit(50)                 
+                    ->get()
+                    ->map(function ($tw) use ($user) {
+
+                        if (!str_starts_with($tw->token->logo_url, 'https') && !str_starts_with($tw->token->logo_url, '/storage')) {                            
+                            $tw->token->logo_url = ImageStorage::saveBase64Image($tw->token->logo_url, trim($tw->token->name));
+                        }
+
+                        $isUserToken = false;
+
+                        if ($tw->token->user_id == auth()->id()) {
+                            $isUserToken = true;
+                        }
+
+                        $market = '';
+                        
+                        if ($tw->token->token_type == 'SHARE') {
+                            foreach ($tw->token->outcomes as $outcome) {
+
+                                if ($outcome->market) {
+                                    $market = $outcome->market->title;
+                                }
+                            }
+                        }
+                        
+                        return [
+                            'asset_name'           => $tw->token->name,
+                            'quantity'             => $tw->quantity,
+                            'reserved_quantity'    => $tw->reserved_quantity,
+                            'token_number'         => $tw->quantity,
+                            'decimals'             => $tw->token->decimals,
+                            'fingerprint'          => $tw->token->fingerprint,                            
+                            'logo_url'             => $tw->token->logo_url,
+                            'is_user_token'        => $isUserToken,                            
+                            'token_type'           => $tw->token->token_type                            
+                        ];                        
+                    });                    
+            }            
+        }
+        
+        return Inertia::render('api/Deposits', [
+                'assets' => $tokens,                
+            ],
+        );        
     }
 
 }

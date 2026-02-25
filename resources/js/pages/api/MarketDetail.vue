@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePage } from '@inertiajs/vue3';
-import { ref, reactive, onMounted, getCurrentInstance, watch, watchEffect, computed, onUnmounted, toRaw } from 'vue';
+import { ref, reactive, onMounted, getCurrentInstance, watch, watchEffect, onUnmounted, toRaw } from 'vue';
 import { ZoomOut } from 'lucide-vue-next';
 import { User } from '@/types';
 import { useAuth } from '@/composables/useAuth'

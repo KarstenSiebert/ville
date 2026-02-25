@@ -36,33 +36,46 @@ Route::middleware('auth', 'verified')->group(function () {
 
 Route::get('/clients/{market}', [ApiMobileClientController::class, 'detail'])->name('clients.detail');
 
+Route::get('/deposit/{market}', [ApiMobileClientController::class, 'wallet'])->name('wallet.detail');
+
 Route::get('webview-login', function (Request $request) {
 
- \Log::error('WEBVIEW DEBUG', [
-        'full_url' => $request->fullUrl(),
-        'path' => $request->path(),
-        'route_name' => optional($request->route())->getName(),
-        'middleware' => optional($request->route())->gatherMiddleware(),
-        'user_agent' => $request->userAgent(),
-    ]);
+    if (! $request->hasValidSignature()) {
+         abort(403);
+    }
 
-
-        if (! $request->hasValidSignature()) {
-             abort(403);
-        }
-
-        $user = \App\Models\User::findOrFail($request->user);
+    $user = \App\Models\User::findOrFail($request->user);
                 
-        Auth::login($user, true);
+    Auth::login($user, true);
 
-        if ($request->user != $user->id) {
-           abort(403);
-        }
+    if ($request->user != $user->id) {
+       abort(403);
+    }
 
-        $id = $request->market;
+    $id = $request->market;
         
-        return redirect('clients/'.$id);
+    return redirect('clients/'.$id);
 
 })->name('webview.login');
+
+Route::get('deposit-wallet', function (Request $request) {
+
+    if (! $request->hasValidSignature()) {
+            abort(403);
+    }
+
+    $user = \App\Models\User::findOrFail($request->user);
+    
+    Auth::login($user, true);
+    
+    if ($request->user != $user->id) {
+       abort(403);
+    }
+
+    $id = $request->market;
+        
+    return redirect('deposit/'.$id);
+
+})->name('deposit.wallet');
    
 Route::post('/markets/prices', [MarketController::class, 'prices'])->name('markets.prices');

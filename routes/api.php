@@ -84,6 +84,8 @@ Route::middleware(['verify.publisher', 'throttle:publisher-api'])->group(functio
 Route::middleware(['verify.mobileclient', 'throttle:mobileclient-api'])->group(function () {
 
     Route::post('/webview/{market}', [ApiMobileClientController::class, 'webview'])->name('api.webview');
+
+    Route::post('/deposit/{market}', [ApiMobileClientController::class, 'deposit'])->name('api.deposit');
 });
 
 
