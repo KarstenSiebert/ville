@@ -44,6 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         
         $middleware->validateCsrfTokens(except: [
+            'https://www.tokenville.fun/language*',
             'https://www.tokenville.fun/api/*',
             'https://www.accesspay.net/api/*',
         ]);     

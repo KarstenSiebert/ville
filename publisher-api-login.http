@@ -3,6 +3,7 @@ curl --http2 --request POST --url https://www.tokenville.fun/api/webview/3 \
     --header 'X-SHADOW: 6' \
     --header 'X-DEVICE: 10' \
     --header 'X-SMARKT: 3' \
+    --header 'X-User-Locale: de' \
     --data   '{
                 
               }' 

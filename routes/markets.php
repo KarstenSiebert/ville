@@ -53,8 +53,14 @@ Route::get('webview-login', function (Request $request) {
     }
 
     $id = $request->market;
-        
-    return redirect('clients/'.$id);
+
+    $locale = $request->query('locale') ?? 'en';
+
+    if ($request->header('X-User-Locale')) {
+        $locale = $request->header('X-User-Locale');
+    }
+
+    return redirect('clients/'.$id.'?locale='.$locale);
 
 })->name('webview.login');
 
@@ -73,8 +79,14 @@ Route::get('deposit-wallet', function (Request $request) {
     }
 
     $id = $request->market;
-        
-    return redirect('deposit/'.$id);
+
+    $locale = $request->query('locale') ?? 'en';
+
+    if ($request->header('X-User-Locale')) {
+        $locale = $request->header('X-User-Locale');
+    }
+
+    return redirect('deposit/'.$id.'?locale='.$locale);
 
 })->name('deposit.wallet');
    

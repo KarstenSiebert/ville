@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cookie;
 use App\Http\Controllers\MarketController;
 use App\Http\Services\MarketSettlementService;
 use App\Http\Controllers\Api\ApiUserController;
@@ -86,6 +87,7 @@ Route::middleware(['verify.mobileclient', 'throttle:mobileclient-api'])->group(f
     Route::post('/webview/{market}', [ApiMobileClientController::class, 'webview'])->name('api.webview');
 
     Route::post('/deposit/{market}', [ApiMobileClientController::class, 'deposit'])->name('api.deposit');
+       
 });
 
 

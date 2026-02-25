@@ -22,7 +22,14 @@ Route::get('readwallets', [TransferController::class, 'readDepositWallets'])->na
 Route::get('sendassets', [TransferController::class, 'readReservedWallets'])->name('sendassets');
 
 Route::post('language', function (Request $request) {
-    $locale = strtolower(substr($request->input('locale', 'en'), 0, 2));
+
+    $locale = strtolower(substr($request->input('locale'), 0, 2));
+
+    if ($request->header('X-User-Locale')) {
+        $locale = $request->header('X-User-Locale');
+    }
+
+    $locale = strtolower(substr($request->input('locale'), 0, 2));
         
     $supported = ['de', 'zh', 'en', 'es', 'fr', 'jp', 'bg', 'cz', 'dk', 'ee', 'fi', 'gr', 'hr', 'hu', 'ie', 'ir', 'it', 'lt', 'lv', 'mt', 'nl', 'pl', 'pt', 'ro', 'ru', 'sa', 'se', 'sk', 'sl', 'ua'];
     

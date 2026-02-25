@@ -24,7 +24,21 @@ class VerifyMobileClient
         $deviceId = $request->header('X-DEVICE') ?? null;
 
         $marketId = $request->header('X-SMARKT') ?? null;
+
+        $language = $request->header('X-User-Locale') ?? null;
+
+        $supported = ['de', 'zh', 'en', 'es', 'fr', 'jp', 'bg', 'cz', 'dk', 'ee', 'fi', 'gr', 'hr', 'hu', 'ie', 'ir', 'it', 'lt', 'lv', 'mt', 'nl', 'pl', 'pt', 'ro', 'ru', 'sa', 'se', 'sk', 'sl', 'ua'];
+    
+        if (!in_array($language, $supported)) {
+            $language = 'en';
+        }
+
+        if (isset($language) && in_array($language, $supported)) {
+            app()->setLocale($language);            
+        }
                 
+        $request->merge(['locale' => $language]);
+
         if (empty($marketId)) {
             $marketId = $request->input('market_id') ?? null;
         }

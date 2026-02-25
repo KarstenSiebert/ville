@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Helpers\ImageStorage;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cookie;
 use App\Http\Controllers\Api\ApiMobileClientController;
 
 class ApiMobileClientController extends Controller
@@ -24,7 +25,16 @@ class ApiMobileClientController extends Controller
     }
 
     public function detail(Request $request, $id)
-    {  
+    {              
+        if ($locale = $request->query('locale')) {
+            
+            app()->setLocale($locale);
+    
+            $request->session()->put('locale', $locale);
+        }
+
+        $cookie = Cookie::queue('locale', $locale, 60*24*365, '/', null, false, false);        
+
         if (empty($id)) {
              return redirect('dashboard');
         }
@@ -53,7 +63,7 @@ class ApiMobileClientController extends Controller
     {
         $shadowUser = $request->shadow_user;
 
-        $loginUrl = URL::temporarySignedRoute('webview.login', now()->addMinutes(5), ['user' => $shadowUser->id, 'market' => $id]);
+        $loginUrl = URL::temporarySignedRoute('webview.login', now()->addMinutes(5), ['user' => $shadowUser->id, 'market' => $id, 'locale' => $request->locale]);
 
         return  response()->json(['access' => $loginUrl], 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); 
     }
@@ -75,13 +85,22 @@ class ApiMobileClientController extends Controller
     {
         $shadowUser = $request->shadow_user;
 
-        $loginUrl = URL::temporarySignedRoute('deposit.wallet', now()->addMinutes(5), ['user' => $shadowUser->id, 'market' => $id]);
+        $loginUrl = URL::temporarySignedRoute('deposit.wallet', now()->addMinutes(5), ['user' => $shadowUser->id, 'market' => $id, 'locale' => $request->locale]);
 
         return  response()->json(['access' => $loginUrl], 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 
     public function wallet(Request $request, $id)
-    {                
+    {           
+        if ($locale = $request->query('locale')) {
+            
+            app()->setLocale($locale);
+    
+            $request->session()->put('locale', $locale);
+        }
+
+        $cookie = Cookie::queue('locale', $locale, 60*24*365, '/', null, false, false); 
+             
         $user = auth()->user();
         
         if (!$user) {
