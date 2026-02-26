@@ -65,7 +65,7 @@ async function searchUsers(query: string) {
 
         let res;
 
-        if (props.user_context.type === 'publisher') {
+        if (props.user_context.type === 'operator') {
             res = await fetch(`/shadows/${props.user_context.id}/search?q=${encodeURIComponent(query)}`)
         }
         else {
@@ -349,7 +349,7 @@ function submitForm() {
         return
     }
 
-    form.post(props.user_context.type === 'publisher'
+    form.post(props.user_context.type === 'operator'
         ? `/deposits/publisher/${props.user_context.id}`
         : `/deposits`
     )

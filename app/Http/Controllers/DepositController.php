@@ -305,6 +305,8 @@ class DepositController extends Controller
             $local = $publisher;
         }
 
+        // dd($publisher);
+
         $ada = array_filter($data, function ($item) {
             return $item['asset_name'] === 'ADA' || is_null($item['asset_name']);
         });

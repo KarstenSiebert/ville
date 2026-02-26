@@ -35,7 +35,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-if (props.assets.user_context.type === 'publisher') {
+if (props.assets.user_context.type === 'operator') {
     breadcrumbs.push({
         title: props.assets.user_context.name,
         href: '',
@@ -268,7 +268,7 @@ function submitForm() {
         });
 
     form.post(
-        props.assets.user_context.type === 'publisher'
+        props.assets.user_context.type === 'operator'
             ? `/deposits/publisher/create/${props.assets.user_context.id}`
             : `/deposits/create`
     )

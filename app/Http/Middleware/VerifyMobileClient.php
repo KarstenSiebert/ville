@@ -121,9 +121,9 @@ class VerifyMobileClient
             if ($isNewUser || $isNewSubscriber) {
 
                 if ($market->max_subscribers && $market->max_subscribers > $market->subscribers()->count()) {
-                    
+                                        
                     $shadowWallet   = Wallet::where('user_id', $shadow->id)->where('user_type', 'SHADOW')->where('type', 'available')->first();
-                    $operatorWallet = Wallet::where('user_id', $publisher->id)->where('type', 'available')->first();
+                    $operatorWallet = Wallet::where('user_id', $publisher->user_id)->where('type', 'available')->first();
                     
                     $baseToken = $market->baseToken;
                     $userValue = intval(floor($market->b / $market->max_subscribers));

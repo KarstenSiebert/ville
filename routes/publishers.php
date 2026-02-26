@@ -23,17 +23,15 @@ Route::middleware('auth', 'verified')->group(function () {
             ->take(5)
             ->get();
     
-        $result = $publishers;
+        // $result = $publishers;
         
-        /*
         $result = $publishers->map(function($publisher) {
                 return [
                     'id' => $publisher->id,
                     'name' => $publisher->name
                 ];
         });
-        */
-
+        
         return response()->json($result);
     });
 
