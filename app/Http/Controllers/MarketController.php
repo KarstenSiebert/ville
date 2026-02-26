@@ -877,9 +877,10 @@ class MarketController extends Controller
         $marketData = [];
 
         $marketData['market']    = $market->id;
+        $marketData['operator']  = config('chimera.operator');
         $marketData['latitude']  = $market->latitude;
-        $marketData['longitude'] = $market->longitude;
-        
+        $marketData['longitude'] = $market->longitude;        
+                
         $data = json_encode($marketData);
                             
         $renderer = new ImageRenderer(new RendererStyle(400, 1, null, null, $fill), new ImagickImageBackEnd());

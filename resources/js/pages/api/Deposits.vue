@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
-import { Coins, Dices } from 'lucide-vue-next';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import "@inertiajs/core";
 
 declare module "@inertiajs/core" {
@@ -26,6 +25,7 @@ interface Asset {
     decimals: number
     token_type: string
     logo_url?: string
+    minimal_tokens: number
 }
 
 const safeAssets = computed(() => Array.isArray(props.assets) ? props.assets : []);
@@ -40,6 +40,7 @@ const editableAssets = ref<Asset[]>(Array.isArray(props.assets) ?
         decimals: a.decimals,
         token_type: a.token_type,
         logo_url: a.logo_url ?? '/storage/logos/cardano-ada-logo.png',
+        minimal_tokens: a.minimal_tokens
     }))
     : []
 );
@@ -88,6 +89,11 @@ async function confirmRedeem(asset: Asset) {
     }
 }
 
+function isRedeemable(asset: Asset) {
+    return asset.token_type === 'BASE' &&
+        Number(asset.minimal_tokens) > 0
+}
+
 function confirmToRedeemConfirmed() {
     if (!assetToRedeem.value) return;
 
@@ -127,10 +133,6 @@ function confirmToRedeemConfirmed() {
                             {{ $t('token') }}
                         </th>
                         <th
-                            class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
-                            {{ $t('type') }}
-                        </th>
-                        <th
                             class="px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
                             {{ $t('balance') }}
                         </th>
@@ -153,17 +155,6 @@ function confirmToRedeemConfirmed() {
                                 </span>
                             </div>
                         </td>
-                        <td class="px-4 py-2 text-center cursor-default">
-
-                            <span v-if="asset.token_type === 'BASE'" title="Currency token">
-                                <Coins class="w-5 h-5 inline-block text-indigo-600 dark:text-indigo-400" />
-                            </span>
-
-                            <span v-else-if="asset.token_type === 'SHARE'" title="Market token">
-                                <Dices class="w-5 h-5 inline-block text-teal-600 dark:text-teal-400" />
-                            </span>
-
-                        </td>
                         <td
                             class="px-4 py-2 font-mono text-xs text-right text-gray-900 dark:text-gray-200 cursor-default">
                             {{
@@ -179,21 +170,32 @@ function confirmToRedeemConfirmed() {
                         <td class="px-8 py-2 text-right cursor-default">
                             <Dialog v-model:open="qrDialogOpen">
 
-                                <button type="button" @click="confirmRedeem(asset)" class="p-1" :class="asset.token_type == 'BASE'
-                                    ? 'text-green-500 hover:text-green-700 dark:hover:text-green-400 cursor-pointer'
-                                    : 'text-gray-400 cursor-not-allowed'" :disabled="asset.token_type !== 'BASE'"
+                                <button type="button" @click="confirmRedeem(asset)" class="p-1" :class="isRedeemable(asset)
+                                    ? 'text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 cursor-pointer'
+                                    : 'text-gray-400 cursor-not-allowed'" :disabled="!isRedeemable(asset)"
                                     :aria-label="$t('redeem')">
 
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="lucide lucide-banknote-arrow-up-icon lucide-banknote-arrow-up h-4 w-4">
-                                        <path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5" />
-                                        <path d="M18 12h.01" />
-                                        <path d="M19 22v-6" />
-                                        <path d="m22 19-3-3-3 3" />
-                                        <path d="M6 12h.01" />
-                                        <circle cx="12" cy="12" r="2" />
+                                    <svg v-if="asset.token_type == 'BASE'" xmlns="http://www.w3.org/2000/svg" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-coins-icon lucide-coins h-5 w-5">
+                                        <path d="M13.744 17.736a6 6 0 1 1-7.48-7.48" />
+                                        <path d="M15 6h1v4" />
+                                        <path d="m6.134 14.768.866-.5 2 3.464" />
+                                        <circle cx="16" cy="8" r="6" />
+                                    </svg>
+
+                                    <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-dices-icon lucide-dices h-5 w-5">
+                                        <rect width="12" height="12" x="2" y="10" rx="2" ry="2" />
+                                        <path
+                                            d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6" />
+                                        <path d="M6 18h.01" />
+                                        <path d="M10 14h.01" />
+                                        <path d="M15 6h.01" />
+                                        <path d="M18 9h.01" />
                                     </svg>
 
                                 </button>
@@ -201,22 +203,15 @@ function confirmToRedeemConfirmed() {
                                 <DialogContent v-if="assetToRedeem && assetToRedeem.id === asset.id">
                                     <DialogHeader>
                                         <DialogTitle>
-                                            {{ $t('redeem') }}: {{
-                                                asset.asset_name }}
+                                            {{ asset.asset_name }}
                                         </DialogTitle>
-                                        <DialogDescription>
-                                            {{ $t('this_action_cannot_be_undone') }}
-                                        </DialogDescription>
                                     </DialogHeader>
                                     <div v-if="qrBase64" class="flex justify-center items-center p-4">
                                         <img :src="qrBase64" :alt="$t('qr_code')"
-                                            class="max-w-xs rounded-lg shadow-lg" />
+                                            class="max-w-full max-h-[400px] rounded-lg shadow-lg object-contain" />
                                     </div>
                                     <DialogFooter class="gap-8">
-                                        <DialogClose as-child>
-                                            <Button variant="secondary">{{ $t('cancel') }}</Button>
-                                        </DialogClose>
-                                        <Button variant="destructive" @click="confirmToRedeemConfirmed">
+                                        <Button variant="default" @click="confirmToRedeemConfirmed">
                                             {{ $t('redeem') }}
                                         </Button>
                                     </DialogFooter>

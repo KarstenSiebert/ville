@@ -113,17 +113,19 @@ class ApiMobileClientController extends Controller
             return redirect('login');
         }
 
-        if (!empty($user)) {    
+        $tokens = [];
+        
+        if (!empty($user) && ($user->type === 'SHADOW')) {
             
-            if ($usrWallet = Wallet::where('user_id', $user->id)->where('type', 'available')->first()) {
-                                      
-                $tokens = TokenWallet::with(['token.outcomes.market'])->forWallet($usrWallet->id)
+            if ($usrWallet = Wallet::where('user_id', $user->id)->where('type', 'available')->where('user_type', $user->type)->first()) {
+                                                      
+                $tokens = TokenWallet::with(['token.outcomes.market', 'token.markets'])->forWallet($usrWallet->id)
                     ->withQuantity()
                     ->withActiveToken()
                     ->loadTokenData()
                     ->limit(50)                 
                     ->get()
-                    ->map(function ($tw) use ($user) {
+                    ->map(function ($tw) use ($user, $id) {
 
                         if (!str_starts_with($tw->token->logo_url, 'https') && !str_starts_with($tw->token->logo_url, '/storage')) {                            
                             $tw->token->logo_url = ImageStorage::saveBase64Image($tw->token->logo_url, trim($tw->token->name));
@@ -135,41 +137,50 @@ class ApiMobileClientController extends Controller
                             $isUserToken = true;
                         }
 
-                        $market = '';
+                        $minimal_tokens = 0;
                         
-                        if ($tw->token->token_type == 'SHARE') {
-                            foreach ($tw->token->outcomes as $outcome) {
+                        /*
+                        foreach ($tw->token->outcomes as $outcome) {
 
-                                if ($outcome->market) {
-                                    $market = $outcome->market->title;
-                                }
+                            if ($outcome->market) {                            
+                        
                             }
                         }
-                        
+                        */
+
+                        foreach ($tw->token->markets as $market) {
+                            
+                            if (($market->id == $id) && ($market->baseToken->fingerprint == $tw->token->fingerprint) && ($tw->token->token_type == 'BASE')) {
+                                $minimal_tokens = (int) max($market->b / $market->max_subscribers, 0);
+                            }
+                        }
+
                         return [
-                            'id'                   => $tw->id,
-                            'asset_name'           => $tw->token->name,
-                            'quantity'             => $tw->quantity,                            
-                            'token_number'         => $tw->quantity,
-                            'decimals'             => $tw->token->decimals,
-                            'fingerprint'          => $tw->token->fingerprint,
-                            'logo_url'             => $tw->token->logo_url,
-                            'is_user_token'        => $isUserToken,
-                            'token_type'           => $tw->token->token_type                            
+                            'id'             => $tw->id,
+                            'asset_name'     => $tw->token->name,
+                            'quantity'       => $tw->quantity,
+                            'decimals'       => $tw->token->decimals,
+                            'fingerprint'    => $tw->token->fingerprint,
+                            'logo_url'       => $tw->token->logo_url,
+                            'token_type'     => $tw->token->token_type,
+                            'minimal_tokens' => max($tw->quantity - $minimal_tokens, 0)
+                            // 'minimal_tokens' => 4
                         ];                        
                     });                    
             }            
         }
         
+        // dd($tokens);
+        
         return Inertia::render('api/Deposits', [
-                'assets' => $tokens,                
+                'assets' => $tokens,
             ],
         );        
     }
 
     public function qrcode(Request $request, $id)
     {
-        // $market = TokenWallet::findOrFail($id);
+        $tokenWallet = TokenWallet::with(['user'])->findOrFail($id);
             
         $foregroundColor = new Rgb(148, 164, 163);
 
@@ -177,11 +188,11 @@ class ApiMobileClientController extends Controller
 
         $fill = Fill::uniformColor($foregroundColor, $backgroundColor);
 
-        $marketData = ['market' => 'HALLO'];
+        $marketData = ['user' => $tokenWallet->user->name];
         
         $data = json_encode($marketData);
                             
-        $renderer = new ImageRenderer(new RendererStyle(400, 1, null, null, $fill), new ImagickImageBackEnd());
+        $renderer = new ImageRenderer(new RendererStyle(320, 1, null, null, $fill), new ImagickImageBackEnd());
         
         $qrcode = 'data:image/png;base64,'.base64_encode((new Writer($renderer))->writeString($data));
                                     

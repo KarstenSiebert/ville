@@ -37,9 +37,9 @@ class TokenWallet extends Model
 
     public function user()
     {        
-        // return $this->hasOneThrough(User::class, Wallet::class, 'id', 'id', 'wallet_id', 'user_id');
+        return $this->hasOneThrough(User::class, Wallet::class, 'id', 'id', 'wallet_id', 'user_id');
 
-        return $this->hasOne(User::class);
+        // return $this->hasOne(User::class);
     }
 
     public function getAvailableAttribute()

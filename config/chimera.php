@@ -7,5 +7,6 @@ return [
     'admin_wallet' => 'addr1vxwx57dyae07fcnpae5mekm5hh5sq5elhw07crlwr0j5c5gjj6q5h',
     'admin_user'   => 'admin@siehog.com',
     'head_fee'     => 2000000,
+    'operator'     => 'https://www.tokenville.fun',
     'cexplorer'    => 'https://api.accesspay.net/api'
 ];
