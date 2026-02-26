@@ -32,6 +32,8 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::post('/markets/{market}/cancel', [MarketAdminController::class, 'cancel'])->name('admin.markets.cancel');
     });
 
+    Route::get('/deposit/{market}/qrcode', [ApiMobileClientController::class, 'qrcode'])->name('deposit.qrcode');
+
 });
 
 Route::get('/clients/{market}', [ApiMobileClientController::class, 'detail'])->name('clients.detail');

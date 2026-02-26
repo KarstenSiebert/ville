@@ -7,12 +7,18 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Wallet;
 use App\Models\Market;
+use BaconQrCode\Writer;
 use App\Models\TokenWallet;
 use Illuminate\Http\Request;
 use App\Helpers\ImageStorage;
+use BaconQrCode\Renderer\Color\Rgb;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cookie;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\RendererStyle\Fill;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use App\Http\Controllers\Api\ApiMobileClientController;
 
 class ApiMobileClientController extends Controller
@@ -141,14 +147,14 @@ class ApiMobileClientController extends Controller
                         }
                         
                         return [
+                            'id'                   => $tw->id,
                             'asset_name'           => $tw->token->name,
-                            'quantity'             => $tw->quantity,
-                            'reserved_quantity'    => $tw->reserved_quantity,
+                            'quantity'             => $tw->quantity,                            
                             'token_number'         => $tw->quantity,
                             'decimals'             => $tw->token->decimals,
-                            'fingerprint'          => $tw->token->fingerprint,                            
+                            'fingerprint'          => $tw->token->fingerprint,
                             'logo_url'             => $tw->token->logo_url,
-                            'is_user_token'        => $isUserToken,                            
+                            'is_user_token'        => $isUserToken,
                             'token_type'           => $tw->token->token_type                            
                         ];                        
                     });                    
@@ -159,6 +165,27 @@ class ApiMobileClientController extends Controller
                 'assets' => $tokens,                
             ],
         );        
+    }
+
+    public function qrcode(Request $request, $id)
+    {
+        // $market = TokenWallet::findOrFail($id);
+            
+        $foregroundColor = new Rgb(148, 164, 163);
+
+        $backgroundColor = new Rgb(255, 255, 255);
+
+        $fill = Fill::uniformColor($foregroundColor, $backgroundColor);
+
+        $marketData = ['market' => 'HALLO'];
+        
+        $data = json_encode($marketData);
+                            
+        $renderer = new ImageRenderer(new RendererStyle(400, 1, null, null, $fill), new ImagickImageBackEnd());
+        
+        $qrcode = 'data:image/png;base64,'.base64_encode((new Writer($renderer))->writeString($data));
+                                    
+        return response()->json($qrcode, 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);        
     }
 
 }

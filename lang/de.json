@@ -409,6 +409,8 @@
     "max_subscribers": "Max. Abonnenten",
     "link_to_outcome": "Link zum Ergebnis (z. B. Produkt, Dienstleistung)",
     "token_ratio": "Token-Verhältnis",
-    "select_token": "Token auswählen"
+    "select_token": "Token auswählen",
+
+    "redeem": "Einlösen"
 
 }
