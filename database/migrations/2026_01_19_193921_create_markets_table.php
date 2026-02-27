@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('category')->nullable();
             $table->text('description')->nullable();
             $table->text('logo_url')->nullable();
+            $table->json('images')->nullable();
             $table->enum('status', ['OPEN', 'CLOSED', 'RESOLVED', 'SETTLED', 'CANCELED'])->default('OPEN');
             $table->foreignId('winning_outcome_id')->nullable();
             $table->timestamp('start_time')->nullable();

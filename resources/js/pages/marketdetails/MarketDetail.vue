@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import { ref, reactive, onMounted, getCurrentInstance, watchEffect, watch, onUnmounted, toRaw } from 'vue';
 import { ZoomOut } from 'lucide-vue-next';
 import { type BreadcrumbItem } from '@/types';
@@ -133,6 +133,7 @@ interface Market {
     b: number;
     close_time: string;
     logo_url?: string;
+    images: [];
     base_token: Token;
     allow_limit_orders: boolean;
     outcomes: Outcome[];
@@ -160,8 +161,6 @@ const props = defineProps<{
 const breadcrumbs: BreadcrumbItem[] = [
     { title: props.market.title, href: `/markets/${props.market.id}` },
 ];
-
-const page = usePage()
 
 const chartPrice = ref<HTMLCanvasElement | null>(null);
 
@@ -936,6 +935,12 @@ onMounted(async () => {
 
         }, 10_000);
 
+        setInterval(() => {
+            if (props.market.images?.length > 1) {
+                nextSlide()
+            }
+        }, 4000)
+
         isDarkMode.value = document.documentElement.classList.contains('dark');
 
     } catch (e) {
@@ -1022,6 +1027,19 @@ const inputAmounts = reactive<{ [outcomeId: number]: number | null }>({});
 marketData.outcomes.forEach(o => {
     inputAmounts[o.id] = inputAmounts[o.id] ?? 0;
 });
+
+const currentSlide = ref(0)
+
+function nextSlide() {
+    currentSlide.value =
+        (currentSlide.value + 1) % props.market.images.length
+}
+
+function prevSlide() {
+    currentSlide.value =
+        (currentSlide.value - 1 + props.market.images.length) %
+        props.market.images.length
+}
 
 async function fetchFullMarketData() {
 
@@ -1122,11 +1140,6 @@ async function fetchFullMarketData() {
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
-            <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-sm">
-                <FlashMessage type="success" :message="page.props.flash?.success ? $t(page.props.flash.success) : ''" />
-                <FlashMessage type="error" :message="page.props.flash?.error ? $t(page.props.flash.error) : ''" />
-            </div>
-
             <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
 
                 <div
@@ -1152,6 +1165,21 @@ async function fetchFullMarketData() {
                             ? marketData.description.slice(0, 364) + '…'
                             : marketData.description || '\u00A0' }}
                     </p>
+
+                    <div v-if="market.images?.length" class="relative w-full max-w-lg h-64 overflow-hidden rounded-lg">
+                        <img :src="`${market.images[currentSlide]}`" class="w-full h-full object-cover"
+                            alt="Market image" />
+
+                        <button @click="prevSlide"
+                            class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white px-2 py-1 rounded">
+                            ‹
+                        </button>
+
+                        <button @click="nextSlide"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white px-2 py-1 rounded">
+                            ›
+                        </button>
+                    </div>
 
                     <!-- Unterer Bereich: Token + Zeit -->
                     <div class="flex items-center justify-between gap-2 cursor-default text-xs mt-auto">
@@ -1299,13 +1327,13 @@ async function fetchFullMarketData() {
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTC"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTC')
-                                        }}</span>
+                                    }}</span>
                                 </label>
                                 <label class="flex items-center gap-1 cursor-pointer">
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTD"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTD')
-                                        }}</span>
+                                    }}</span>
                                 </label>
                             </div>
 

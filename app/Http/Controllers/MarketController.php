@@ -143,6 +143,8 @@ class MarketController extends Controller
             'latitude' => ['nullable', 'numeric', 'min:-90.0', 'max:90.0'],
             'longitude' => ['nullable', 'numeric', 'min:-180.0', 'max:180.0'],
             'logo_url' => ['nullable', 'image', 'max:2048'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['image', 'max:2028'],
             'outcomes.*.name' => ['required', 'string', 'max:255'],
             'outcomes.*.link' => ['nullable', 'url:https', 'max:255'],
             'outcomes.*.logo_url' => ['nullable', 'image', 'max:2048'],
@@ -249,8 +251,19 @@ class MarketController extends Controller
         if (empty($validated['logo_url'])) {
             $validated['logo_url'] = '/storage/logos/wechselstuben-logo.png';
         }
+        
+        $imagePaths = [];
+
+        if ($request->hasFile('images')) {
+    
+            foreach ($request->file('images') as $image) {                
+                $imagePaths[] = '/storage/'.$image->store('market-logos', 'public');
+
+                $validated['logo_url'] = '/storage/'.$image->store('market-logos', 'public');
+            }
+        }
                                     
-        $market = DB::transaction(function() use ($product, $user, $b, $marketWalletAmount, $currencyToken, $validated) {
+        $market = DB::transaction(function() use ($product, $user, $b, $marketWalletAmount, $currencyToken, $validated, $imagePaths) {
         
             $mUser = User::create([
                 'name' => $product['name'],
@@ -285,6 +298,7 @@ class MarketController extends Controller
                     'title' => $validated['title'],
                     'category' => $validated['category'],
                     'logo_url' => $validated['logo_url'],
+                    'images' => $imagePaths,
                     'description' => $validated['description'],
                     'status' => 'OPEN',
                     'b' => $b,                    

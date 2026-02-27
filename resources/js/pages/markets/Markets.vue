@@ -665,8 +665,7 @@ function submitForm() {
         <Dialog v-model:open="qrDialogOpen">
             <DialogContent class="max-w-sm flex flex-col items-center justify-center">
                 <DialogHeader>
-                    <DialogTitle>{{ $t('qr_code') }}</DialogTitle>
-                    <DialogDescription>{{ $t('scan_QR_code_to_see_market_details') }}</DialogDescription>
+                    <DialogTitle>{{ $t('market') }}</DialogTitle>
                 </DialogHeader>
 
                 <div v-if="qrBase64" class="flex justify-center items-center p-4">

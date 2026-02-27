@@ -16,7 +16,8 @@ class Market extends Model
         'publisher_id',
         'title', 
         'description',
-        'logo_url', 
+        'logo_url',
+        'images',
         'status',
         'category',
         'start_time',
@@ -61,11 +62,12 @@ class Market extends Model
     protected function casts(): array
     {
         return [
+            'images' => 'array',
             'is_active' => 'boolean',
             'allow_limit_orders' => 'boolean',
         ];
     }
-
+    
     protected $appends = ['is_active'];
     
     public function getIsActiveAttribute(): bool

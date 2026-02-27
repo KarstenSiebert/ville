@@ -1,8 +1,8 @@
-curl --http2 --request POST --url https://www.tokenville.fun/api/webview/1 \
+curl --http2 --request POST --url https://www.tokenville.fun/api/webview/2 \
     --header 'content-type: application/json' \
     --header 'X-SHADOW: 6' \
     --header 'X-DEVICE: 10' \
-    --header 'X-SMARKT: 1' \
+    --header 'X-SMARKT: 2' \
     --header 'X-User-Locale: de' \
     --data   '{
                 

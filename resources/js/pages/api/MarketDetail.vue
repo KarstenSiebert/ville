@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { usePage } from '@inertiajs/vue3';
 import { ref, reactive, onMounted, getCurrentInstance, watch, watchEffect, onUnmounted, toRaw } from 'vue';
 import { ZoomOut } from 'lucide-vue-next';
 import { User } from '@/types';
@@ -134,6 +133,7 @@ interface Market {
     b: number;
     close_time: string;
     logo_url?: string;
+    images: [];
     base_token: Token;
     allow_limit_orders: boolean;
     outcomes: Outcome[];
@@ -144,8 +144,6 @@ const props = defineProps<{
     tokenValue: number;
     user: User;
 }>();
-
-const page = usePage()
 
 const chartPrice = ref<HTMLCanvasElement | null>(null);
 
@@ -175,6 +173,19 @@ function outcomeColor(index: number) {
     ];
 
     return colors[index % colors.length];
+}
+
+const currentSlide = ref(0)
+
+function nextSlide() {
+    currentSlide.value =
+        (currentSlide.value + 1) % props.market.images.length
+}
+
+function prevSlide() {
+    currentSlide.value =
+        (currentSlide.value - 1 + props.market.images.length) %
+        props.market.images.length
 }
 
 const isZoomed = ref(false)
@@ -807,6 +818,12 @@ onMounted(async () => {
 
         }, 10_000);
 
+        setInterval(() => {
+            if (props.market.images?.length > 1) {
+                nextSlide()
+            }
+        }, 4000)
+
         isDarkMode.value = document.documentElement.classList.contains('dark');
 
     } catch (e) {
@@ -910,21 +927,6 @@ async function fetchFullMarketData() {
 
         marketData.currentLiquidity = response.data.outcomes.liquidity;
 
-        /*
-        marketData.outcomes.forEach(o => {
-            const priceData = response.data.outcomes.prices[o.id];
-            if (!priceData) return;
-
-            o.total_value = priceData.total_value ?? 0;
-            o.price = priceData.price ?? 0;
-            o.realPrice = priceData.realPrice ?? 0;
-            o.beforeProb = priceData.before_probs;
-            o.afterProb = priceData.after_probs;
-            o.chance = priceData.chance ?? 1;
-            o.chanceIncrease = priceData.after_probs - priceData.before_probs;
-        });
-        */
-
         const receivedTrades = response.data.trades as BackendTradesResponse;
 
         const rawTrades: BackendTrade[] = Array.isArray(receivedTrades?.trades)
@@ -984,12 +986,7 @@ async function fetchFullMarketData() {
 
 <template>
 
-    <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
-
-        <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-sm">
-            <FlashMessage type="success" :message="page.props.flash?.success ? $t(page.props.flash.success) : ''" />
-            <FlashMessage type="error" :message="page.props.flash?.error ? $t(page.props.flash.error) : ''" />
-        </div>
+    <div class="text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
         <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
 
@@ -1016,6 +1013,21 @@ async function fetchFullMarketData() {
                         ? marketData.description.slice(0, 364) + '…'
                         : marketData.description || '\u00A0' }}
                 </p>
+
+                <div v-if="market.images?.length" class="relative w-full max-w-lg h-64 overflow-hidden rounded-lg">
+                    <img :src="`${market.images[currentSlide]}`" class="w-full h-full object-cover"
+                        alt="Market image" />
+
+                    <button @click="prevSlide"
+                        class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white px-2 py-1 rounded">
+                        ‹
+                    </button>
+
+                    <button @click="nextSlide"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white px-2 py-1 rounded">
+                        ›
+                    </button>
+                </div>
 
                 <!-- Unterer Bereich: Token + Zeit -->
                 <div class="flex items-center justify-between gap-2 cursor-default text-xs mt-auto">

@@ -121,11 +121,20 @@ function openMarketLogoDialog() {
     marketLogoInput.value?.click()
 }
 
+/*
 function onMarketLogoChange(event: Event) {
     const target = event.target as HTMLInputElement
     if (!target.files || !target.files[0]) return
 
     form.logo_url = target.files[0]
+}
+*/
+
+function onMarketImagesChange(event: Event) {
+    const target = event.target as HTMLInputElement
+    if (!target.files) return
+
+    form.images = Array.from(target.files)
 }
 
 const outcomeInputs = ref<(HTMLInputElement | null)[]>([])
@@ -158,6 +167,7 @@ interface FormData {
     latitude: number | null;
     longitude: number | null;
     logo_url?: File | null;
+    images: File[];
     description: string;
     processing: boolean;
     outcomes: OutcomeInput[];
@@ -176,6 +186,7 @@ const form = useForm<FormData>({
     latitude: 0.0,
     longitude: 0.0,
     logo_url: null,
+    images: [],
     description: '',
     processing: false,
     outcomes: [
@@ -436,16 +447,19 @@ function submitForm() {
                 }}</label>
 
                 <div class="flex gap-3 items-center">
-                    <input ref="marketLogoInput" type="file" accept="image/*" class="hidden"
-                        @change="onMarketLogoChange" />
+                    <input ref="marketLogoInput" type="file" accept="image/*" multiple class="hidden"
+                        @change="onMarketImagesChange" />
 
                     <Button type="button" size="sm" @click="openMarketLogoDialog">
                         {{ $t('upload_photo') }}
                     </Button>
 
-                    <span v-if="form.logo_url" class="text-xs text-gray-500">
-                        {{ form.logo_url.name }}
-                    </span>
+                    <div v-if="form.images.length" class="text-xs text-gray-500 max-w-[320px] sm:max-w-xs truncate">
+                        <span v-for="(img, i) in form.images" :key="i">
+                            {{ img.name }}
+                        </span>
+                    </div>
+
                 </div>
 
                 <label class="block text-left text-sm font-medium mt-3 mb-1">
