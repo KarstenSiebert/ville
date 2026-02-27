@@ -935,11 +935,13 @@ onMounted(async () => {
 
         }, 10_000);
 
+        /*
         setInterval(() => {
             if (props.market.images?.length > 1) {
                 nextSlide()
             }
         }, 4000)
+        */
 
         isDarkMode.value = document.documentElement.classList.contains('dark');
 
@@ -1060,21 +1062,6 @@ async function fetchFullMarketData() {
         });
 
         marketData.currentLiquidity = response.data.outcomes.liquidity;
-
-        /*
-        marketData.outcomes.forEach(o => {
-            const priceData = response.data.outcomes.prices[o.id];
-            if (!priceData) return;
-
-            o.total_value = priceData.total_value ?? 0;
-            o.price = priceData.price ?? 0;
-            o.realPrice = priceData.realPrice ?? 0;
-            o.beforeProb = priceData.before_probs;
-            o.afterProb = priceData.after_probs;
-            o.chance = priceData.chance ?? 1;
-            o.chanceIncrease = priceData.after_probs - priceData.before_probs;
-        });
-        */
 
         const receivedTrades = response.data.trades as BackendTradesResponse;
 
@@ -1197,6 +1184,32 @@ async function fetchFullMarketData() {
                         <span class="text-xs text-gray-500 dark:text-gray-400">
                             ⏳ {{ $t(timeLeft(marketData)) }}
                         </span>
+                    </div>
+
+                    <!-- Base Token / Liquidity -->
+                    <div
+                        class="flex justify-between items-center mt-auto pt-2 border-t border-gray-200 dark:border-gray-700 text-sm">
+
+                        <div class="flex items-center gap-4 cursor-default text-xs">
+
+                        </div>
+
+                        <div class="flex flex-col text-xs">
+                            <div class="flex flex-wrap gap-2">
+                                <div v-for="(o, index) in market.outcomes" :key="o.id" :class="[
+                                    'flex flex-col items-center px-2 py-1 rounded text-center min-w-[60px]',
+                                    outcomeColor(index)
+                                ]">
+                                    <span class="text-[10px] font-medium truncate max-w-[70px]">
+                                        {{ o.name }}
+                                    </span>
+                                    <span class="inline-block transition-transform duration-200"
+                                        :class="{ 'scale-125 text-blue-600 dark:text-blue-300 font-bold': popId.id === o.id }">
+                                        {{ outcomeTokenSums[o.id] ?? 0 }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1327,13 +1340,13 @@ async function fetchFullMarketData() {
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTC"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTC')
-                                    }}</span>
+                                        }}</span>
                                 </label>
                                 <label class="flex items-center gap-1 cursor-pointer">
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTD"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTD')
-                                    }}</span>
+                                        }}</span>
                                 </label>
                             </div>
 

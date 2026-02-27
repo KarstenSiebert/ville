@@ -818,11 +818,13 @@ onMounted(async () => {
 
         }, 10_000);
 
+        /*
         setInterval(() => {
             if (props.market.images?.length > 1) {
                 nextSlide()
             }
         }, 4000)
+        */
 
         isDarkMode.value = document.documentElement.classList.contains('dark');
 
