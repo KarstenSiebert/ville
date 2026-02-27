@@ -163,15 +163,12 @@ class ApiMobileClientController extends Controller
                             'fingerprint'    => $tw->token->fingerprint,
                             'logo_url'       => $tw->token->logo_url,
                             'token_type'     => $tw->token->token_type,
-                            'minimal_tokens' => max($tw->quantity - $minimal_tokens, 0)
-                            // 'minimal_tokens' => 4
+                            'minimal_tokens' => max($tw->quantity - $minimal_tokens, 0)                            
                         ];                        
                     });                    
             }            
-        }
-        
-        // dd($tokens);
-        
+        }        
+
         return Inertia::render('api/Deposits', [
                 'assets' => $tokens,
             ],

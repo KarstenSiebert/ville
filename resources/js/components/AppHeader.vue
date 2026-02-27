@@ -221,7 +221,7 @@ onMounted(() => {
 <template>
     <div>
         <div class="border-b border-sidebar-border/80">
-            <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
+            <div class="mx-auto flex h-16 items-center px-4 md:max-w-screen-2xl">
                 <!-- Mobile Menu -->
                 <div class="lg:hidden">
                     <Sheet>

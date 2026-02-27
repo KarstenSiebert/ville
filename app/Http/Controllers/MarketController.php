@@ -292,8 +292,8 @@ class MarketController extends Controller
                     'token_ratio' => $validated['token_ratio'] ? $validated['token_ratio'] : 1,
                     'start_time' => $validated['start_date'] ? $validated['start_date'] : now(),
                     'close_time' => $validated['end_date'],
-                    'latitude' => $validated['latitude'] ? round($validated['latitude'], 4) : null,
-                    'longitude' => $validated['longitude'] ? round($validated['longitude'], 4) : null,
+                    'latitude' => $validated['latitude'] ? round($validated['latitude'], 4) : 0.0,
+                    'longitude' => $validated['longitude'] ? round($validated['longitude'], 4) : 0.0,
                     'liquidity_b' => $marketWalletAmount,
                     'base_token_fingerprint' => $fingerprint,
                 ]);
