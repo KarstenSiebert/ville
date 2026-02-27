@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Wallet;
 use App\Models\Market;
 use BaconQrCode\Writer;
+use App\Models\Transfer;
 use App\Models\Publisher;
 use App\Models\TokenWallet;
 use Illuminate\Http\Request;
@@ -209,8 +210,8 @@ class ApiMobileClientController extends Controller
         $tokenWallet = TokenWallet::with(['token.markets', 'user.avaWallet'])->where('id', $id)->first();
         
         $srcWallet = $tokenWallet->user->avaWallet;
-
         $publisher = null;
+        $baseToken = null;
 
         foreach ($tokenWallet->token->markets as $market) {
                                     
@@ -219,15 +220,17 @@ class ApiMobileClientController extends Controller
                 
                 $minimal_tokens = max($tokenWallet->quantity - $minimal_tokens, 0);
 
-                $publisher = Publisher::with('user.avaWallet')->where('id', $market->publisher_id)->first();                
+                $publisher = Publisher::with('user.avaWallet')->where('id', $market->publisher_id)->first();
+
+                $baseToken = $market->baseToken;
             }
         }
                 
         if ($publisher) {           
             $pubWallet = $publisher->user->avaWallet;
 
-            if (!empty($srcWallet) && !empty($pubWallet) && ($minimal_tokens > 0)) {
-                Transfer::execute($srcWallet, $pubWallet, $currencyToken, $minimal_tokens, 'internal', 0, 'REDEEM', false);
+            if (!empty($baseToken) && !empty($srcWallet) && !empty($pubWallet) && ($minimal_tokens > 0)) {
+                Transfer::execute($srcWallet, $pubWallet, $baseToken, $minimal_tokens, 'internal', 0, 'REDEEM', false);
             }
         }
 
