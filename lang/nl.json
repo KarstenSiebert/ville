@@ -382,6 +382,9 @@
     "max_subscribers": "Max. abonnees",
     "link_to_outcome": "Link naar resultaat (bijv. product, dienst)",
     "token_ratio": "Token-verhouding",
-    "select_token": "Selecteer token"
+    "select_token": "Selecteer token",
+    "redeem": "Inwisselen",
+    "upload_file": "Bestand uploaden",
+    "download": "Downloaden"
 
 }

@@ -382,6 +382,9 @@
     "max_subscribers": "Max. odberatelia",
     "link_to_outcome": "Odkaz na výsledok (napr. produkt, služba)",
     "token_ratio": "Pomer tokenov",
-    "select_token": "Vyberte token"
+    "select_token": "Vyberte token",
+    "redeem": "Uplatniť",
+    "upload_file": "Nahrať súbor",
+    "download": "Stiahnuť"
 
 }

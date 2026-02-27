@@ -382,6 +382,9 @@
     "max_subscribers": "Maks. abonentu skaits",
     "link_to_outcome": "Saite uz rezultātu (piem., produkts, pakalpojums)",
     "token_ratio": "Tokenu attiecība",
-    "select_token": "Izvēlieties tokenu"
+    "select_token": "Izvēlieties tokenu",
+    "redeem": "Izmaksāt",
+    "upload_file": "Augšupielādēt failu",
+    "download": "Lejupielādēt"
 
 }

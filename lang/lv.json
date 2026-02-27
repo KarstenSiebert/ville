@@ -381,6 +381,9 @@
     "max_subscribers": "Maks. prenumeratorių",
     "link_to_outcome": "Nuoroda į rezultatą (pvz., produktas, paslauga)",
     "token_ratio": "Žetonų santykis",
-    "select_token": "Pasirinkite žetoną"
+    "select_token": "Pasirinkite žetoną",
+    "redeem": "Išpirkti",
+    "upload_file": "Įkelti failą",
+    "download": "Atsisiųsti"
 
 }

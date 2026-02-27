@@ -382,6 +382,9 @@
     "max_subscribers": "Liotálaithe uasta",
     "link_to_outcome": "Nasc chuig an toradh (m.sh. táirge, seirbhís)",
     "token_ratio": "Cóimheas ticéad",
-    "select_token": "Roghnaigh ticéad"
+    "select_token": "Roghnaigh ticéad",
+    "redeem": "Éileamh",
+    "upload_file": "Uaslódáil comhad",
+    "download": "Íoslódáil"
 
 }

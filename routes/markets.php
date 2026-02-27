@@ -34,6 +34,7 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('/deposit/{market}/qrcode', [ApiMobileClientController::class, 'qrcode'])->name('deposit.qrcode');
 
+    Route::delete('/deposit/{market}', [ApiMobileClientController::class, 'destroy'])->name('deposit.destroy');
 });
 
 Route::get('/clients/{market}', [ApiMobileClientController::class, 'detail'])->name('clients.detail');

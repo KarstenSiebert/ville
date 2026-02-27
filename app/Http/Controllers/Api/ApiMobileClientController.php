@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Wallet;
 use App\Models\Market;
 use BaconQrCode\Writer;
+use App\Models\Publisher;
 use App\Models\TokenWallet;
 use Illuminate\Http\Request;
 use App\Helpers\ImageStorage;
@@ -138,6 +139,8 @@ class ApiMobileClientController extends Controller
                         }
 
                         $minimal_tokens = 0;
+
+                        $download = null;
                         
                         /*
                         foreach ($tw->token->outcomes as $outcome) {
@@ -152,6 +155,8 @@ class ApiMobileClientController extends Controller
                             
                             if (($market->id == $id) && ($market->baseToken->fingerprint == $tw->token->fingerprint) && ($tw->token->token_type == 'BASE')) {
                                 $minimal_tokens = (int) max($market->b / $market->max_subscribers, 0);
+
+                                $download = $market->download ?? null;
                             }
                         }
 
@@ -161,9 +166,12 @@ class ApiMobileClientController extends Controller
                             'quantity'       => $tw->quantity,
                             'decimals'       => $tw->token->decimals,
                             'fingerprint'    => $tw->token->fingerprint,
-                            'logo_url'       => $tw->token->logo_url,
+                            'logo_url'       => $tw->token->logo_url,                            
                             'token_type'     => $tw->token->token_type,
-                            'minimal_tokens' => max($tw->quantity - $minimal_tokens, 0)                            
+                            'download'       => $download,
+                            'minimal_tokens' => max($tw->quantity - $minimal_tokens, 0)
+
+                            // 'minimal_tokens' => 4
                         ];                        
                     });                    
             }            
@@ -194,6 +202,36 @@ class ApiMobileClientController extends Controller
         $qrcode = 'data:image/png;base64,'.base64_encode((new Writer($renderer))->writeString($data));
                                     
         return response()->json($qrcode, 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);        
+    }
+
+    public function destroy($id)
+    {        
+        $tokenWallet = TokenWallet::with(['token.markets', 'user.avaWallet'])->where('id', $id)->first();
+        
+        $srcWallet = $tokenWallet->user->avaWallet;
+
+        $publisher = null;
+
+        foreach ($tokenWallet->token->markets as $market) {
+                                    
+            if (($market->baseToken->fingerprint == $tokenWallet->token->fingerprint) && ($tokenWallet->token->token_type == 'BASE')) {
+                $minimal_tokens = (int) max($market->b / $market->max_subscribers, 0);     
+                
+                $minimal_tokens = max($tokenWallet->quantity - $minimal_tokens, 0);
+
+                $publisher = Publisher::with('user.avaWallet')->where('id', $market->publisher_id)->first();                
+            }
+        }
+                
+        if ($publisher) {           
+            $pubWallet = $publisher->user->avaWallet;
+
+            if (!empty($srcWallet) && !empty($pubWallet) && ($minimal_tokens > 0)) {
+                Transfer::execute($srcWallet, $pubWallet, $currencyToken, $minimal_tokens, 'internal', 0, 'REDEEM', false);
+            }
+        }
+
+        return redirect()->back();
     }
 
 }

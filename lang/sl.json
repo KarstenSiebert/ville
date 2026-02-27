@@ -382,6 +382,9 @@
     "max_subscribers": "Maks. naročnikov",
     "link_to_outcome": "Povezava do rezultata (npr. izdelek, storitev)",
     "token_ratio": "Razmerje žetonov",
-    "select_token": "Izberite žeton"
+    "select_token": "Izberite žeton",
+    "redeem": "Unovči",
+    "upload_file": "Naloži datoteko",
+    "download": "Prenesi"
 
 }

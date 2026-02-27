@@ -382,6 +382,9 @@
     "max_subscribers": "Maks. pretplatnika",
     "link_to_outcome": "Poveznica na rezultat (npr. proizvod, usluga)",
     "token_ratio": "Omjer tokena",
-    "select_token": "Odaberite token"
+    "select_token": "Odaberite token",
+    "redeem": "Iskoristi",
+    "upload_file": "Prenesi datoteku",
+    "download": "Preuzmi"
 
 }

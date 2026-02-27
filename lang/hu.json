@@ -382,6 +382,9 @@
     "max_subscribers": "Max. feliratkozók",
     "link_to_outcome": "Hivatkozás az eredményhez (pl. termék, szolgáltatás)",
     "token_ratio": "Token arány",
-    "select_token": "Token kiválasztása"
+    "select_token": "Token kiválasztása",
+    "redeem": "Beváltás",
+    "upload_file": "Fájl feltöltése",
+    "download": "Letöltés"
 
 }

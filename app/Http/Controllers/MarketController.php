@@ -143,6 +143,7 @@ class MarketController extends Controller
             'latitude' => ['nullable', 'numeric', 'min:-90.0', 'max:90.0'],
             'longitude' => ['nullable', 'numeric', 'min:-180.0', 'max:180.0'],
             'logo_url' => ['nullable', 'image', 'max:2048'],
+            'download' => ['nullable', 'mimes:pdf,zip', 'max:10140'],
             'images' => ['nullable', 'array'],
             'images.*' => ['image', 'max:2028'],
             'outcomes.*.name' => ['required', 'string', 'max:255'],
@@ -244,6 +245,10 @@ class MarketController extends Controller
             $product['decimals'] = 0;
         }
 
+        if ($request->hasFile('download')) {
+            $validated['download'] = '/storage/'.$request->file('download')->store('files', 'public');
+        }        
+
         if ($request->hasFile('logo_url')) {
             $validated['logo_url'] = '/storage/'.$request->file('logo_url')->store('market-logos', 'public');
         }
@@ -298,6 +303,7 @@ class MarketController extends Controller
                     'title' => $validated['title'],
                     'category' => $validated['category'],
                     'logo_url' => $validated['logo_url'],
+                    'download' => $validated['download'],
                     'images' => $imagePaths,
                     'description' => $validated['description'],
                     'status' => 'OPEN',

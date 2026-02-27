@@ -410,7 +410,8 @@
     "link_to_outcome": "Link zum Ergebnis (z. B. Produkt, Dienstleistung)",
     "token_ratio": "Verhältnis",
     "select_token": "Token auswählen",
-
-    "redeem": "Einlösen"
+    "redeem": "Einlösen",
+    "upload_file": "Datei hochladen",
+    "download": "Speichern"
 
 }

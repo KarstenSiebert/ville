@@ -382,6 +382,9 @@
     "max_subscribers": "Maks. tellijad",
     "link_to_outcome": "Link tulemusele (nt toode, teenus)",
     "token_ratio": "Tokeni suhe",
-    "select_token": "Vali token"
+    "select_token": "Vali token",
+    "redeem": "Lunasta",
+    "upload_file": "Laadi fail üles",
+    "download": "Laadi alla"
     
 }

@@ -399,6 +399,9 @@
     "max_subscribers": "Máx. suscriptores",
     "link_to_outcome": "Enlace al resultado (p. ej., producto, servicio)",
     "token_ratio": "Proporción de tokens",
-    "select_token": "Seleccionar token"
+    "select_token": "Seleccionar token",
+    "redeem": "Canjear",
+    "upload_file": "Subir archivo",
+    "download": "Descargar"
 
 }

@@ -382,6 +382,9 @@
     "max_subscribers": "Max. prenumeranter",
     "link_to_outcome": "Länk till resultat (t.ex. produkt, tjänst)",
     "token_ratio": "Tokenförhållande",
-    "select_token": "Välj token"
+    "select_token": "Välj token",
+    "redeem": "Lös in",
+    "upload_file": "Ladda upp fil",
+    "download": "Ladda ner"
 
 }

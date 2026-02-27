@@ -382,6 +382,9 @@
     "max_subscribers": "Max. abonați",
     "link_to_outcome": "Link către rezultat (ex. produs, serviciu)",
     "token_ratio": "Raport token",
-    "select_token": "Selectează token"
+    "select_token": "Selectează token",
+    "redeem": "Răscumpără",
+    "upload_file": "Încarcă fișier",
+    "download": "Descarcă"
 
 }

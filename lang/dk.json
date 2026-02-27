@@ -383,6 +383,9 @@
     "max_subscribers": "Maks. abonnenter",
     "link_to_outcome": "Link til resultat (f.eks. produkt, tjeneste)",
     "token_ratio": "Token-forhold",
-    "select_token": "Vælg token"
+    "select_token": "Vælg token",
+    "redeem": "Indløs",
+    "upload_file": "Upload fil",
+    "download": "Download"
 
 }

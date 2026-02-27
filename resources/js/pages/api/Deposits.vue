@@ -25,6 +25,7 @@ interface Asset {
     decimals: number
     token_type: string
     logo_url?: string
+    download?: string | null
     minimal_tokens: number
 }
 
@@ -39,6 +40,7 @@ const editableAssets = ref<Asset[]>(Array.isArray(props.assets) ?
         quantity: a.quantity,
         decimals: a.decimals,
         token_type: a.token_type,
+        download: a.download ?? null,
         logo_url: a.logo_url ?? '/storage/logos/cardano-ada-logo.png',
         minimal_tokens: a.minimal_tokens
     }))
@@ -97,13 +99,22 @@ function isRedeemable(asset: Asset) {
 function confirmToRedeemConfirmed() {
     if (!assetToRedeem.value) return;
 
+    if (assetToRedeem.value.download) {
+        const link = document.createElement('a');
+        link.href = assetToRedeem.value.download;
+        link.download = assetToRedeem.value.asset_name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     const previousAsset = [...editableAssets.value];
 
     editableAssets.value = editableAssets.value.filter(
         (c) => c.id !== assetToRedeem.value!.id
     );
 
-    router.delete(`/api/deposits/${assetToRedeem.value.id}`, {
+    router.delete(`/deposit/${assetToRedeem.value.id}`, {
         data: {
             asset: assetToRedeem.value
         },

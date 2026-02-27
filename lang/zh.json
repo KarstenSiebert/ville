@@ -394,6 +394,9 @@
   "max_subscribers": "最多订阅者",
   "link_to_outcome": "结果链接（例如产品、服务）",
   "token_ratio": "代币比例",
-  "select_token": "选择代币"
+  "select_token": "选择代币",
+  "redeem": "兑换",
+  "upload_file": "上传文件",
+  "download": "下载"
 
 }

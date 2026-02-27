@@ -399,6 +399,9 @@
     "max_subscribers": "Nb max d'abonnés",
     "link_to_outcome": "Lien vers le résultat (ex. produit, service)",
     "token_ratio": "Ratio de jetons",
-    "select_token": "Sélectionner un jeton"
+    "select_token": "Sélectionner un jeton",
+    "redeem": "Échanger",
+    "upload_file": "Téléverser le fichier",
+    "download": "Télécharger"
 
 }

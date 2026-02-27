@@ -395,6 +395,9 @@
   "max_subscribers": "最大購読者数",
   "link_to_outcome": "成果へのリンク（例：製品、サービス）",
   "token_ratio": "トークン比率",
-  "select_token": "トークンを選択"
+  "select_token": "トークンを選択",
+  "redeem": "引き換え",
+  "upload_file": "ファイルをアップロード",
+  "download": "ダウンロード"
 
 }

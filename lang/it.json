@@ -382,6 +382,9 @@
     "max_subscribers": "Max. iscritti",
     "link_to_outcome": "Collegamento al risultato (es. prodotto, servizio)",
     "token_ratio": "Rapporto token",
-    "select_token": "Seleziona token"
+    "select_token": "Seleziona token",
+    "redeem": "Riscatta",
+    "upload_file": "Carica file",
+    "download": "Scarica"
 
 }

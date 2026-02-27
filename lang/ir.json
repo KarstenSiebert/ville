@@ -393,6 +393,9 @@
   "max_subscribers": "حداکثر مشترکین",
   "link_to_outcome": "لینک به نتیجه (مثلاً محصول، خدمت)",
   "token_ratio": "نسبت توکن",
-  "select_token": "انتخاب توکن"
+  "select_token": "انتخاب توکن",
+  "redeem": "بازخرید",
+  "upload_file": "آپلود فایل",
+  "download": "دانلود"
 
 }

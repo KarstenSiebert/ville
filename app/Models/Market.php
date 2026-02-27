@@ -17,6 +17,7 @@ class Market extends Model
         'title', 
         'description',
         'logo_url',
+        'download',
         'images',
         'status',
         'category',

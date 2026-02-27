@@ -115,20 +115,24 @@ function handleInput(query: string) {
     }, 300)
 }
 
-const marketLogoInput = ref<HTMLInputElement | null>(null)
+const marketImageInput = ref<(HTMLInputElement | null)>(null);
 
-function openMarketLogoDialog() {
-    marketLogoInput.value?.click()
+const marketDownloadInput = ref<(HTMLInputElement | null)>(null);
+
+function openImageInutDialog() {
+    marketImageInput.value?.click()
 }
 
-/*
-function onMarketLogoChange(event: Event) {
+function openDownloadInutDialog() {
+    marketDownloadInput.value?.click()
+}
+
+function onMarketDownloadChange(event: Event) {
     const target = event.target as HTMLInputElement
     if (!target.files || !target.files[0]) return
 
-    form.logo_url = target.files[0]
+    form.download = target.files[0]
 }
-*/
 
 function onMarketImagesChange(event: Event) {
     const target = event.target as HTMLInputElement
@@ -168,6 +172,7 @@ interface FormData {
     longitude: number | null;
     logo_url?: File | null;
     images: File[];
+    download?: File | null;
     description: string;
     processing: boolean;
     outcomes: OutcomeInput[];
@@ -187,6 +192,7 @@ const form = useForm<FormData>({
     longitude: 0.0,
     logo_url: null,
     images: [],
+    download: null,
     description: '',
     processing: false,
     outcomes: [
@@ -442,24 +448,37 @@ function submitForm() {
                     </div>
                 </div>
 
-                <label id="editorLabel" class="block text-sm mt-4 text-left font-medium mb-1">{{
-                    $t('market_image')
-                }}</label>
+                <div class="flex gap-3 items-center md:mt-0 mt-4">
 
-                <div class="flex gap-3 items-center">
-                    <input ref="marketLogoInput" type="file" accept="image/*" multiple class="hidden"
-                        @change="onMarketImagesChange" />
+                    <div class="flex-1 gap-3 items-center">
+                        <input ref="marketImageInput" type="file" accept="image/*" multiple class="hidden"
+                            @change="onMarketImagesChange" />
 
-                    <Button type="button" size="sm" @click="openMarketLogoDialog">
-                        {{ $t('upload_photo') }}
-                    </Button>
+                        <Button type="button" class="w-full md:w-auto" size="sm" @click="openImageInutDialog">
+                            {{ $t('upload_photo') }}
+                        </Button>
 
-                    <div v-if="form.images.length" class="text-xs text-gray-500 max-w-[320px] sm:max-w-xs truncate">
-                        <span v-for="(img, i) in form.images" :key="i">
-                            {{ img.name }}
-                        </span>
+                        <div v-if="form.images.length" class="text-xs text-gray-500 max-w-[320px] sm:max-w-xs truncate">
+                            <span v-for="(img, i) in form.images" :key="i">
+                                {{ img.name }}
+                            </span>
+                        </div>
                     </div>
 
+                    <div class="flex-1 gap-3 items-center">
+                        <input ref="marketDownloadInput" type="file" accept="application/pdf" class="hidden"
+                            @change="onMarketDownloadChange" />
+
+                        <Button type="button" size="sm" class="w-full md:w-auto" @click="openDownloadInutDialog">
+                            {{ $t('upload_file') }}
+                        </Button>
+
+                        <div v-if="form.download" class="text-xs text-gray-500 max-w-[320px] sm:max-w-xs truncate">
+                            <span>
+                                {{ form.download.name }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 <label class="block text-left text-sm font-medium mt-3 mb-1">

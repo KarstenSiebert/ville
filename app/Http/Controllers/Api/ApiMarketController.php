@@ -107,6 +107,7 @@ class ApiMarketController extends Controller
             'longitude' => ['nullable', 'numeric', 'min:-180.0', 'max:180.0'],
             'allow_limit_orders' => ['nullable', 'string', 'in:yes,no'],
             'logo_url' => ['nullable', 'url', 'max:255'],
+            'download' => ['nullable', 'mimes:pdf,zip', 'max:10140'],
             'outcomes' => ['required', 'array', 'min:1'],
             'outcomes.*.name' => ['required', 'string', 'max:255'],
             'outcomes.*.link' => ['nullable', 'url:https', 'max:255'],
@@ -204,12 +205,14 @@ class ApiMarketController extends Controller
             $product['fingerprint'] = '';
             $product['decimals'] = 0;
         }
-               
+
         if (empty($validated['logo_url'])) {
             $validated['logo_url'] = '/storage/logos/wechselstuben-logo.png';
         }
 
-        // return response()->json($user);
+        if ($request->hasFile('download')) {
+            $validated['download'] = '/storage/'.$request->file('download')->store('files', 'public');
+        }
 
         $market = DB::transaction(function() use ($product, $user, $b, $marketWalletAmount, $currencyToken, $validated) {
         
@@ -250,6 +253,7 @@ class ApiMarketController extends Controller
                     'title' => $validated['title'],
                     'category' => $validated['category'],
                     'logo_url' => $validated['logo_url'],
+                    'download' => $validated['download'],
                     'description' => $validated['description'],
                     'status' => 'OPEN',
                     'max_subscribers' => $validated['max_subscribers'] ? $validated['max_subscribers'] : 100000,

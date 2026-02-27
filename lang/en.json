@@ -402,7 +402,8 @@
     "link_to_outcome": "Link to outcome (e.g. product, service)",
     "token_ratio": "Token ratio",
     "select_token": "Select token",
-
-    "redeem": "Redeem"
+    "redeem": "Redeem",
+    "upload_file": "Upload file",
+    "download": "Download"
 
 }

@@ -382,6 +382,9 @@
     "max_subscribers": "Μέγ. συνδρομητές",
     "link_to_outcome": "Σύνδεσμος στο αποτέλεσμα (π.χ. προϊόν, υπηρεσία)",
     "token_ratio": "Αναλογία token",
-    "select_token": "Επιλέξτε token"
+    "select_token": "Επιλέξτε token",
+    "redeem": "Εξαργύρωση",
+    "upload_file": "Αποστολή αρχείου",
+    "download": "Λήψη"
 
 }

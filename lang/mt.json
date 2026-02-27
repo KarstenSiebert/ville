@@ -382,6 +382,9 @@
     "max_subscribers": "Massimu abbonati",
     "link_to_outcome": "Rabta mar-riżultat (eż. prodott, servizz)",
     "token_ratio": "Proporzjon tal-token",
-    "select_token": "Agħżel token"
+    "select_token": "Agħżel token",
+    "redeem": "Irridempja",
+    "upload_file": "Itella' fajl",
+    "download": "Niżżel"
 
 }

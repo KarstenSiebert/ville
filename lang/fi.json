@@ -382,6 +382,9 @@
     "max_subscribers": "Max. tilaajat",
     "link_to_outcome": "Linkki tulokseen (esim. tuote, palvelu)",
     "token_ratio": "Token-suhde",
-    "select_token": "Valitse token"
+    "select_token": "Valitse token",
+    "redeem": "Lunasta",
+    "upload_file": "Lataa tiedosto",
+    "download": "Lataa"
     
 }
