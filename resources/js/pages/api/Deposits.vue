@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import "@inertiajs/core";
@@ -126,7 +126,7 @@ function confirmToRedeemConfirmed() {
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                    <tr v-for="asset in assets" :key="asset.fingerprint"
+                    <tr v-for="asset in props.assets" :key="asset.fingerprint"
                         class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
                         <td class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200 min-w-[100px] whitespace-nowrap">
                             <div class="flex items-center space-x-2 group transition-shadow duration-200 rounded">
@@ -202,7 +202,7 @@ function confirmToRedeemConfirmed() {
                             </Dialog>
                         </td>
                     </tr>
-                    <tr v-if="!assets.length">
+                    <tr v-if="!props.assets.length">
                         <td colspan="4" class="text-center py-4 text-gray-500">
                             {{ $t('no_assets_found') }}
                         </td>
