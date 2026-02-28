@@ -206,8 +206,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return false;
     }
 
-    private function generateAddress($index, $path) : bool
-    {                
+    public function generateAddress($index, $path) : bool
+    {       
         file_put_contents($path.'root.xsk', VaultService::getRootKey());
         
         $cmd = '/usr/local/bin/genaddr.sh '.$path.'root.xsk '.$index.' '.$path;

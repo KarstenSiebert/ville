@@ -4,10 +4,14 @@ namespace App\Http\Middleware;
 
 use DB;
 use Closure;
+use Exception;
 use App\Models\User;
+use RuntimeException;
 use App\Models\Wallet;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
+use App\Helpers\CardanoCliWrapper;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class VerifyPublisher
@@ -90,10 +94,27 @@ class VerifyPublisher
                     'public_id'        => null
                 ]);
 
+                $address = 'avaaddr1' . bin2hex(random_bytes(27));
+         
+			    $path = '/tmp/'.bin2hex(openssl_random_pseudo_bytes(4)).'/';
+
+                try {
+             
+                    if (CardanoCliWrapper::make_dir($path)) {
+
+                        if ($shadow->generateAddress($shadow->id, $path)) {		
+                            $address = 'ava'.trim(file_get_contents($path.'user.address'));		
+			    	        CardanoCliWrapper::remove_dir($path);
+                        }
+                    } 
+                } catch (\Exception $e) {
+                    Log::error('Address exception: '.$e->getMessage());
+                }
+       
                 Wallet::create([
                     'user_id'          => $shadow->id,
                     'parent_wallet_id' => null,
-                    'address'          => 'avaaddr1' . bin2hex(random_bytes(27)),
+                    'address'          => $address,
                     'type'             => 'available',
                     'user_type'        => 'SHADOW',
                 ]);

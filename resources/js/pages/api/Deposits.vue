@@ -29,24 +29,6 @@ interface Asset {
     minimal_tokens: number
 }
 
-const safeAssets = computed(() => Array.isArray(props.assets) ? props.assets : []);
-
-const editableAssets = ref<Asset[]>(Array.isArray(props.assets) ?
-    safeAssets.value.map((a) => ({
-        ...a,
-        id: a.id,
-        asset_name: a.asset_name,
-        fingerprint: a.fingerprint,
-        quantity: a.quantity,
-        decimals: a.decimals,
-        token_type: a.token_type,
-        download: a.download ?? null,
-        logo_url: a.logo_url ?? '/storage/logos/cardano-ada-logo.png',
-        minimal_tokens: a.minimal_tokens
-    }))
-    : []
-);
-
 const qrDialogOpen = ref(false)
 const qrBase64 = ref<string | null>(null)
 
@@ -108,22 +90,12 @@ function confirmToRedeemConfirmed() {
         document.body.removeChild(link);
     }
 
-    const previousAsset = [...editableAssets.value];
-
-    editableAssets.value = editableAssets.value.filter(
-        (c) => c.id !== assetToRedeem.value!.id
-    );
-
     router.delete(`/deposit/${assetToRedeem.value.id}`, {
-        data: {
-            asset: assetToRedeem.value
-        },
+        only: ['assets'],
         preserveScroll: true,
-        onError: () => {
-            editableAssets.value = previousAsset;
-        },
         onSuccess: () => {
             assetToRedeem.value = null;
+            qrDialogOpen.value = false;
         },
     });
 }
@@ -154,7 +126,7 @@ function confirmToRedeemConfirmed() {
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                    <tr v-for="(asset) in editableAssets" :key="asset.fingerprint"
+                    <tr v-for="asset in assets" :key="asset.fingerprint"
                         class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
                         <td class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200 min-w-[100px] whitespace-nowrap">
                             <div class="flex items-center space-x-2 group transition-shadow duration-200 rounded">
@@ -230,7 +202,7 @@ function confirmToRedeemConfirmed() {
                             </Dialog>
                         </td>
                     </tr>
-                    <tr v-if="!editableAssets.length">
+                    <tr v-if="!assets.length">
                         <td colspan="4" class="text-center py-4 text-gray-500">
                             {{ $t('no_assets_found') }}
                         </td>

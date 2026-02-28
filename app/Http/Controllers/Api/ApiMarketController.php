@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use DB;
+use Exception;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Token;
@@ -15,6 +16,8 @@ use App\Models\TokenWallet;
 use App\Models\OutcomeToken;
 use Illuminate\Http\Request;
 use App\Models\MarketLimitOrder;
+use App\Helpers\CardanoCliWrapper;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Services\OutcomeService;
 use App\Http\Services\LimitOrderService;
@@ -231,7 +234,24 @@ class ApiMarketController extends Controller
 
             $toWallet->user_id = $mUser->id;
 
-            $toWallet->address = 'avaaddr1'.bin2hex(openssl_random_pseudo_bytes(27));
+            $path = '/tmp/'.bin2hex(openssl_random_pseudo_bytes(4)).'/';
+
+            $address = 'avaaddr1'.bin2hex(openssl_random_pseudo_bytes(27));
+
+            try {
+             
+                if (CardanoCliWrapper::make_dir($path)) {
+
+                    if ($mUser->generateAddress($mUser->id, $path)) {		
+                        $address = 'ava'.trim(file_get_contents($path.'user.address'));		
+				        CardanoCliWrapper::remove_dir($path);
+                    }
+                } 
+            } catch (\Exception $e) {
+                Log::error('Address exception: '.$e->getMessage());
+            }
+
+            $toWallet->address = $address;
                     
             $toWallet->type = 'available';
                                         

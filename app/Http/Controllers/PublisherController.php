@@ -13,7 +13,9 @@ use App\Models\Wallet;
 use App\Models\Transfer;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
+use App\Helpers\CardanoCliWrapper;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -135,7 +137,24 @@ class PublisherController extends Controller
 
             $toWallet->user_id = $pUser->id;
 
-            $toWallet->address = 'avaaddr1'.bin2hex(openssl_random_pseudo_bytes(27));
+            $path = '/tmp/'.bin2hex(openssl_random_pseudo_bytes(4)).'/';
+
+            $address = 'avaaddr1'.bin2hex(openssl_random_pseudo_bytes(27));
+
+            try {
+             
+                if (CardanoCliWrapper::make_dir($path)) {
+
+                    if ($pUser->generateAddress($pUser->id, $path)) {                    
+                        $address = 'ava'.trim(file_get_contents($path.'user.address'));		
+				        CardanoCliWrapper::remove_dir($path);
+                    }
+                } 
+            } catch (\Exception $e) {
+                Log::error('Address exception: '.$e->getMessage());
+            }
+       
+            $toWallet->address = $address;
                     
             $toWallet->type = 'available';
                                         
