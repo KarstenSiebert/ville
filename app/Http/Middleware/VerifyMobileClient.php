@@ -139,8 +139,9 @@ class VerifyMobileClient
                 $market->subscribers()->attach($shadow->id);
             }
 
-            // Only transfer to users, if they have been created and new to the market
+            // Only transfer to users, if they have been created and are new to the market
 
+            /*
             if ($isNewUser || $isNewSubscriber) {
 
                 if ($market->max_subscribers && $market->max_subscribers > $market->subscribers()->count()) {
@@ -152,8 +153,7 @@ class VerifyMobileClient
                     $userValue = intval(floor($market->b / $market->max_subscribers));
 
                     $sum = bcmul($userValue, bcpow("10", (string) $baseToken->decimals));
-
-                    /*
+                    
                     if ($sum > 0) {
 
                         $available = $operatorWallet->tokenWallets()->where('token_id', $baseToken->id)->sum(DB::raw('quantity - reserved_quantity'));
@@ -161,10 +161,10 @@ class VerifyMobileClient
                         if (!empty($operatorWallet) && !empty($shadowWallet) && $this->isLessOrEqual($sum, $available, $baseToken->decimals)) {
                             Transfer::execute($operatorWallet, $shadowWallet, $baseToken, $sum, 'internal', 0, 'MARKET ACCESS', false);
                         }
-                    }
-                    */
+                    }              
                 }
-            }            
+            } 
+            */           
 
             return $shadow;
         });

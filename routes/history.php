@@ -23,7 +23,7 @@ Route::middleware('auth', 'verified')->group(function () {
                 ->orWhereRaw('LOWER(email) LIKE ?', ["%{$query}%"]);
             })
             ->where('is_system', false)
-            ->where('parent_user_id', null)
+            // ->where('parent_user_id', null)
             ->take(5)
             ->get(['id', 'name', 'email']);            
     
@@ -45,7 +45,7 @@ Route::middleware('auth', 'verified')->group(function () {
             ->where('publisher_id', $realPublisherId)
             ->where('is_system', false)
             ->where('type', 'SHADOW')
-            ->whereNull('parent_user_id')
+            // ->whereNull('parent_user_id')
             ->where(function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
                 ->orWhere('external_user_id', 'like', "%{$query}%");                

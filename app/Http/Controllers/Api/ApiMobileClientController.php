@@ -170,7 +170,8 @@ class ApiMobileClientController extends Controller
                             'logo_url'       => $tw->token->logo_url,                            
                             'token_type'     => $tw->token->token_type,
                             'download'       => $download,
-                            'minimal_tokens' => max($tw->quantity - $minimal_tokens, 0)
+                            'minimal_tokens' => max($tw->quantity - $tw->reserved_quantity, 0)
+                            // 'minimal_tokens' => max($tw->quantity - $minimal_tokens, 0)
 
                             // 'minimal_tokens' => 4
                         ];                        
@@ -216,9 +217,11 @@ class ApiMobileClientController extends Controller
         foreach ($tokenWallet->token->markets as $market) {
                                     
             if (($market->baseToken->fingerprint == $tokenWallet->token->fingerprint) && ($tokenWallet->token->token_type == 'BASE')) {
-                $minimal_tokens = (int) max($market->b / $market->max_subscribers, 0);     
+                // $minimal_tokens = (int) max($market->b / $market->max_subscribers, 0);     
                 
-                $minimal_tokens = max($tokenWallet->quantity - $minimal_tokens, 0);
+                // $minimal_tokens = max($tokenWallet->quantity - $tokenWallet->reserved_quantity - $minimal_tokens, 0);
+
+                $minimal_tokens = max($tokenWallet->quantity - $tokenWallet->reserved_quantity, 0);
 
                 $publisher = Publisher::with('user.avaWallet')->where('id', $market->publisher_id)->first();
 
