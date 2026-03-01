@@ -90,6 +90,7 @@ class VerifyMobileClient
                 try {
                     $shadow = User::create([
                         'external_user_id'  => null,
+                        'parent_user_id'    => $publisher->id,
                         'publisher_id'      => $publisher->id,
                         'name'              => strval($deviceId),
                         'type'              => 'SHADOW',
@@ -101,9 +102,9 @@ class VerifyMobileClient
                     //
                 }
                 
-    	        $address = 'avaaddr1' . bin2hex(random_bytes(27));
-         
-			    $path = '/tmp/'.bin2hex(openssl_random_pseudo_bytes(4)).'/';
+                $path = '/tmp/'.bin2hex(openssl_random_pseudo_bytes(4)).'/';
+
+    	        $address = 'avaaddr1' . bin2hex(random_bytes(27));    			
 
                 try {
 
@@ -114,6 +115,7 @@ class VerifyMobileClient
 				            CardanoCliWrapper::remove_dir($path);
                         }
                     }
+
                 } catch (\Exception $e) {
                     Log::error('Address exception: '.$e->getMessage());
                 }
@@ -151,8 +153,17 @@ class VerifyMobileClient
 
                     $sum = bcmul($userValue, bcpow("10", (string) $baseToken->decimals));
 
-                    if (!empty($operatorWallet) && !empty($shadowWallet) && ($sum > 0)) {
-                        Transfer::execute($operatorWallet, $shadowWallet, $baseToken, $sum, 'internal', 0, 'FIRST MARKET ACCESS', false);
+                    if ($sum > 0) {
+                        
+                        $availableTokens = DB::table('token_wallet')
+                                ->join('wallets', 'wallets.id', '=', 'token_wallet.wallet_id')
+                                ->where('wallets.user_id', $operatorWallet->user_id)
+                                ->where('token_wallet.token_id', $baseToken->id)
+                                ->sum(DB::raw('token_wallet.quantity - token_wallet.reserved_quantity'));
+
+                        if (!empty($operatorWallet) && !empty($shadowWallet) && $this->isLessOrEqual($sum, $availableTokens, $baseToken->decimals)) {
+                            Transfer::execute($operatorWallet, $shadowWallet, $baseToken, $sum, 'internal', 0, 'MARKET ACCESS', false);
+                        }
                     }
                 }
             }            
@@ -165,4 +176,9 @@ class VerifyMobileClient
         return $next($request);
     }
 
+    private function isLessOrEqual(string $a, string $b, int $scale = 6): bool
+    {
+        return bccomp($a, $b, $scale) <= 0;
+    }
+    
 }

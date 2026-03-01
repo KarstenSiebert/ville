@@ -87,6 +87,7 @@ class VerifyPublisher
                         
                 $shadow = User::create([
                     'external_user_id' => $externalId,
+                    'parent_user_id'   => $publisher->id,
                     'publisher_id'     => $publisher->id,
                     'name'             => strval($externalId),
                     'type'             => 'SHADOW',

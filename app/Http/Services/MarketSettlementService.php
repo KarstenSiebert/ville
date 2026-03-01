@@ -383,7 +383,11 @@ class MarketSettlementService
 
                 // Currently fixed 70% of fees go to Market Creator
 
-                $creatorShare = (int) round($totalFees * 0.7);
+                // $creatorShare = (int) round($totalFees * 0.7);
+
+                // 100% go to Publisher / Market Creator
+
+                $creatorShare = $totalFees;
                                 
                 if ($creatorShare > 0) {
                     Transfer::execute($adminWallet, $creatorWallet, $baseToken, $creatorShare, 'internal', 0, 'CREATOR-FEE-'.$market->id, false);

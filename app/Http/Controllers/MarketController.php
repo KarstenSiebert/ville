@@ -13,6 +13,7 @@ use App\Models\Wallet;
 use BaconQrCode\Writer;
 use App\Models\Outcome;
 use App\Models\Transfer;
+use App\Models\Publisher;
 use App\Models\MarketTrade;
 use App\Models\TokenWallet;
 use App\Models\InputOutput;
@@ -133,7 +134,7 @@ class MarketController extends Controller
         $validated = $request->validate([
             'start_date' => ['nullable', 'string'],
             'end_date' => ['required', 'string'],
-            'publisher_id' => ['nullable', 'integer'],
+            'publisher_id' => ['required', 'integer'],
             'title' => ['required', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:255'],
             'liquidity_b' => ['required', 'integer', 'min:1', 'max:1000000000'],
@@ -172,14 +173,18 @@ class MarketController extends Controller
         // Token with decimals are multiple of their real value
         
         $tokenLiquidity = bcmul($validated['liquidity_b'], bcpow("10", (string) $currencyToken->decimals));
+
+        $publisherUserId = Publisher::where('id', $validated['publisher_id'])->value('user_id');
+
+        $fromWalletUserId = !empty($publisherUserId) ? $publisherUserId : $user->id;        
                 
         $availableTotal = DB::table('token_wallet')
             ->join('wallets', 'wallets.id', '=', 'token_wallet.wallet_id')
-            ->where('wallets.user_id', $user->id)
+            ->where('wallets.user_id', $fromWalletUserId)
             ->where('token_wallet.token_id', $currencyToken->id)
             ->sum(DB::raw('token_wallet.quantity - token_wallet.reserved_quantity'));
 
-        if (bccomp($availableTotal, $tokenLiquidity) < 0) {        
+        if (bccomp((string) $availableTotal, (string) $tokenLiquidity, $currencyToken->decimals) < 0) {        
             return back()->with(['error' => __('you_do_not_have_enough_tokens_to_provide_this_liquidity')]);
         }
       
@@ -269,12 +274,12 @@ class MarketController extends Controller
             }
         }
                                     
-        $market = DB::transaction(function() use ($product, $user, $b, $marketWalletAmount, $currencyToken, $validated, $imagePaths) {
+        $market = DB::transaction(function() use ($product, $user, $b, $marketWalletAmount, $currencyToken, $validated, $publisherUserId, $imagePaths) {
         
             $mUser = User::create([
                 'name' => $product['name'],
                 'type' => 'MARKET',
-                'parent_user_id' => $user->id,                
+                'parent_user_id' => $publisherUserId,                
                 'profile_photo_path' => $validated['logo_url'],
                 'is_system' => true,
             ]);
@@ -381,10 +386,16 @@ class MarketController extends Controller
                     ]);
                 }
 
-                // Finally transfer the amount to the new wallet
+                // Finally transfer the amount to the new wallet from the publisher wallet !!!
 
-                $fromWallet = Wallet::where('user_id', $user->id)->where('type', 'available')->first();
+                // $fromWallet = Wallet::where('user_id', $user->id)->where('type', 'available')->first();
                 
+                $publisherUserId = Publisher::where('id', $validated['publisher_id'])->value('user_id');
+
+                $fromWalletUserId = !empty($publisherUserId) ? $publisherUserId : $user->id;
+ 
+                $fromWallet = Wallet::where('user_id', $fromWalletUserId)->where('type', 'available')->first();
+
                 if (!empty($fromWallet) && $mUser->can('credit', $toWallet) && $mUser->can('debit', $fromWallet)) {
                     Transfer::execute($fromWallet, $toWallet, $currencyToken, $marketWalletAmount, 'internal', 0, 'PLTM', false);
                 }                                 
@@ -463,13 +474,21 @@ class MarketController extends Controller
       
                 if ($restTotal > 0) {
 
+                    // toWalletUser is either the publisher ord the parent user of the market
+
+                    $publisherUserId = Publisher::where('id', $market->publisher_id)->value('user_id');
+
+                    $toWalletUserId = !empty($publisherUserId) ? $publisherUserId : $user->parent_user_id;
+
+                    // fromWallet is the wallet of the market
+                    
                     $fromWallet = Wallet::where('user_id', $user->id)->where('type', 'available')->first();
-                    $toWallet = Wallet::where('user_id', $user->parent_user_id)->where('type', 'available')->first();
+                    $toWallet = Wallet::where('user_id', $toWalletUserId)->where('type', 'available')->first();
 
-                    // Canceled, 10% goes to platform
+                    // Canceled, 10% goes to platform, if string is CANCELED
                                         
-                    if ($market->status == 'CANCELED') {
-
+                    if ($market->status == 'CHANGE_THIS_STRING_TO_CANCELED') {
+                      
                         $rest90Prz = intval(round($restTotal * 0.90), 2);
                         $cancelFee = $restTotal - $rest90Prz;
 
@@ -496,7 +515,7 @@ class MarketController extends Controller
 
                             MarketTrade::create([                            
                                 'market_id'    => $market->id,
-                                'user_id'      => $user->parent_user_id,
+                                'user_id'      => $toWalletUserId,
                                 'outcome_id'   => null,
                                 'share_amount' => 0,
                                 'price_paid'   => $restTotal,                                
