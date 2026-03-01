@@ -153,18 +153,16 @@ class VerifyMobileClient
 
                     $sum = bcmul($userValue, bcpow("10", (string) $baseToken->decimals));
 
+                    /*
                     if ($sum > 0) {
-                        
-                        $availableTokens = DB::table('token_wallet')
-                                ->join('wallets', 'wallets.id', '=', 'token_wallet.wallet_id')
-                                ->where('wallets.user_id', $operatorWallet->user_id)
-                                ->where('token_wallet.token_id', $baseToken->id)
-                                ->sum(DB::raw('token_wallet.quantity - token_wallet.reserved_quantity'));
 
-                        if (!empty($operatorWallet) && !empty($shadowWallet) && $this->isLessOrEqual($sum, $availableTokens, $baseToken->decimals)) {
+                        $available = $operatorWallet->tokenWallets()->where('token_id', $baseToken->id)->sum(DB::raw('quantity - reserved_quantity'));
+                        
+                        if (!empty($operatorWallet) && !empty($shadowWallet) && $this->isLessOrEqual($sum, $available, $baseToken->decimals)) {
                             Transfer::execute($operatorWallet, $shadowWallet, $baseToken, $sum, 'internal', 0, 'MARKET ACCESS', false);
                         }
                     }
+                    */
                 }
             }            
 

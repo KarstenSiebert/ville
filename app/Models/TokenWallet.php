@@ -34,14 +34,7 @@ class TokenWallet extends Model
     {
         return $this->belongsTo(Token::class);
     }
-
-    public function user()
-    {        
-        return $this->hasOneThrough(User::class, Wallet::class, 'id', 'id', 'wallet_id', 'user_id');
-
-        // return $this->hasOne(User::class);
-    }
-
+    
     public function getAvailableAttribute()
     {           
         return max($this->quantity - ($this->reserved_quantity ?? 0), 0);
@@ -93,5 +86,5 @@ class TokenWallet extends Model
             }
         ]);
     }
-   
+    
 }

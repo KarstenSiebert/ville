@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Market;
 use App\Models\Wallet;
 use App\Models\Transfer;
+use App\Models\Publisher;
 use App\Models\MarketTrade;
 use App\Models\TokenWallet;
 use App\Models\OutcomeToken;
@@ -22,7 +23,7 @@ class MarketSettlementService
         if (!$api && (empty($market) || !$this->authorize('cancel', $market))) {
             return;
         }
-        
+                
         DB::transaction(function () use ($market) {
             
             foreach ($market->limitOrders()->whereIn('status', ['OPEN','PARTIAL'])->get() as $order) {
@@ -71,6 +72,7 @@ class MarketSettlementService
                 if (!$userWallet) continue;
                         
                 if ($totalRefund > 0) {
+
                     Transfer::execute($marketWallet, $userWallet, $baseToken, $totalRefund, 'internal', 0, 'REFUND', false);
                 
                     MarketTrade::create([
@@ -83,6 +85,40 @@ class MarketSettlementService
                         'price_denominator' => 0,
                         'tx_type'           => 'CANCEL'
                     ]);
+
+                    // Send the promotion value back to the publisher
+
+                    /*
+                    $promotion = (int) max($market->b / $market->max_subscribers, 0);
+
+                    $sum = bcmul($promotion, bcpow("10", (string) $baseToken->decimals));
+
+                    $available = $userWallet->tokenWallets()->where('token_id', $baseToken->id)->sum(DB::raw('quantity - reserved_quantity'));
+                                        
+                    $promotion = (int) max((int) min($sum, $available), 0);
+
+                    if ($promotion > 0) {
+                    
+                        $publisher = Publisher::with('user.avaWallet')->where('id', $market->publisher_id)->first();
+                
+                        if ($publisher) {           
+                            $pubWallet = $publisher->user->avaWallet;
+
+                            Transfer::execute($userWallet, $pubWallet, $baseToken, $promotion, 'internal', 0, 'RETURN PROMO', false);
+
+                            MarketTrade::create([
+                                'market_id'         => $market->id,
+                                'user_id'           => $pubWallet->user_id,
+                                'outcome_id'        => null,
+                                'share_amount'      => 0,
+                                'price_paid'        => $promotion,                            
+                                'price_numerator'   => 0,
+                                'price_denominator' => 0,
+                                'tx_type'           => 'CANCEL'
+                            ]);
+                        }
+                    }
+                    */               
                 }
             }
                 
