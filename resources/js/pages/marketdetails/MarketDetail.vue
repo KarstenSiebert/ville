@@ -1156,7 +1156,7 @@ async function fetchFullMarketData() {
                         <div class="flex items-center gap-2">
                             <img v-if="marketData.base_token.logo_url" :src="marketData.base_token.logo_url" alt=""
                                 class="w-5 h-5 rounded" />
-                            <span class="font-mono" v-if="tokenValue">
+                            <span class="tabular-nums" v-if="tokenValue">
                                 {{ formatToken(Number(tokenValue), market.base_token.decimals) + ' ' +
                                     marketData.base_token.name }}
                             </span>
@@ -1220,7 +1220,7 @@ async function fetchFullMarketData() {
                                         {{ o.name }}
                                     </span>
                                 </component>
-                                <span class="font-mono text-xs text-gray-500 dark:text-gray-400 ml-2">
+                                <span class="tabular-nums text-xs text-gray-500 dark:text-gray-400 ml-2">
                                     {{ (outcomeShare(marketData, o) * 100).toFixed(2) }}%
                                 </span>
                             </div>
@@ -1253,7 +1253,7 @@ async function fetchFullMarketData() {
                         <span>{{ $t('change') }}:</span>
 
                         <!-- Rechte Spalte -->
-                        <span class="font-mono flex items-center gap-1">
+                        <span class="tabular-nums flex items-center gap-1">
                             {{ ((o.beforeProb ?? 0) * 100).toFixed(2) }}%
                             <span class="text-gray-400">→</span>
                             {{ ((o.afterProb ?? 0) * 100).toFixed(2) }}%
@@ -1273,7 +1273,7 @@ async function fetchFullMarketData() {
                         <span>{{ $t('chance') }}:</span>
 
                         <!-- Rechte Spalte -->
-                        <span class="flex font-mono items-center gap-1">
+                        <span class="flex tabular-nums items-center gap-1">
                             <template v-if="Number.isFinite(o.price as number)">
                                 {{ formatToLess(o.total_value, market.base_token.decimals) }} {{
                                     market.base_token.name }}
@@ -1296,7 +1296,7 @@ async function fetchFullMarketData() {
                             {{ $t('token') }}:
                         </span>
 
-                        <span class="px-2 font-mono font-bold transition-all duration-300 ease-out" :class="o.buyAmount > 0
+                        <span class="px-2 tabular-nums font-bold transition-all duration-300 ease-out" :class="o.buyAmount > 0
                             ? 'text-blue-600 dark:text-blue-300'
                             : 'text-gray-600 dark:text-gray-400'">
                             <template v-if="Number.isFinite(o.price as number)">
@@ -1323,13 +1323,13 @@ async function fetchFullMarketData() {
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTC"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTC')
-                                        }}</span>
+                                    }}</span>
                                 </label>
                                 <label class="flex items-center gap-1 cursor-pointer">
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTD"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTD')
-                                        }}</span>
+                                    }}</span>
                                 </label>
                             </div>
 
@@ -1442,7 +1442,7 @@ async function fetchFullMarketData() {
                         </div>
 
                         <div v-if="reactiveOrderTable[o.id]"
-                            class="mt-1 mb-2 border-gray-200 dark:border-gray-700 border rounded bg-gray-50 dark:bg-gray-900 text-[11px] font-mono">
+                            class="mt-1 mb-2 border-gray-200 dark:border-gray-700 border rounded bg-gray-50 dark:bg-gray-900 text-[11px] tabular-nums">
 
                             <div class="pb-1 grid grid-cols-[1fr_auto_1fr]">
 

@@ -1162,7 +1162,7 @@ async function fetchFullMarketData() {
                             <div class="flex items-center gap-2 cursor-default">
                                 <img v-if="marketData.base_token.logo_url" :src="marketData.base_token.logo_url" alt=""
                                     class="w-5 h-5 rounded" />
-                                <span class="font-mono">
+                                <span class="tabular-nums">
                                     {{
                                         isNaN(marketData.currentLiquidity)
                                             ? ''

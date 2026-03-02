@@ -636,8 +636,8 @@ watch(
                                     @keypress="onlyNumber($event)"
                                     class="w-20 px-2 py-1 border rounded text-xs dark:bg-gray-700 dark:text-gray-200" />
 
-                                <span class="w-12 text-xs text-gray-600 text-right dark:text-gray-400">
-                                    <tt>{{ (outcomeShare(market, o) * 100).toFixed(2) + '%' }}</tt>
+                                <span class="w-12 text-xs text-gray-600 text-right tabular-nums dark:text-gray-400">
+                                    {{ (outcomeShare(market, o) * 100).toFixed(2) + '%' }}
                                 </span>
 
                                 <button
@@ -654,7 +654,7 @@ watch(
                                 <span>{{ $t('change') }}:</span>
 
                                 <!-- Rechte Spalte -->
-                                <span class="flex font-mono items-center gap-1">
+                                <span class="flex tabular-nums items-center gap-1">
                                     {{ ((o.beforeProb ?? 0) * 100).toFixed(2) }}%
                                     <span class="text-gray-400">→</span>
                                     {{ ((o.afterProb ?? 0) * 100).toFixed(2) }}%
@@ -674,7 +674,7 @@ watch(
                                 <span>{{ $t('chance') }}:</span>
 
                                 <!-- Rechte Spalte -->
-                                <span class="flex font-mono items-center gap-1">
+                                <span class="flex tabular-nums items-center gap-1">
                                     <template v-if="Number.isFinite(o.price as number)">
                                         {{ formatToken(o.total_value, market.base_token.decimals) }}
                                         {{
@@ -698,7 +698,7 @@ watch(
                                     {{ $t('token') }}:
                                 </span>
 
-                                <span class="px-2 font-mono font-bold transition-all duration-300 ease-out" :class="o.buyAmount > 0
+                                <span class="px-2 tabular-nums font-bold transition-all duration-300 ease-out" :class="o.buyAmount > 0
                                     ? 'text-blue-600 dark:text-blue-300'
                                     : 'text-gray-600 dark:text-gray-400'">
                                     <template v-if="Number.isFinite(o.price as number)">
@@ -720,7 +720,7 @@ watch(
                             <div class="flex items-center gap-2 cursor-default">
                                 <img v-if="market.base_token.logo_url" :src="market.base_token.logo_url" alt=""
                                     class="w-5 h-5 rounded" />
-                                <span class="font-mono">
+                                <span class="tabular-nums">
                                     {{
                                         isNaN(market.currentLiquidity) || (market.currentLiquidity == null)
                                             ? ''

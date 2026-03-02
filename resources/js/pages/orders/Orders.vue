@@ -311,7 +311,7 @@ function goTo(page: number) {
                                 </td>
                                 <td
                                     class="hidden md:table-cell px-4 py-2 text-sm text-center text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
-                                    <span class="font-mono py-0.5">
+                                    <span class="tabular-nums py-0.5">
                                         {{ formatDate(order.valid_until) }}
                                     </span>
                                 </td>

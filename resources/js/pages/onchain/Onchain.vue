@@ -321,7 +321,7 @@ onUnmounted(() => {
                                     </component>
                                 </td>
                                 <td
-                                    class="px-4 py-2 font-mono text-right text-gray-900 dark:text-gray-200 cursor-default">
+                                    class="px-4 py-2 tabular-nums text-right text-gray-900 dark:text-gray-200 cursor-default">
                                     <component :is="asset.asset_name ? 'a' : 'div'"
                                         :href="asset.fingerprint ? '/users?f=' + asset.fingerprint : '/users?f=ADA'"
                                         class="space-x-2 group transition-shadow duration-200 rounded">

@@ -156,15 +156,16 @@ function goTo(page: number) {
                             <tr v-for="tx in props.messages.data" :key="tx.id">
                                 <td
                                     class="hidden md:table-cell px-4 py-2 text-sm text-left text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
-                                    <span class="font-mono py-0.5">{{ tx.level_name }}</span>
+                                    <span class="tabular-nums py-0.5">{{ tx.level_name }}</span>
                                 </td>
                                 <td
                                     class="px-4 py-2 text-sm text-left text-gray-900 truncate max-w-lg dark:text-gray-200 truncate cursor-default">
-                                    <span class="font-mono py-0.5">{{ tx.message }}</span>
+                                    <span class="tabular-nums py-0.5">{{ tx.message }}</span>
                                 </td>
                                 <td
                                     class="hidden md:table-cell px-4 py-2 text-sm text-right text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
-                                    <span class="font-mono py-0.5">{{ new Date(tx.logged_at).toLocaleString() }}</span>
+                                    <span class="tabular-nums py-0.5">{{ new Date(tx.logged_at).toLocaleString()
+                                        }}</span>
                                 </td>
 
                             </tr>

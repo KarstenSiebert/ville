@@ -374,8 +374,8 @@ onUnmounted(() => {
                                     {{ asset.market || '' }}
                                 </td>
                                 <td
-                                    class="px-4 py-2 text-xs text-right text-gray-900 dark:text-gray-200 cursor-default">
-                                    <tt>{{
+                                    class="px-4 py-2 tabular-nums text-xs text-right text-gray-900 dark:text-gray-200 cursor-default">
+                                    {{
                                         (asset.asset_name === "ADA"
                                             ? asset.quantity / 1e6
                                             : asset.quantity / Math.pow(10, asset.decimals)
@@ -383,12 +383,12 @@ onUnmounted(() => {
                                             minimumFractionDigits: asset.decimals > 6 ? 6 : asset.decimals,
                                             maximumFractionDigits: asset.decimals > 6 ? 6 : asset.decimals
                                         })
-                                    }}</tt>
+                                    }}
                                 </td>
 
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-xs text-right text-gray-900 dark:text-gray-200 cursor-default">
-                                    <tt>{{
+                                    class="hidden md:table-cell tabular-nums px-4 py-2 text-xs text-right text-gray-900 dark:text-gray-200 cursor-default">
+                                    {{
                                         (asset.asset_name === "ADA"
                                             ? asset.reserved_quantity / 1e6
                                             : asset.reserved_quantity / Math.pow(10, asset.decimals)
@@ -396,7 +396,7 @@ onUnmounted(() => {
                                             minimumFractionDigits: asset.decimals > 6 ? 6 : asset.decimals,
                                             maximumFractionDigits: asset.decimals > 6 ? 6 : asset.decimals
                                         })
-                                    }}</tt>
+                                    }}
                                 </td>
 
                                 <td class="hidden md:table-cell px-4 py-2 text-center cursor-default">

@@ -100,7 +100,7 @@ console.log(props.transaction.tx_fee + ' ' + props.transaction.tx_net)
                     <div class="mb-4 flex-1">
                         <label for="tx_net" class="block text-sm font-medium">{{ $t('network_fee') }}</label>
                         <input id="tx_net"
-                            class="font-mono w-full px-1 py-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-0 cursor-default"
+                            class="tabular-nums w-full px-1 py-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-0 cursor-default"
                             :value="Number(Math.max(0, parseFloat(form.transaction.tx_net) || 0)).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })"
                             type="text" readonly />
                     </div>
@@ -108,7 +108,7 @@ console.log(props.transaction.tx_fee + ' ' + props.transaction.tx_net)
                     <div class="mb-4 flex-1">
                         <label for="tx_fee" class="block text-sm font-medium">{{ $t('accesspay_fee') }}</label>
                         <input id="tx_fee"
-                            class="font-mono w-full px-1 py-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-0 cursor-default"
+                            class="tabular-nums w-full px-1 py-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-0 cursor-default"
                             :value="Number(Math.max(0, (parseFloat(form.transaction.tx_fee)) || 0)).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })"
                             type="text" readonly />
                     </div>
@@ -116,7 +116,7 @@ console.log(props.transaction.tx_fee + ' ' + props.transaction.tx_net)
                     <div class="mb-4 flex-1">
                         <label for="tx_fee" class="block text-sm font-medium">{{ $t('your_fee') }}</label>
                         <input id="tx_fee"
-                            class="font-mono w-full px-1 py-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-0 cursor-default"
+                            class="tabular-nums w-full px-1 py-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-0 cursor-default"
                             :value="Number(Math.max(0, (parseFloat(form.transaction.tx_fee) || 0) - parseFloat(form.transaction.tx_net) || 0)).toLocaleString(undefined, { minimumFractionDigits: 6, maximumFractionDigits: 6 })"
                             type="text" readonly />
                     </div>

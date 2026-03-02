@@ -425,7 +425,7 @@ function submitForm() {
                                         </span>
                                     </component>
                                 </td>
-                                <td class="px-4 py-2 text-sm font-mono text-gray-900 dark:text-gray-200">
+                                <td class="px-4 py-2 text-sm tabular-nums text-gray-900 dark:text-gray-200">
                                     <div class="flex flex-col">
                                         <input type="number" min="0"
                                             :step="asset.is_product ? 1 : (asset.decimals > 0 ? 1 / Math.pow(10, asset.decimals) : 1)"
@@ -445,12 +445,12 @@ function submitForm() {
                                     </div>
                                 </td>
 
-                                <td class="px-4 py-2 font-mono text-gray-900 dark:text-gray-200">
+                                <td class="px-4 py-2 tabular-nums text-gray-900 dark:text-gray-200">
                                     <input type="text" :placeholder="$t('type_to_search_user')"
                                         v-model="editableAssets[index].destination" :id="`destination-${index}`"
                                         @input="handleInput(editableAssets[index].destination, index)"
                                         :disabled="!selected.includes(asset.id)" :class="[
-                                            'w-full px-2 py-1 text-sm font-mono rounded border bg-white dark:bg-gray-700',
+                                            'w-full px-2 py-1 text-sm tabular-nums rounded border bg-white dark:bg-gray-700',
                                             'text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600',
                                             'focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:text-gray-400',
                                             { 'border-red-500 focus:ring-red-500': isDestinationInvalid(asset) }
@@ -460,7 +460,7 @@ function submitForm() {
 
                                         <li v-for="c in searchResults.slice(0, 3)" :key="c.id"
                                             @click="selectDestination(c, index)"
-                                            class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer font-mono truncate">
+                                            class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer tabular-nums truncate">
                                             {{ c.name }} {{ c.email || '' }}
                                         </li>
                                     </ul>

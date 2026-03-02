@@ -213,7 +213,7 @@ function goTo(page: number) {
                                     }}
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-xs text-right text-gray-900 dark:text-gray-200 cursor-default">
+                                    class="hidden md:table-cell tabular-nums px-4 py-2 text-xs text-right text-gray-900 dark:text-gray-200 cursor-default">
                                     {{
                                         (item.asset_name === "ADA"
                                             ? item.quantity_after / 1e6
@@ -225,7 +225,7 @@ function goTo(page: number) {
                                     }}
                                 </td>
                                 <td
-                                    class="px-4 py-2 text-xs text-right text-gray-900 dark:text-gray-200 cursor-default">
+                                    class="px-4 py-2 text-xs tabular-nums text-right text-gray-900 dark:text-gray-200 cursor-default">
                                     {{
                                         (item.asset_name === "ADA"
                                             ? item.change / 1e6

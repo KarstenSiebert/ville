@@ -193,14 +193,15 @@ function goTo(page: number) {
                                 </td>
                                 <td
                                     class="hidden md:table-cell px-4 py-2 text-sm text-center text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
-                                    <span class="font-mono py-0.5">{{ new Date(tx.created_at).toLocaleString('de-DE', {
-                                        year: '2-digit',
-                                        month: '2-digit',
-                                        day: '2-digit',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        second: '2-digit'
-                                    }) }}</span>
+                                    <span class="tabular-nums py-0.5">{{ new Date(tx.created_at).toLocaleString('de-DE',
+                                        {
+                                            year: '2-digit',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            second: '2-digit'
+                                        }) }}</span>
                                 </td>
                                 <td class="hidden md:table-cell px-4 py-2 text-center cursor-default">
                                     {{ tx.tx_type }}

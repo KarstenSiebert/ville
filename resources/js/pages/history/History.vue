@@ -159,7 +159,7 @@ function goTo(page: number) {
                                     <component :is="'a'" :href="'https://cexplorer.io/tx/' + tx.tx_hash" target="_blank"
                                         rel="noopener noreferrer"
                                         class="flex items-center space-x-2 group transition-shadow duration-200 rounded">
-                                        <span class="py-0.5 font-mono transition-colors duration-200"
+                                        <span class="py-0.5 tabular-nums transition-colors duration-200"
                                             :class="{ 'group-hover:text-blue-600': tx.tx_hash }">
                                             {{ tx.tx_hash }}
                                         </span>
@@ -167,12 +167,13 @@ function goTo(page: number) {
                                 </td>
                                 <td
                                     class="hidden md:table-cell px-4 py-2 text-sm text-center text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
-                                    <span class="font-mono py-0.5">{{ new Date(tx.timestamp).toLocaleString() }}</span>
+                                    <span class="tabular-nums py-0.5">{{ new Date(tx.timestamp).toLocaleString()
+                                        }}</span>
                                 </td>
 
                                 <td class="hidden md:table-cell pr-5 py-2 text-sm text-right text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default"
                                     :class="Number(tx.balance_change) >= 0 ? 'text-green-600' : 'text-red-600'">
-                                    <span class="font-mono py-0.5">{{ (Number(tx.balance_change) /
+                                    <span class="tabular-nums py-0.5">{{ (Number(tx.balance_change) /
                                         1000000).toLocaleString("en-US", {
                                             minimumFractionDigits: 6,
                                             maximumFractionDigits: 6

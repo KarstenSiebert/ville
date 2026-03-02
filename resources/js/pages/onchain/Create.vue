@@ -275,13 +275,13 @@ function submitForm() {
                                         </span>
                                     </component>
                                 </td>
-                                <td class="px-4 py-2 text-sm font-mono text-gray-900 dark:text-gray-200">
+                                <td class="px-4 py-2 text-sm tabular-nums text-gray-900 dark:text-gray-200">
                                     <div class="flex flex-col">
                                         <input type="number" min="0"
                                             :step="asset.decimals > 0 ? (1 / Math.pow(10, asset.decimals)) : 1"
                                             v-model.number="editableAssets[index].token_number"
                                             :disabled="!selected.includes(asset.id)" :class="[
-                                                'w-full px-2 py-1 font-mono rounded border bg-white dark:bg-gray-700',
+                                                'w-full px-2 py-1 tabular-nums rounded border bg-white dark:bg-gray-700',
                                                 'text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600',
                                                 'focus:outline-none focus:ring-2',
                                                 validationErrors[asset.id]

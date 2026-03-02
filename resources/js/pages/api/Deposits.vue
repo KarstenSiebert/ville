@@ -139,7 +139,7 @@ function confirmToRedeemConfirmed() {
                             </div>
                         </td>
                         <td
-                            class="px-4 py-2 font-mono text-xs text-right text-gray-900 dark:text-gray-200 cursor-default">
+                            class="px-4 py-2 tabular-nums text-xs text-right text-gray-900 dark:text-gray-200 cursor-default">
                             {{
                                 (asset.asset_name === "ADA"
                                     ? asset.quantity / 1e6

@@ -197,7 +197,7 @@ function goTo(page: number) {
                                         </span>
                                     </component>
                                 </td>
-                                <td class="mono-font-mono px-4 py-2 text-xs text-right text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default"
+                                <td class="tabular-nums px-4 py-2 text-xs text-right text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default"
                                     :class="(tx.type == 'internal') ? 'text-green-600' : 'text-red-600'">
                                     {{
                                         (tx.token_name === "ADA"
@@ -230,14 +230,15 @@ function goTo(page: number) {
                                 </td>
                                 <td
                                     class="px-4 py-2 text-sm text-center text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
-                                    <span class="font-mono py-0.5">{{ new Date(tx.timestamp).toLocaleString('de-DE', {
-                                        year: '2-digit',
-                                        month: '2-digit',
-                                        day: '2-digit',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        second: '2-digit'
-                                    }) }}</span>
+                                    <span class="tabular-nums py-0.5">{{ new Date(tx.timestamp).toLocaleString('de-DE',
+                                        {
+                                            year: '2-digit',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            second: '2-digit'
+                                        }) }}</span>
                                 </td>
                             </tr>
                             <tr v-if="!archive.data.length">

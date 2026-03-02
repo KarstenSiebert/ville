@@ -234,7 +234,7 @@ onMounted(() => {
                         <thead class="bg-gray-100 dark:bg-gray-800">
                             <tr>
                                 <th
-                                    class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('avatar') }}
                                 </th>
                                 <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
@@ -250,7 +250,7 @@ onMounted(() => {
                                     {{ $t('type') }}
                                 </th>
                                 <th
-                                    class="px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer">
+                                    class="hidden md:table-cell px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer">
                                     {{ $t('reserved') }}
                                 </th>
                                 <th class="px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
@@ -262,7 +262,8 @@ onMounted(() => {
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                             <tr v-for="(user) in sortedUsers" :key="user.user_id"
                                 class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
-                                <td class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
+                                <td
+                                    class="hidden md:table-cell px-4 py-2 text-gray-900 dark:text-gray-200 whitespace-nowrap">
                                     <img v-if="user.avatar" :src="user.avatar" alt="avatar"
                                         class="w-8 h-8 rounded-full object-cover" />
                                     <div v-else
@@ -270,19 +271,20 @@ onMounted(() => {
                                         {{ user.name.slice(0, 2) }}
                                     </div>
                                 </td>
-                                <td class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200">
+                                <td
+                                    class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200 truncate max-w-xs overflow-hidden text-ellipsis">
                                     {{ user.name }}
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-sm text-gray-900 dark:text-gray-200 truncate max-w-xs">
+                                    class="hidden md:table-cell px-4 py-2 text-gray-900 dark:text-gray-200 truncate max-w-xs">
                                     {{ user.email }}
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-sm text-gray-900 dark:text-gray-200 truncate max-w-xs">
+                                    class="hidden md:table-cell px-4 py-2 text-gray-900 dark:text-gray-200 truncate max-w-xs">
                                     {{ user.type }}
                                 </td>
                                 <td
-                                    class="px-4 py-2 text-sm font-mono text-right text-gray-900 dark:text-gray-200 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 tabular-nums text-right text-gray-900 dark:text-gray-200 cursor-default">
                                     {{
                                         (user.reserved / Math.pow(10, props.users.decimals)
                                         ).toLocaleString(undefined, {
@@ -292,7 +294,7 @@ onMounted(() => {
                                     }}
                                 </td>
                                 <td
-                                    class="px-4 py-2 text-sm font-mono text-right text-gray-900 dark:text-gray-200 cursor-default">
+                                    class="px-4 py-2 tabular-nums text-right text-gray-900 dark:text-gray-200 cursor-default">
                                     {{
                                         (user.total_owned / Math.pow(10, props.users.decimals)
                                         ).toLocaleString(undefined, {
@@ -303,22 +305,21 @@ onMounted(() => {
                                 </td>
                             </tr>
                             <tr v-if="!sortedUsers.length">
-                                <td colspan="4" class="text-center py-4 text-gray-500">
+                                <td colspan="6" class="text-center py-4 text-gray-500">
                                     {{ $t('no_users_found') }}
                                 </td>
                             </tr>
                         </tbody>
                         <tfoot class="bg-gray-50 dark:bg-gray-800">
                             <tr>
-                                <td class="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300"
-                                    colspan="4">
+                                <td class="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
                                     {{ $t('total_value') }}
                                 </td>
-                                <td
-                                    class="hidden md:table-cell px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                <td class="hidden md:table-cell px-4 py-2 font-semibold text-gray-700 dark:text-gray-300"
+                                    colspan="4">
                                 </td>
                                 <td
-                                    class="px-4 py-2 text-sm font-mono text-right text-gray-900 dark:text-gray-200 font-semibold">
+                                    class="px-4 py-2 tabular-nums text-right text-gray-900 dark:text-gray-200 font-semibold">
                                     {{
                                         (props.users.total_tokens / Math.pow(10, props.users.decimals)
                                         ).toLocaleString(undefined, {
