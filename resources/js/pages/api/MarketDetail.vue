@@ -175,19 +175,6 @@ function outcomeColor(index: number) {
     return colors[index % colors.length];
 }
 
-const currentSlide = ref(0)
-
-function nextSlide() {
-    currentSlide.value =
-        (currentSlide.value + 1) % props.market.images.length
-}
-
-function prevSlide() {
-    currentSlide.value =
-        (currentSlide.value - 1 + props.market.images.length) %
-        props.market.images.length
-}
-
 const isZoomed = ref(false)
 
 const editingOutcomeId = ref<number | null>(null);

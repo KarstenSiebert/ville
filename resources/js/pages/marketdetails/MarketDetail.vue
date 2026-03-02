@@ -1040,19 +1040,6 @@ marketData.outcomes.forEach(o => {
     inputAmounts[o.id] = inputAmounts[o.id] ?? 0;
 });
 
-const currentSlide = ref(0)
-
-function nextSlide() {
-    currentSlide.value =
-        (currentSlide.value + 1) % props.market.images.length
-}
-
-function prevSlide() {
-    currentSlide.value =
-        (currentSlide.value - 1 + props.market.images.length) %
-        props.market.images.length
-}
-
 async function fetchFullMarketData() {
 
     try {
