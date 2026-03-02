@@ -71,7 +71,7 @@ class ApiMobileClientController extends Controller
     {
         $shadowUser = $request->shadow_user;
 
-        $loginUrl = URL::temporarySignedRoute('webview.login', now()->addMinutes(5), ['user' => $shadowUser->id, 'market' => $id, 'locale' => $request->locale]);
+        $loginUrl = URL::temporarySignedRoute('webview.login', now()->addMinutes(15), ['user' => $shadowUser->id, 'market' => $id, 'locale' => $request->locale]);
 
         return  response()->json(['access' => $loginUrl], 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); 
     }
@@ -93,7 +93,7 @@ class ApiMobileClientController extends Controller
     {
         $shadowUser = $request->shadow_user;
 
-        $loginUrl = URL::temporarySignedRoute('deposit.wallet', now()->addMinutes(5), ['user' => $shadowUser->id, 'market' => $id, 'locale' => $request->locale]);
+        $loginUrl = URL::temporarySignedRoute('deposit.wallet', now()->addMinutes(15), ['user' => $shadowUser->id, 'market' => $id, 'locale' => $request->locale]);
 
         return  response()->json(['access' => $loginUrl], 200, [], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }

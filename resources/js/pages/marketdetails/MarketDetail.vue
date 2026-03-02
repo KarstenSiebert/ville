@@ -1163,21 +1163,6 @@ async function fetchFullMarketData() {
                             : marketData.description || '\u00A0' }}
                     </p>
 
-                    <div v-if="market.images?.length" class="relative w-full max-w-lg h-64 overflow-hidden rounded-lg">
-                        <img :src="`${market.images[currentSlide]}`" class="w-full h-full object-cover"
-                            alt="Market image" />
-
-                        <button @click="prevSlide"
-                            class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white px-2 py-1 rounded">
-                            ‹
-                        </button>
-
-                        <button @click="nextSlide"
-                            class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white px-2 py-1 rounded">
-                            ›
-                        </button>
-                    </div>
-
                     <!-- Unterer Bereich: Token + Zeit -->
                     <div class="flex items-center justify-between gap-2 cursor-default text-xs mt-auto">
                         <!-- Token Info -->
@@ -1351,13 +1336,13 @@ async function fetchFullMarketData() {
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTC"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTC')
-                                    }}</span>
+                                        }}</span>
                                 </label>
                                 <label class="flex items-center gap-1 cursor-pointer">
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTD"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTD')
-                                    }}</span>
+                                        }}</span>
                                 </label>
                             </div>
 
