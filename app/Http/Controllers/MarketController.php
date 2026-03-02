@@ -776,9 +776,11 @@ class MarketController extends Controller
         $request->validate([
             'market_ids' => ['required', 'array'],
             'market_ids.*' => ['integer', 'exists:markets,id'],
+            'inputAmounts' => ['sometimes', 'array'],
+            'inputAmounts.*' => ['numeric', 'nullable'],
         ]);
 
-        $prices = app(OutcomeService::class)->prices($request->market_ids);
+        $prices = app(OutcomeService::class)->prices($request->market_ids, $request->input('inputAmounts', []));
         
         return response()->json(['markets' => $prices]);
     }

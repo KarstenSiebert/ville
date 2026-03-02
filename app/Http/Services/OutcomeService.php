@@ -165,7 +165,7 @@ class OutcomeService
         return $q;
     }
 
-    public function prices($marketIds): array
+    public function prices($marketIds, array $inputAmounts = []): array
     {
         $markets = Market::with(['baseToken','outcomes.outcomeToken'])
             ->whereIn('id', $marketIds)
@@ -179,7 +179,9 @@ class OutcomeService
             $q = $this->getOutcomeQuantities($market);
             
             foreach ($market->outcomes as $outcome) {
-                $prices[$outcome->id] = $this->calculateLmsrPrice($market, $outcome->id, 0);
+                $amount = $inputAmounts[$outcome->id] ?? 0;
+
+                $prices[$outcome->id] = $this->calculateLmsrPrice($market, $outcome->id, $amount);
             }
 
             $result[$market->id] = [

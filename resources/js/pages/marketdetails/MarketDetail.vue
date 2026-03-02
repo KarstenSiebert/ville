@@ -265,6 +265,8 @@ function canPlaceLimit(o: Outcome) {
     )
 }
 
+const editingOutcomeId = ref<number | null>(null);
+
 const successFlash = reactive<Record<number, boolean>>({});
 const errorFlash = reactive<Record<number, boolean>>({});
 
@@ -607,7 +609,9 @@ async function updatePrice(market: Market, outcomeId: number, buyAmount: number)
 
 async function buyOutcome(market: Market, outcome: Outcome) {
 
-    if (outcome.buyAmount <= 0) return;
+    const amount = inputAmounts[outcome.id] ?? 0;
+
+    if (amount <= 0) return;
 
     const price = Number(outcome.price);
 
@@ -628,7 +632,7 @@ async function buyOutcome(market: Market, outcome: Outcome) {
         const response = await axios.post(`/markets/${market.id}/buy`, {
             market_id: market.id,
             outcome_id: outcome.id,
-            buy_amount: outcome.buyAmount,
+            buy_amount: amount,
             price: price
         });
 
@@ -1011,7 +1015,13 @@ async function updateAllPrices() {
                     o.price = priceEntry.price ?? 0;
                     o.realPrice = priceEntry.realPrice;
                     o.chance = priceEntry.chance ?? 1;
-                    o.buyAmount = priceEntry.amount;
+
+                    o.buyAmount = 1;
+
+                    if (editingOutcomeId.value !== o.id) {
+                        //    o.buyAmount = priceEntry.amount;
+                    }
+
                     o.beforeProb = before;
                     o.afterProb = after;
                     o.chanceIncrease = after - before;
@@ -1214,8 +1224,8 @@ async function fetchFullMarketData() {
                 </div>
 
                 <!-- Outcomes List -->
-                <div v-for="o in marketData.outcomes" :key="o.id"
-                    class="bg-white dark:bg-gray-800 p-4 outcome-hover rounded-lg shadow flex flex-col gap-2 transition-all duration-200"
+                <div v-for="(o, index) in marketData.outcomes" :key="o.id"
+                    class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow flex flex-col gap-2 transition-all duration-200"
                     :class="{
                         'bg-green-100 dark:bg-green-700 animate-flash': successFlash[o.id],
                         'bg-red-100 dark:bg-red-700 animate-flash-error': errorFlash[o.id]
@@ -1245,19 +1255,20 @@ async function fetchFullMarketData() {
 
                             <!-- Buy Input + Button -->
                             <div class="flex items-center gap-2 w-full min-w-0">
-                                <input type="number" v-model.number="o.buyAmount" min="1" step="1"
+                                <input type="number" v-model.number="inputAmounts[o.id]" min="1" step="1"
                                     :disabled="marketData.status !== 'OPEN' || !authUser"
-                                    @input="debouncedUpdatePrice(marketData, o.id, o.buyAmount)"
-                                    @keypress="onlyNumber($event)"
+                                    @input="debouncedUpdatePrice(marketData, o.id, inputAmounts[o.id])"
+                                    @keypress="onlyNumber($event)" @focus="editingOutcomeId = o.id"
+                                    @blur="editingOutcomeId = null"
                                     class="px-2 py-1 border rounded text-sm dark:bg-gray-700 dark:text-gray-200 flex-1 min-w-0" />
 
                                 <span v-if="loadingOutcomeId === o.id" class="w-5 text-center animate-spin">⏳</span>
                                 <span v-else class="w-5 text-center"></span>
 
                                 <button
-                                    class="px-2 py-1 text-sm rounded text-white transition bg-blue-600 hover:bg-blue-700 cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
+                                    class="px-2 py-1 text-sm rounded text-white transition cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
                                     :disabled="marketData.status !== 'OPEN' || o.buyAmount <= 0 || !canBuy(o) || !authUser"
-                                    @click="buyOutcome(marketData, o)">
+                                    :class="[outcomeColor(index)]" @click="buyOutcome(marketData, o)">
                                     {{ $t('vote') }}
                                 </button>
                             </div>
@@ -1340,13 +1351,13 @@ async function fetchFullMarketData() {
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTC"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTC')
-                                        }}</span>
+                                    }}</span>
                                 </label>
                                 <label class="flex items-center gap-1 cursor-pointer">
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTD"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTD')
-                                        }}</span>
+                                    }}</span>
                                 </label>
                             </div>
 
