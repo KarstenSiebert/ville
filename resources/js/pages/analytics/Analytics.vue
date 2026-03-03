@@ -3,7 +3,6 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, usePage } from '@inertiajs/vue3';
 import { ref, reactive, onMounted, getCurrentInstance, watchEffect, watch, onUnmounted, toRaw } from 'vue';
 import { ZoomOut } from 'lucide-vue-next';
-import { type BreadcrumbItem } from '@/types';
 import axios from 'axios';
 
 import {
@@ -120,10 +119,6 @@ interface Market {
 const props = defineProps<{
     market: Market;
 }>();
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: props.market.title, href: `/markets/${props.market.id}` },
-];
 
 const page = usePage()
 
@@ -1093,7 +1088,7 @@ async function fetchFullMarketData() {
 
     <Head :title="marketData.title" />
 
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-sm">

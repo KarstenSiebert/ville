@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { index } from '@/routes/deposits';
-import { type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage, router } from '@inertiajs/vue3';
 import FlashMessage from '@/components/FlashMessage.vue';
 import { Button } from '@/components/ui/button';
@@ -27,20 +25,6 @@ const props = defineProps<{
         user_context: { type: string, name: string, id: number }
     }
 }>()
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'wallet',
-        href: index().url,
-    },
-];
-
-if (props.assets.user_context.type === 'operator') {
-    breadcrumbs.push({
-        title: props.assets.user_context.name,
-        href: '',
-    });
-}
 
 interface Asset {
     policy_id: string | null
@@ -290,7 +274,7 @@ onUnmounted(() => {
 <template>
 
     <Head :title="$t('wallet')" />
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
 
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
@@ -303,7 +287,12 @@ onUnmounted(() => {
 
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                        <span>{{ $t('wallet') }}</span>
+                        <span v-if="props.assets.user_context.type === 'operator'">
+                            {{ props.assets.user_context.name }}
+                        </span>
+                        <span v-else>
+                            {{ $t('wallet') }}
+                        </span>
                     </h2>
                     <input v-model="searchQuery" id="search" type="text" :placeholder="$t('search') + '...'"
                         class="ml-4 px-3 py-2 border rounded-lg text-sm w-56 dark:bg-gray-700 dark:text-gray-200" />
@@ -312,35 +301,33 @@ onUnmounted(() => {
                 <div class="overflow-x-auto rounded-lg">
                     <table
                         class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-                        <thead class="bg-gray-100 dark:bg-gray-800">
+                        <thead class="bg-gray-100 text-sm font-semibold dark:bg-gray-800">
                             <tr>
                                 <th class="px-4 py-2 text-center">
                                     <input type="checkbox" id="checkbox" ref="selectAllCheckbox"
                                         v-model="allSelected" />
                                 </th>
 
-                                <th class="px-8 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="px-8 py-2 text-left text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('asset_name')">
                                     {{ $t('token') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell px-8 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-8 py-2 text-left text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('title') }}
                                 </th>
-                                <th
-                                    class="px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('balance') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('reserved') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('type') }}
                                 </th>
-                                <th
-                                    class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('status') }}
                                 </th>
                             </tr>
@@ -352,8 +339,7 @@ onUnmounted(() => {
                                     <input type="checkbox" :value="asset.fingerprint" v-model="selected"
                                         :id="`checkbox-${index}`" />
                                 </td>
-                                <td
-                                    class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200 min-w-[100px] whitespace-nowrap">
+                                <td class="px-4 py-2 text-gray-900 dark:text-gray-200 min-w-[100px] whitespace-nowrap">
                                     <component :is="asset.fingerprint && (asset.token_type == 'BASE') ? 'a' : 'div'"
                                         :href="asset.fingerprint && (asset.token_type == 'BASE') ? 'https://cexplorer.io/asset/' + asset.fingerprint : null"
                                         target="_blank" rel="noopener noreferrer"
@@ -370,7 +356,7 @@ onUnmounted(() => {
                                     </component>
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-left text-sm truncate max-w-xs overflow-hidden text-ellipsis cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-left truncate max-w-xs overflow-hidden text-ellipsis cursor-default">
                                     {{ asset.market || '' }}
                                 </td>
                                 <td

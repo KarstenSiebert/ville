@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { ref, computed, watch } from 'vue';
-import { index } from '@/routes/trades';
 import { Head, router } from '@inertiajs/vue3';
-import { type BreadcrumbItem } from '@/types';
 import debounce from "lodash/debounce";
 import "@inertiajs/core";
 
@@ -37,13 +35,6 @@ const props = defineProps<{
         meta: { current_page: number, last_page: number, per_page: number, total: number }
     }
 }>()
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: "trades",
-        href: index().url,
-    },
-];
 
 const urlParams = new URLSearchParams(window.location.search)
 const searchQuery = ref(urlParams.get("search") || "")
@@ -123,7 +114,7 @@ function goTo(page: number) {
 <template>
 
     <Head :title="$t('trades')" />
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow">
@@ -140,36 +131,32 @@ function goTo(page: number) {
                     <table
                         class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
 
-                        <thead class="bg-gray-100 dark:bg-gray-800">
+                        <thead class="bg-gray-100 text-sm font-semibold dark:bg-gray-800">
                             <tr>
-                                <th
-                                    class="px-8 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-8 py-2 text-left text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('title') }}</th>
-                                <th
-                                    class="px-8 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-8 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('outcome') }}</th>
-                                <th
-                                    class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('shares') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('price') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('token') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('date') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-8 py-2 text-center text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-8 py-2 text-center text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('type') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                             <tr v-for="tx in props.trades.data" :key="tx.id"
                                 class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
-                                <td
-                                    class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200 min-w-[100px] whitespace-nowrap">
+                                <td class="px-4 py-2 text-gray-900 dark:text-gray-200 min-w-[100px] whitespace-nowrap">
                                     <div
                                         class=" flex items-center space-x-2 group transition-shadow duration-200 rounded">
                                         <img v-if="tx.market.logo" :src="tx.market.logo" alt="logo"
@@ -192,7 +179,7 @@ function goTo(page: number) {
                                     {{ tx.token.name }}
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-sm text-center text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
                                     <span class="tabular-nums py-0.5">{{ new Date(tx.created_at).toLocaleString('de-DE',
                                         {
                                             year: '2-digit',

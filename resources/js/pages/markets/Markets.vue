@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import AppLayout from '@/layouts/AppLayout.vue';
-import { index } from '@/routes/markets';
-import { type BreadcrumbItem } from '@/types';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import Button from "@/components/ui/button/Button.vue";
 import { Head, useForm, usePage, router } from '@inertiajs/vue3';
@@ -18,10 +16,6 @@ declare module "@inertiajs/core" {
         }
     }
 }
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'markets', href: index().url },
-];
 
 interface Outcome {
     id: number;
@@ -290,7 +284,7 @@ function submitForm() {
 
     <Head :title="$t('markets')" />
 
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-sm">
@@ -313,42 +307,41 @@ function submitForm() {
                 <div class="overflow-x-auto rounded-lg">
                     <table
                         class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-                        <thead class="bg-gray-100 dark:bg-gray-800">
+                        <thead class="bg-gray-100 text-sm font-semibold dark:bg-gray-800">
                             <tr>
-                                <th class="px-8 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="px-8 py-2 text-left text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('title')">
                                     {{ $t('title') }}
                                 </th>
-                                <th class="hidden md:table-cell px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="hidden md:table-cell px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('category')">
                                     {{ $t('category') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('description') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('subscribers') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell px-4 px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('orders') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell pr-8 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell pr-8 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('limit') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell pr-8 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell pr-8 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('token_ratio') }}
                                 </th>
-                                <th class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('status')">
                                     {{ $t('status') }}
                                 </th>
-                                <th
-                                    class="px-10 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-10 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('actions') }}
                                 </th>
                             </tr>
@@ -358,7 +351,7 @@ function submitForm() {
                             <tr v-for="asset in sortedMarkets" :key="asset.id"
                                 class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
                                 <td
-                                    class="px-4 py-2 text-sm text-right text-gray-900 dark:text-gray-200 cursor-default max-w-xs overflow-hidden">
+                                    class="px-4 py-2 text-right text-gray-900 dark:text-gray-200 cursor-default max-w-xs overflow-hidden">
 
                                     <div
                                         class="flex items-center space-x-2 group transition-shadow duration-200 rounded">
@@ -372,15 +365,15 @@ function submitForm() {
                                         </span>
                                     </div>
                                 </td>
-                                <td class="hidden md:table-cell px-4 py-2 text-sm text-left text-gray-900
+                                <td class="hidden md:table-cell px-4 py-2 text-left text-gray-900
                                             dark:text-gray-200 cursor-default max-w-xs overflow-hidden">
                                     {{ $t(asset.category || '') }}
                                 </td>
-                                <td class="hidden md:table-cell px-4 py-2 text-sm text-left text-gray-900 dark:text-gray-200
+                                <td class="hidden md:table-cell px-4 py-2 text-left text-gray-900 dark:text-gray-200
                                             truncate max-w-xs overflow-hidden text-ellipsis cursor-default">
                                     {{ asset.description }}
                                 </td>
-                                <td class="hidden md:table-cell pr-8 py-2 text-sm text-right text-gray-900 dark:text-gray-200
+                                <td class="hidden md:table-cell pr-8 py-2 text-right text-gray-900 dark:text-gray-200
                                             truncate max-w-xs overflow-hidden text-ellipsis cursor-default">
                                     {{ asset.subscribers_count }}
                                 </td>
@@ -403,7 +396,7 @@ function submitForm() {
                                         step="1" @blur="saveParameterSettings(asset)"
                                         class="w-20 px-2 py-1 border rounded text-right" />
                                 </td>
-                                <td class="hidden md:table-cell px-4 py-2 text-sm text-center text-gray-900 dark:text-gray-200 truncate text-ellipsis 
+                                <td class="hidden md:table-cell px-4 py-2 text-center text-gray-900 dark:text-gray-200 truncate text-ellipsis 
                                             cursor-default max-w-xs overflow-hidden">
                                     {{ $t(asset.status || '') }}
                                 </td>

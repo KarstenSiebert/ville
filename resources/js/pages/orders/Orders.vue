@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { ref, computed, watch } from 'vue';
-import { index } from '@/routes/orders';
 import { Head, router, usePage } from '@inertiajs/vue3';
-import { type BreadcrumbItem } from '@/types';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import Button from "@/components/ui/button/Button.vue";
 import FlashMessage from '@/components/FlashMessage.vue';
@@ -29,13 +27,6 @@ const formatDate = (value: string | null | undefined) => {
         second: '2-digit'
     })
 }
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: "orders",
-        href: index().url,
-    },
-];
 
 type Order = {
     id: number
@@ -202,7 +193,7 @@ function goTo(page: number) {
 <template>
 
     <Head :title="$t('orders')" />
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow">
@@ -226,31 +217,27 @@ function goTo(page: number) {
                     <table
                         class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
 
-                        <thead class="bg-gray-100 dark:bg-gray-800">
+                        <thead class="bg-gray-100 text-sm font-semibold dark:bg-gray-800">
                             <tr>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('market') }}</th>
-                                <th
-                                    class="pl-8 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="pl-8 py-2 text-left text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('outcome') }}</th>
-                                <th
-                                    class="px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('price') }}</th>
                                 <th
-                                    class="hidden md:table-cell pr-8 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell pr-8 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('filled') }}</th>
-                                <th
-                                    class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('type') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('status') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('valid_until') }}</th>
-                                <th
-                                    class="px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('action') }}
                                 </th>
                             </tr>
@@ -259,7 +246,7 @@ function goTo(page: number) {
                             <tr v-for="order in sortedOrders" :key="order.id"
                                 class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-sm text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
                                     <a :href="'/marketdetails/' + order.market_id"
                                         class="flex items-center justify-center space-x-2 mx-auto group transition-shadow duration-200 rounded">
                                         <img v-if="order.market_logo_url" :src="order.market_logo_url" alt="logo"
@@ -267,8 +254,7 @@ function goTo(page: number) {
                                     </a>
                                 </td>
 
-                                <td
-                                    class="px-4 py-2 justify-left text-sm text-gray-900 dark:text-gray-200 whitespace-nowrap">
+                                <td class="px-4 py-2 justify-left text-gray-900 dark:text-gray-200 whitespace-nowrap">
                                     <a :href="'/marketdetails/' + order.market_id"
                                         class="flex items-center space-x-2 mx-auto group transition-shadow duration-200 rounded">
                                         <img v-if="order.outcome_logo_url" :src="order.outcome_logo_url" alt="logo"
@@ -281,8 +267,8 @@ function goTo(page: number) {
                                 </td>
 
                                 <td
-                                    class="px-4 py-2 text-sm text-right text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
-                                    <tt>{{
+                                    class="px-4 py-2 tabular-nums text-right text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
+                                    {{
                                         (order.base_token_name === "ADA"
                                             ? order.limit_price / 1e6
                                             : order.limit_price / Math.pow(10, order.decimals)
@@ -290,17 +276,17 @@ function goTo(page: number) {
                                             minimumFractionDigits: order.decimals > 6 ? 6 : order.decimals,
                                             maximumFractionDigits: order.decimals > 6 ? 6 : order.decimals
                                         })
-                                    }}</tt>
+                                    }}
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-sm text-right text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
-                                    <tt>{{ order.filled }} / {{ order.share_amount }}</tt>
+                                    class="hidden md:table-cell tabular-nums px-4 py-2 text-right text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
+                                    {{ order.filled }} / {{ order.share_amount }}
                                 </td>
                                 <td
-                                    class="px-4 py-2 text-sm text-center text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
-                                    <tt>{{ order.type }}</tt>
+                                    class="px-4 py-2 text-center text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
+                                    {{ order.type }}
                                 </td>
-                                <td class="hidden md:table-cell px-4 py-2 text-sm text-center truncate max-w-xs cursor-default"
+                                <td class="hidden md:table-cell px-4 py-2 text-center truncate max-w-xs cursor-default"
                                     :class="{
                                         'text-green-600 dark:text-green-400': order.status === 'OPEN',
                                         'text-yellow-500 dark:text-yellow-400': order.status === 'PARTIAL',
@@ -310,10 +296,8 @@ function goTo(page: number) {
                                     <tt>{{ order.status }}</tt>
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-sm text-center text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
-                                    <span class="tabular-nums py-0.5">
-                                        {{ formatDate(order.valid_until) }}
-                                    </span>
+                                    class="hidden md:table-cell px-4 py-2 tabular-nums text-center text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
+                                    {{ formatDate(order.valid_until) }}
                                 </td>
                                 <td class="px-4 py-2 text-right cursor-default">
                                     <button @click="openMarket(order.market_id)"

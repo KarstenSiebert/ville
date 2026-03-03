@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, shallowReactive, computed, onMounted, watch, nextTick } from "vue";
 import AppLayout from '@/layouts/AppLayout.vue';
-import { index } from '@/routes/deposits';
-import { type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import FlashMessage from "@/components/FlashMessage.vue";
 import Button from "@/components/ui/button/Button.vue";
@@ -16,13 +14,6 @@ declare module "@inertiajs/core" {
         }
     }
 }
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'wallet',
-        href: index().url,
-    },
-];
 
 const page = usePage()
 
@@ -360,7 +351,7 @@ function submitForm() {
 <template>
 
     <Head :title="$t('select_amount')" />
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-sm">
@@ -379,26 +370,22 @@ function submitForm() {
                 <div class="overflow-x-auto rounded-lg">
                     <table
                         class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-                        <thead class="bg-gray-100 dark:bg-gray-800">
+                        <thead class="bg-gray-100 text-sm font-semibold dark:bg-gray-800">
                             <tr>
                                 <th class="px-4 py-2 text-center">
                                     <input type="checkbox" id="checkbox" ref="selectAllCheckbox"
                                         v-model="allSelected" />
                                 </th>
-                                <th
-                                    class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('token') }}
                                 </th>
-                                <th
-                                    class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('number') }}
                                 </th>
-                                <th
-                                    class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('recipient') }}
                                 </th>
-                                <th
-                                    class="px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('actions') }}
                                 </th>
                             </tr>
@@ -411,13 +398,13 @@ function submitForm() {
                                     <input type="checkbox" :value="asset.id" v-model="selected"
                                         :id="`checkbox-${index}`" />
                                 </td>
-                                <td class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200">
+                                <td class="px-4 py-2 text-gray-900 dark:text-gray-200">
                                     <component :is="asset.fingerprint ? 'a' : 'div'"
                                         :href="asset.fingerprint ? 'https://cexplorer.io/asset/' + asset.fingerprint : null"
                                         target="_blank" rel="noopener noreferrer"
                                         class="flex items-center space-x-2 group transition-shadow duration-200 rounded">
                                         <img v-if="asset.logo_url" :src="asset.logo_url" alt="logo"
-                                            class="w-6 h-6 rounded transition-transform duration-200"
+                                            class="w-8 h-8 rounded transition-transform duration-200"
                                             :class="{ 'group-hover:scale-105': asset.fingerprint }" />
                                         <span class="transition-colors duration-200 truncate cursor-default"
                                             :class="{ 'group-hover:text-blue-600': asset.fingerprint }">
@@ -425,7 +412,7 @@ function submitForm() {
                                         </span>
                                     </component>
                                 </td>
-                                <td class="px-4 py-2 text-sm tabular-nums text-gray-900 dark:text-gray-200">
+                                <td class="px-4 py-2 tabular-nums text-gray-900 dark:text-gray-200">
                                     <div class="flex flex-col">
                                         <input type="number" min="0"
                                             :step="asset.is_product ? 1 : (asset.decimals > 0 ? 1 / Math.pow(10, asset.decimals) : 1)"
@@ -439,7 +426,7 @@ function submitForm() {
                                                     ? 'border-red-500 focus:ring-red-500'
                                                     : 'focus:ring-blue-500'
                                             ]" />
-                                        <span v-if="validationErrors[asset.id]" class="text-red-500 text-xs mt-1">
+                                        <span v-if="validationErrors[asset.id]" class="text-red-500 mt-1">
                                             {{ $t(validationErrors[asset.id]) }}
                                         </span>
                                     </div>
@@ -450,7 +437,7 @@ function submitForm() {
                                         v-model="editableAssets[index].destination" :id="`destination-${index}`"
                                         @input="handleInput(editableAssets[index].destination, index)"
                                         :disabled="!selected.includes(asset.id)" :class="[
-                                            'w-full px-2 py-1 text-sm tabular-nums rounded border bg-white dark:bg-gray-700',
+                                            'w-full px-2 py-1 tabular-nums rounded border bg-white dark:bg-gray-700',
                                             'text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600',
                                             'focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:text-gray-400',
                                             { 'border-red-500 focus:ring-red-500': isDestinationInvalid(asset) }

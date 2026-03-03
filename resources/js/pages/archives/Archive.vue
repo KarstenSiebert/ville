@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { ref, computed, onUnmounted, watch } from 'vue';
-import { index } from '@/routes/archives';
 import { Head, router } from '@inertiajs/vue3';
-import { type BreadcrumbItem } from '@/types';
 import debounce from "lodash/debounce";
 import "@inertiajs/core";
 
@@ -33,13 +31,6 @@ const props = defineProps<{
         meta: { current_page: number, last_page: number, per_page: number, total: number }
     }
 }>()
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: "archive",
-        href: index().url,
-    },
-];
 
 let intervalId: ReturnType<typeof setInterval> | null = null
 
@@ -132,7 +123,7 @@ function goTo(page: number) {
 <template>
 
     <Head :title="$t('archive')" />
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow">
@@ -149,31 +140,28 @@ function goTo(page: number) {
                     <table
                         class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
 
-                        <thead class="bg-gray-100 dark:bg-gray-800">
+                        <thead class="bg-gray-100 text-sm font-semibold dark:bg-gray-800">
                             <tr>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('id') }}</th>
-                                <th
-                                    class="px-8 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-8 py-2 text-left text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('token') }}</th>
-                                <th
-                                    class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('number') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('from') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('to') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('type') }}</th>
                                 <th
-                                    class="hidden md:table-cell pr-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell pr-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('note') }}</th>
-                                <th
-                                    class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('date') }}</th>
                             </tr>
                         </thead>
@@ -229,8 +217,8 @@ function goTo(page: number) {
                                     </component>
                                 </td>
                                 <td
-                                    class="px-4 py-2 text-sm text-center text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
-                                    <span class="tabular-nums py-0.5">{{ new Date(tx.timestamp).toLocaleString('de-DE',
+                                    class="px-4 py-2 tabular-nums text-center text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
+                                    {{ new Date(tx.timestamp).toLocaleString('de-DE',
                                         {
                                             year: '2-digit',
                                             month: '2-digit',
@@ -238,7 +226,7 @@ function goTo(page: number) {
                                             hour: '2-digit',
                                             minute: '2-digit',
                                             second: '2-digit'
-                                        }) }}</span>
+                                        }) }}
                                 </td>
                             </tr>
                             <tr v-if="!archive.data.length">

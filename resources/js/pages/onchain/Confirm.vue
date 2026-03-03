@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import AppLayout from '@/layouts/AppLayout.vue';
-import { confirm } from '@/routes/onchain';
-import { type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -17,13 +15,6 @@ declare module "@inertiajs/core" {
         }
     }
 }
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'onchain',
-        href: confirm().url,
-    },
-];
 
 interface Token {
     quantity: number;
@@ -80,7 +71,7 @@ console.log(props.transaction.tx_fee + ' ' + props.transaction.tx_net)
 <template>
 
     <Head :title="$t('confirm')" />
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-sm">

@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { ref, computed, onUnmounted, watch } from 'vue';
-import { index } from '@/routes/reconciliation';
 import { Head, router } from '@inertiajs/vue3';
-import { type BreadcrumbItem } from '@/types';
 import debounce from "lodash/debounce";
 import "@inertiajs/core";
 
@@ -31,13 +29,6 @@ const props = defineProps<{
         meta: { current_page: number, last_page: number, per_page: number, total: number }
     }
 }>()
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: "reconciliation",
-        href: index().url,
-    },
-];
 
 let intervalId: ReturnType<typeof setInterval> | null = null
 
@@ -130,7 +121,7 @@ function goTo(page: number) {
 <template>
 
     <Head :title="$t('reconciliation')" />
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow">
@@ -147,42 +138,39 @@ function goTo(page: number) {
                     <table
                         class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
 
-                        <thead class="bg-gray-100 dark:bg-gray-800">
+                        <thead class="bg-gray-100 text-sm font-semibold dark:bg-gray-800">
                             <tr>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('id') }}</th>
-                                <th
-                                    class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('token') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('wallet') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('before') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('after') }}</th>
-                                <th
-                                    class="pr-5 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="pr-5 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('change') }}</th>
                                 <th
-                                    class="hidden md:table-cell pr-5 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell pr-5 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('note') }}</th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('date') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                             <tr v-for="item in props.reconciliation.data" :key="item.id">
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-sm text-center text-gray-900 dark:text-gray-200 truncate cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-900 dark:text-gray-200 truncate cursor-default">
                                     {{ item.transfer_id }}
                                 </td>
-                                <td
-                                    class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200 min-w-[100px] whitespace-nowrap">
+                                <td class="px-4 py-2 text-gray-900 dark:text-gray-200 min-w-[100px] whitespace-nowrap">
                                     <component :is="item.fingerprint ? 'a' : 'div'"
                                         :href="item.fingerprint ? 'https://cexplorer.io/asset/' + item.fingerprint : null"
                                         target="_blank" rel="noopener noreferrer"
@@ -197,11 +185,11 @@ function goTo(page: number) {
                                     </component>
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-xs text-center text-gray-900 dark:text-gray-200 truncate cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-900 dark:text-gray-200 truncate cursor-default">
                                     {{ item.wallet_id }}
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-xs text-right text-gray-900 dark:text-gray-200 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-right text-gray-900 dark:text-gray-200 cursor-default">
                                     {{
                                         (item.asset_name === "ADA"
                                             ? item.quantity_before / 1e6
@@ -213,7 +201,7 @@ function goTo(page: number) {
                                     }}
                                 </td>
                                 <td
-                                    class="hidden md:table-cell tabular-nums px-4 py-2 text-xs text-right text-gray-900 dark:text-gray-200 cursor-default">
+                                    class="hidden md:table-cell tabular-nums px-4 py-2 text-right text-gray-900 dark:text-gray-200 cursor-default">
                                     {{
                                         (item.asset_name === "ADA"
                                             ? item.quantity_after / 1e6
@@ -225,7 +213,7 @@ function goTo(page: number) {
                                     }}
                                 </td>
                                 <td
-                                    class="px-4 py-2 text-xs tabular-nums text-right text-gray-900 dark:text-gray-200 cursor-default">
+                                    class="px-4 py-2 tabular-nums text-right text-gray-900 dark:text-gray-200 cursor-default">
                                     {{
                                         (item.asset_name === "ADA"
                                             ? item.change / 1e6
@@ -237,7 +225,7 @@ function goTo(page: number) {
                                     }}
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-sm text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
                                     <component :is="item.tx_hash && item.tx_hash.startsWith('\\x') ? 'a' : 'div'"
                                         :href="item.tx_hash ? 'https://cexplorer.io/tx/' + item.tx_hash.slice(2) : null"
                                         target="_blank" rel="noopener noreferrer"
@@ -249,7 +237,7 @@ function goTo(page: number) {
                                     </component>
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-xs text-right text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-right text-gray-900 dark:text-gray-200 truncate max-w-xs cursor-default">
                                     {{ new Date(item.created_at).toLocaleString()
                                     }}
                                 </td>

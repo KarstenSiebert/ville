@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, watch, nextTick } from "vue";
 import AppLayout from '@/layouts/AppLayout.vue';
-import { create } from '@/routes/onchain';
-import { type BreadcrumbItem } from '@/types';
 import { Button } from "@/components/ui/button";
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import FlashMessage from "@/components/FlashMessage.vue";
@@ -16,13 +14,6 @@ declare module "@inertiajs/core" {
         }
     }
 }
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'onchain',
-        href: create().url,
-    },
-];
 
 const page = usePage()
 
@@ -209,7 +200,7 @@ function submitForm() {
 <template>
 
     <Head :title="$t('select_amount')" />
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-sm">

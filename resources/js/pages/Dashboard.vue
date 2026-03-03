@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { dashboard } from '@/routes';
 import { Head, usePage, router } from '@inertiajs/vue3';
 import { reactive, ref, watchEffect, computed, onMounted, watch } from 'vue';
-import { type BreadcrumbItem } from '@/types';
 import { useAuth } from '@/composables/useAuth'
 import axios from 'axios';
 
@@ -65,10 +63,6 @@ const outcomeBarColorMap: Record<string, { light: string; dark: string }> = {
     'bg-blue-100': { light: '#dbeafe', dark: '#1e40af' },
     'bg-teal-100': { light: '#ccfbf1', dark: '#134e4a' },
 };
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'dashboard', href: dashboard().url },
-];
 
 interface Outcome {
     id: number;
@@ -558,7 +552,7 @@ watch(
 <template>
 
     <Head :title="$t('dashboard')" />
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
 
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 

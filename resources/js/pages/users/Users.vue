@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from "vue";
 import AppLayout from '@/layouts/AppLayout.vue';
-import { index } from '@/routes/onchain';
-import { type BreadcrumbItem } from '@/types';
 import { Head, usePage, router } from '@inertiajs/vue3';
 import FlashMessage from '@/components/FlashMessage.vue';
 import debounce from "lodash/debounce";
@@ -16,18 +14,6 @@ declare module "@inertiajs/core" {
         }
     }
 }
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'onchain',
-        href: index().url,
-    },
-];
-
-breadcrumbs.push({
-    title: 'token_users',
-    href: '',
-});
 
 interface User {
     user_id: number
@@ -211,7 +197,7 @@ onMounted(() => {
 <template>
 
     <Head {{ props.users.tok_name }} />
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-sm">
@@ -231,29 +217,29 @@ onMounted(() => {
                 <div class="overflow-x-auto rounded-lg">
                     <table
                         class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-                        <thead class="bg-gray-100 dark:bg-gray-800">
+                        <thead class="bg-gray-100 text-sm font-semibold dark:bg-gray-800">
                             <tr>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('avatar') }}
                                 </th>
-                                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('name')">
                                     {{ $t('name') }}
                                 </th>
-                                <th class="hidden md:table-cell px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="hidden md:table-cell px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('email')">
                                     {{ $t('email') }}
                                 </th>
-                                <th class="hidden md:table-cell px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="hidden md:table-cell px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('type')">
                                     {{ $t('type') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer">
+                                    class="hidden md:table-cell px-4 py-2 text-right text-gray-700 dark:text-gray-300 cursor-pointer">
                                     {{ $t('reserved') }}
                                 </th>
-                                <th class="px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="px-4 py-2 text-right text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('total_owned')">
                                     {{ $t('total_owned') }}
                                 </th>
@@ -272,7 +258,7 @@ onMounted(() => {
                                     </div>
                                 </td>
                                 <td
-                                    class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200 truncate max-w-xs overflow-hidden text-ellipsis">
+                                    class="px-4 py-4 text-gray-900 dark:text-gray-200 truncate max-w-xs overflow-hidden text-ellipsis">
                                     {{ user.name }}
                                 </td>
                                 <td

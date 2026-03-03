@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from "vue";
 import AppLayout from '@/layouts/AppLayout.vue';
-import { create } from '@/routes/publishers';
-import { type BreadcrumbItem } from '@/types';
 import { Head, usePage, useForm } from '@inertiajs/vue3';
 import FlashMessage from "@/components/FlashMessage.vue";
 import "@inertiajs/core";
@@ -18,13 +16,6 @@ declare module "@inertiajs/core" {
         }
     }
 }
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'create_operator',
-        href: create().url,
-    },
-];
 
 interface User {
     id: number
@@ -184,7 +175,7 @@ function submitForm() {
 
     <Head :title="$t('create_operator')" />
 
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-sm">

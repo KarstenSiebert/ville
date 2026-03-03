@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from "vue";
 import AppLayout from '@/layouts/AppLayout.vue';
-import { outgoings } from '@/routes/users';
-import { type BreadcrumbItem } from '@/types';
 import { Head, usePage, router } from '@inertiajs/vue3';
 import FlashMessage from '@/components/FlashMessage.vue';
 import debounce from "lodash/debounce";
@@ -16,13 +14,6 @@ declare module "@inertiajs/core" {
         }
     }
 }
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'outgoing_tokens',
-        href: outgoings().url,
-    },
-];
 
 interface Token {
     token_id: number
@@ -229,7 +220,7 @@ function formatQuantity(quantity: number, decimals: number): string {
 <template>
 
     <Head :title="$t('onchain_requests')" />
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-sm">
@@ -251,19 +242,18 @@ function formatQuantity(quantity: number, decimals: number): string {
                 <div class="overflow-x-auto rounded-lg">
                     <table
                         class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-                        <thead class="bg-gray-100 dark:bg-gray-800">
+                        <thead class="bg-gray-100 text-sm font-semibold dark:bg-gray-800">
                             <tr>
                                 <th v-if="isAdmin"
-                                    class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                    class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('user_name')">
                                     {{ $t('name') }}
                                 </th>
-                                <th class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('payout')">
                                     {{ $t('payout_wallet_address') }}
                                 </th>
-                                <th
-                                    class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer">
+                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-pointer">
                                     {{ $t('tokens') }}
                                 </th>
                             </tr>
@@ -271,7 +261,7 @@ function formatQuantity(quantity: number, decimals: number): string {
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                             <tr v-for="(user) in sortedUsers" :key="user.user_id"
                                 class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
-                                <td v-if="isAdmin" class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200">
+                                <td v-if="isAdmin" class="px-4 py-2 text-gray-900 dark:text-gray-200">
                                     {{ user.user_name }}
                                 </td>
                                 <td class="px-4 py-2 text-xs text-gray-900 dark:text-gray-200 break-all">
@@ -291,7 +281,7 @@ function formatQuantity(quantity: number, decimals: number): string {
                                             <tr v-for="token in parseTokens(user.tokens)" :key="token.token_id">
                                                 <td class="px-2 py-1">{{ token.token_name }}</td>
                                                 <td class="px-2 py-1">{{ formatQuantity(token.quantity, token.decimals)
-                                                    }}
+                                                }}
                                                 </td>
                                             </tr>
                                         </tbody>

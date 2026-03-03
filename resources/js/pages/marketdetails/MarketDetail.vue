@@ -3,7 +3,6 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref, reactive, onMounted, getCurrentInstance, watchEffect, watch, onUnmounted, toRaw } from 'vue';
 import { ZoomOut } from 'lucide-vue-next';
-import { type BreadcrumbItem } from '@/types';
 import { useAuth } from '@/composables/useAuth'
 import axios from 'axios';
 
@@ -157,10 +156,6 @@ const props = defineProps<{
     tokenValue: number;
     orderTable: OrderTable;
 }>();
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: props.market.title, href: `/markets/${props.market.id}` },
-];
 
 const chartPrice = ref<HTMLCanvasElement | null>(null);
 
@@ -1121,7 +1116,7 @@ async function fetchFullMarketData() {
 
     <Head :title="marketData.title" />
 
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
@@ -1323,13 +1318,13 @@ async function fetchFullMarketData() {
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTC"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTC')
-                                        }}</span>
+                                    }}</span>
                                 </label>
                                 <label class="flex items-center gap-1 cursor-pointer">
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTD"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTD')
-                                        }}</span>
+                                    }}</span>
                                 </label>
                             </div>
 

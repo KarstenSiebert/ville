@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import AppLayout from '@/layouts/AppLayout.vue';
-import { index } from '@/routes/publishers';
-import { type BreadcrumbItem } from '@/types';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import Button from "@/components/ui/button/Button.vue";
 import { Head, Link, useForm, usePage, router } from '@inertiajs/vue3';
@@ -18,10 +16,6 @@ declare module "@inertiajs/core" {
         }
     }
 }
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'operators', href: index().url },
-];
 
 type Publisher = {
     id: number
@@ -197,7 +191,7 @@ function submitForm() {
 
     <Head :title="$t('operators')" />
 
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-sm">
@@ -213,49 +207,46 @@ function submitForm() {
                         {{ $t('operators') }}
                     </h2>
                     <input v-model="searchQuery" id="search" type="text" :placeholder="$t('search') + '...'"
-                        class="ml-4 px-3 py-2 border rounded-lg text-sm w-64 dark:bg-gray-700 dark:text-gray-200" />
+                        class="ml-4 px-3 py-2 border rounded-lg text-sm w-56 dark:bg-gray-700 dark:text-gray-200" />
                 </div>
 
                 <!-- Table -->
                 <div class="overflow-x-auto rounded-lg">
                     <table
                         class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-                        <thead class="bg-gray-100 dark:bg-gray-800">
+                        <thead class="bg-gray-100 text-sm font-semibold dark:bg-gray-800">
                             <tr>
-                                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('name')">
                                     {{ $t('name') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('api_key') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell pr-8 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell pr-8 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('shadows') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell pr-8 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell pr-8 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('markets') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell pr-8 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell pr-8 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('limit') }}
                                 </th>
                                 <th
-                                    class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                    class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('tracking') }}
                                 </th>
-                                <th
-                                    class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('reports') }}
                                 </th>
-                                <th
-                                    class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('status') }}
                                 </th>
-                                <th
-                                    class="px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-right text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('actions') }}
                                 </th>
                             </tr>
@@ -265,7 +256,7 @@ function submitForm() {
                             <tr v-for="publisher in sortedPublishers" :key="publisher.id"
                                 class="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
                                 <td
-                                    class="px-4 py-2 text-sm text-left text-gray-900 dark:text-gray-200 cursor-default max-w-xs truncate overflow-hidden whitespace-nowrap">
+                                    class="px-4 py-4 text-left text-gray-900 dark:text-gray-200 cursor-default max-w-xs truncate overflow-hidden whitespace-nowrap">
                                     <Link :href="`/deposits/publisher/${publisher.user_id}`"
                                         class="text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400 ">
                                         {{ publisher.name }}

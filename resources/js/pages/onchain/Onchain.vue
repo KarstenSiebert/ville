@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import AppLayout from '@/layouts/AppLayout.vue';
-import { index } from '@/routes/onchain';
-import { type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage, router } from '@inertiajs/vue3';
 import { Button } from "@/components/ui/button";
 import FlashMessage from '@/components/FlashMessage.vue';
@@ -18,13 +16,6 @@ declare module "@inertiajs/core" {
         }
     }
 }
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'onchain',
-        href: index().url,
-    },
-];
 
 interface Asset {
     policy_id: string | null
@@ -254,7 +245,7 @@ onUnmounted(() => {
 <template>
 
     <Head :title="$t('onchain')" />
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout>
         <div class="relative text-xs flex flex-col gap-4 overflow-x-auto rounded-xl p-4">
 
             <div class="absolute top-2 left-1/2 -translate-x-1/2 z-20 w-full max-w-sm">
@@ -275,26 +266,25 @@ onUnmounted(() => {
                 <div class="overflow-x-auto rounded-lg">
                     <table
                         class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-                        <thead class="bg-gray-100 dark:bg-gray-800">
+                        <thead class="bg-gray-100 text-sm font-semibold dark:bg-gray-800">
                             <tr>
                                 <th v-if="canSelectAssets" class="px-4 py-2 text-center">
                                     <input type="checkbox" id="checkbox" ref="selectAllCheckbox"
                                         v-model="allSelected" />
                                 </th>
-                                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('asset_name')">
                                     {{ $t('token') }}
                                 </th>
-                                <th class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('quantity')">
                                     {{ $t('number') }}
                                 </th>
-                                <th class="hidden md:table-cell px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('fingerprint')">
                                     {{ $t('fingerprint') }}
                                 </th>
-                                <th
-                                    class="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-default">
+                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-default">
                                     {{ $t('status') }}
                                 </th>
                             </tr>
@@ -306,8 +296,7 @@ onUnmounted(() => {
                                     <input type="checkbox" :value="asset.fingerprint" :id="`asset-${index}`"
                                         :disabled="asset.asset_name === 'CHIMERA'" v-model="selected" />
                                 </td>
-                                <td
-                                    class="px-4 py-2 text-sm text-gray-900 dark:text-gray-200 min-w-[100px] whitespace-nowrap">
+                                <td class="px-4 py-2 text-gray-900 dark:text-gray-200 min-w-[100px] whitespace-nowrap">
                                     <component :is="asset.asset_name ? 'a' : 'div'"
                                         :href="asset.fingerprint ? '/users?f=' + asset.fingerprint : '/users?f=ADA'"
                                         class="flex items-center space-x-2 group transition-shadow duration-200 rounded">
