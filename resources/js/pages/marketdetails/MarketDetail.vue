@@ -1131,7 +1131,7 @@ async function fetchFullMarketData() {
 
                     <!-- Titel + Status -->
                     <div class="flex justify-between items-center">
-                        <h1 class="text-xl font-bold truncate">{{ marketData.title }}</h1>
+                        <h1 class="text-xl font-bold truncate pr-4">{{ marketData.title }}</h1>
                         <span :class="{
                             'text-green-600 text-lg font-semibold': marketData.status === 'OPEN',
                             'text-gray-500 text-lg font-semibold': marketData.status === 'CLOSED' || marketData.status === 'SETTLED',
@@ -1323,13 +1323,13 @@ async function fetchFullMarketData() {
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTC"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTC')
-                                    }}</span>
+                                        }}</span>
                                 </label>
                                 <label class="flex items-center gap-1 cursor-pointer">
                                     <input type="radio" :name="`expiry-${o.id}`" value="GTD"
                                         v-model="getLimit(o).expiry" class="accent-gray-600" />
                                     <span class="text-xs text-gray-500 dark:text-gray-400 font-semibold">{{ $t('GTD')
-                                    }}</span>
+                                        }}</span>
                                 </label>
                             </div>
 

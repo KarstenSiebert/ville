@@ -994,7 +994,7 @@ async function fetchFullMarketData() {
 
                 <!-- Titel + Status -->
                 <div class="flex justify-between items-center">
-                    <h1 class="text-xl font-bold truncate">{{ marketData.title }}</h1>
+                    <h1 class="text-xl font-bold truncate pr-4">{{ marketData.title }}</h1>
                     <span :class="{
                         'text-green-600 text-lg font-semibold': marketData.status === 'OPEN',
                         'text-gray-500 text-lg font-semibold': marketData.status === 'CLOSED' || marketData.status === 'SETTLED',
