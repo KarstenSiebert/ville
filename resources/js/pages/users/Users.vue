@@ -18,7 +18,8 @@ declare module "@inertiajs/core" {
 interface User {
     user_id: number
     name: string
-    email: string
+    email: string | null
+    operator: string | null
     type: string
     avatar?: string
     total_owned: number
@@ -173,6 +174,7 @@ watch(
             user_id: a.user_id,
             name: a.name,
             email: a.email,
+            operator: a.operator,
             type: a.type,
             avatar: a.avatar ?? '/storage/logos/wechselstuben-logo.png',
             total_owned: a.total_owned,
@@ -235,6 +237,10 @@ onMounted(() => {
                                     @click="sort('type')">
                                     {{ $t('type') }}
                                 </th>
+                                <th class="hidden md:table-cell px-4 py-2 text-left text-gray-700 dark:text-gray-300 cursor-pointer"
+                                    @click="sort('type')">
+                                    {{ $t('operator') }}
+                                </th>
                                 <th
                                     class="hidden md:table-cell px-4 py-2 text-right text-gray-700 dark:text-gray-300 cursor-pointer">
                                     {{ $t('reserved') }}
@@ -270,6 +276,10 @@ onMounted(() => {
                                     {{ user.type }}
                                 </td>
                                 <td
+                                    class="hidden md:table-cell px-4 py-2 text-gray-900 dark:text-gray-200 truncate max-w-xs">
+                                    {{ user.operator }}
+                                </td>
+                                <td
                                     class="hidden md:table-cell px-4 py-2 tabular-nums text-right text-gray-900 dark:text-gray-200 cursor-default">
                                     {{
                                         (user.reserved / Math.pow(10, props.users.decimals)
@@ -302,7 +312,7 @@ onMounted(() => {
                                     {{ $t('total_value') }}
                                 </td>
                                 <td class="hidden md:table-cell px-4 py-2 font-semibold text-gray-700 dark:text-gray-300"
-                                    colspan="4">
+                                    colspan="5">
                                 </td>
                                 <td
                                     class="px-4 py-2 tabular-nums text-right text-gray-900 dark:text-gray-200 font-semibold">

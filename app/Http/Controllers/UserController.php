@@ -8,9 +8,8 @@ use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Token;
 use App\Models\Wallet;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
-use App\Services\UserIdentifier;
-use App\Services\HeadIdService;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserController extends Controller
@@ -54,8 +53,8 @@ class UserController extends Controller
                       ->whereHas('tokenWallets', function ($q2) use ($token) {
                             $q2->where('token_id', $token->id);
                         });
-                    })
-                    ->with(['wallets' => function ($q) use ($token) {
+                })                
+                ->with(['wallets' => function ($q) use ($token) {
                         $q->whereIn('type', ['available', 'reserved'])
                             ->with(['tokenWallets' => function ($q2) use ($token) {
                                 $q2->where('token_id', $token->id);
@@ -77,20 +76,29 @@ class UserController extends Controller
                     if (str_starts_with($avatar, '/storage')) {
                         $avatar = substr($avatar, 8);
                     }
+               
+                    $publisherName = null;
+
+                    if ($user->publisher_id) {
+                        $publisher = Publisher::with(['user:id,name'])->find($user->publisher_id);
+
+                        $publisherName = $publisher?->user->name;
+                    }
 
                     return [
-                        'user_id'      => $user->id,
-                        'name'         => $user->name,
-                        'email'        => $user->email,
-                        'type'         => $user->type,
-                        'avatar'       => !empty($avatar) ? Storage::url($avatar) : null,
-                        'total_owned'  => $total,
-                        'reserved'     => $reserved,
+                        'user_id'     => $user->id,
+                        'name'        => $user->name,
+                        'email'       => $user->email,
+                        'operator'    => $publisherName,
+                        'type'        => $user->type,
+                        'avatar'      => !empty($avatar) ? Storage::url($avatar) : null,
+                        'total_owned' => $total,
+                        'reserved'    => $reserved,
                     ];
                 })
                 ->filter(fn($item) => $item['total_owned'] > 0)
                 ->sortByDesc('total_owned')
-                ->values();                
+                ->values();
             
             if ($holders) {
 
@@ -254,29 +262,5 @@ class UserController extends Controller
             'is_admin' => $isAdmin,
         ]);
     }
-
-    public function lookup(string $worldId)
-    {
-        $id = null;
-
-        try {
-            $id = UserIdentifier::parse($worldId);
     
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 422);
-        }
-        
-        if (empty($id)) {
-            return response()->json(['status' => 'not_found']);
-        }
-
-        if (($id->headId === config('chimera.head_id')) && ($user = User::where('email', $id->email)->first())) {
-            return response()->json(['status' => 'found', 'world_id' => $worldId]);
-    
-        } else {        
-            return response()->json(['status' => 'not_found']);
-        }
-    }
-
-
 }

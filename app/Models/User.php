@@ -102,7 +102,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Publisher::class);
     }
-
+    
     public function administeredPublishers()
     {
         return $this->belongsToMany(Publisher::class)
