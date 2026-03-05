@@ -176,18 +176,6 @@ class ApiMarketController extends Controller
             $product['fingerprint'] = 'asset16fq594uun90f2jajmecjcdt4jnsnq7r3jdqsw5';
             $product['decimals'] = 6;
 
-        } else if ($product['currency'] == 'HOSKY') {
-            $product['fingerprint'] = 'asset17q7r59zlc3dgw0venc80pdv566q6yguw03f0d9';
-            $product['decimals'] = 0;
-
-        } else if ($product['currency'] == 'NIGHT') {
-            $product['fingerprint'] = 'asset1wd3llgkhsw6etxf2yca6cgk9ssrpva3wf0pq9a';
-            $product['decimals'] = 6;
-
-        } else if ($product['currency'] == 'SNEK') {
-            $product['fingerprint'] = 'asset108xu02ckwrfc8qs9d97mgyh4kn8gdu9w8f5sxk';
-            $product['decimals'] = 0;
-
         } else if ($product['currency'] == 'CHKS') {
             $product['fingerprint'] = 'asset1945pt2n8zutnygk8qyjh83fmu55a9jnwzfdphr';
             $product['decimals'] = 0;

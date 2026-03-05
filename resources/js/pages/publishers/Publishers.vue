@@ -263,7 +263,7 @@ function submitForm() {
                                     </Link>
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-left text-gray-900 dark:text-gray-200 cursor-default max-w-xs truncate overflow-hidden whitespace-nowrap">
+                                    class="hidden md:table-cell px-4 py-2 font-mono text-left text-gray-900 dark:text-gray-200 cursor-default max-w-xs truncate overflow-hidden whitespace-nowrap">
                                     {{ publisher.api_key }}
                                 </td>
                                 <td

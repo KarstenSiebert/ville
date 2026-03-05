@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AppLogo from '@/components/AppLogo.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { login, register } from '@/routes';
@@ -38,7 +37,7 @@ import onchain from '@/routes/onchain';
 import markettrades from '@/routes/trades';
 import reconciliation from '@/routes/reconciliation';
 import orders from '@/routes/orders';
-import type { BreadcrumbItem, NavItem } from '@/types';
+import type { NavItem } from '@/types';
 import { InertiaLinkProps, Link, usePage } from '@inertiajs/vue3';
 import { House, Archive, Landmark, History, Coins, Link as Chain, Logs, Menu, ChartLine, NotepadText, Book } from 'lucide-vue-next';
 import { computed, ref, watch, onMounted } from 'vue';
@@ -46,12 +45,10 @@ import { reloadRolesAndPermissions, is } from 'laravel-permission-to-vuejs'
 import { permissionsLoaded } from '@/app';
 
 interface Props {
-    breadcrumbs?: BreadcrumbItem[];
     canRegister?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    breadcrumbs: () => [],
     canRegister: true,
 });
 
@@ -289,7 +286,7 @@ onMounted(() => {
                             class="inline-block rounded-sm border border-transparent px-5 py-1.5 font-semibold text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]">
                             {{ $t('log_in') }}
                         </Link>
-                        <Link v-if="canRegister" :href="register()"
+                        <Link v-if="props.canRegister" :href="register()"
                             class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 font-semibold text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]">
                             {{ $t('register') }}
                         </Link>
@@ -319,10 +316,5 @@ onMounted(() => {
             </div>
         </div>
 
-        <div v-if="props.breadcrumbs.length > 1" class="flex w-full border-b border-sidebar-border/70">
-            <div class="mx-auto flex h-12 w-full items-center justify-start px-4 text-neutral-500 md:max-w-7xl">
-                <Breadcrumbs :breadcrumbs="breadcrumbs" />
-            </div>
-        </div>
     </div>
 </template>

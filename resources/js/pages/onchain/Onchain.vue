@@ -276,11 +276,11 @@ onUnmounted(() => {
                                     @click="sort('asset_name')">
                                     {{ $t('token') }}
                                 </th>
-                                <th class="px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="pr-8 py-2 text-right text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('quantity')">
                                     {{ $t('number') }}
                                 </th>
-                                <th class="hidden md:table-cell px-4 py-2 text-center text-gray-700 dark:text-gray-300 cursor-pointer"
+                                <th class="hidden md:table-cell pr-8 py-2 text-right text-gray-700 dark:text-gray-300 cursor-pointer"
                                     @click="sort('fingerprint')">
                                     {{ $t('fingerprint') }}
                                 </th>
@@ -311,28 +311,22 @@ onUnmounted(() => {
                                 </td>
                                 <td
                                     class="px-4 py-2 tabular-nums text-right text-gray-900 dark:text-gray-200 cursor-default">
-                                    <component :is="asset.asset_name ? 'a' : 'div'"
-                                        :href="asset.fingerprint ? '/users?f=' + asset.fingerprint : '/users?f=ADA'"
-                                        class="space-x-2 group transition-shadow duration-200 rounded">
-                                        <span class="transition-colors duration-200 group-hover:text-blue-600">
-                                            {{
-                                                (asset.asset_name === "ADA"
-                                                    ? asset.quantity / 1e6
-                                                    : asset.quantity / Math.pow(10, asset.decimals)
-                                                ).toLocaleString("en-US", {
-                                                    minimumFractionDigits: asset.decimals > 6 ? 6 : asset.decimals,
-                                                    maximumFractionDigits: asset.decimals > 6 ? 6 : asset.decimals
-                                                })
-                                            }}
-                                        </span>
-                                    </component>
+                                    {{
+                                        (asset.asset_name === "ADA"
+                                            ? asset.quantity / 1e6
+                                            : asset.quantity / Math.pow(10, asset.decimals)
+                                        ).toLocaleString("en-US", {
+                                            minimumFractionDigits: asset.decimals > 6 ? 6 : asset.decimals,
+                                            maximumFractionDigits: asset.decimals > 6 ? 6 : asset.decimals
+                                        })
+                                    }}
                                 </td>
                                 <td
-                                    class="hidden md:table-cell px-4 py-2 text-gray-900 dark:text-gray-200 truncate max-w-xs">
+                                    class="hidden md:table-cell px-4 py-2 font-mono text-right text-gray-900 dark:text-gray-200 truncate max-w-xs">
                                     <component :is="asset.fingerprint ? 'a' : 'div'"
                                         :href="asset.fingerprint ? 'https://cexplorer.io/asset/' + asset.fingerprint : null"
                                         target="_blank" rel="noopener noreferrer"
-                                        class="flex items-center space-x-2 group transition-shadow duration-200 rounded">
+                                        class="group transition-shadow duration-200 rounded">
                                         <span class="transition-colors duration-200"
                                             :class="{ 'group-hover:text-blue-600': asset.fingerprint }">
                                             {{ asset.fingerprint || '\u00A0' }}

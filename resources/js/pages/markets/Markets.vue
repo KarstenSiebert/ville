@@ -618,7 +618,7 @@ function submitForm() {
                                 </td>
                             </tr>
                             <tr v-if="!sortedMarkets.length">
-                                <td colspan="6" class="text-center py-4 text-gray-500">
+                                <td colspan="10" class="text-center py-4 text-gray-500">
                                     {{ $t('no_markets_found') }}
                                 </td>
                             </tr>

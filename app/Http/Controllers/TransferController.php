@@ -129,10 +129,7 @@ class TransferController extends Controller
                             $predefined = [
                                 'USDM'          => ['policy' => 'c48cbb3d5e57ed56e276bc45f99ab39abe94e6cd7ac39fb402da47ad', 'logo' => '/storage/logos/usdm-coin.png', 'decimals' => 6],
                                 'USDA'          => ['policy' => 'fe7c786ab321f41c654ef6c1af7b3250a613c24e4213e0425a7ae456', 'logo' => '/storage/logos/usda-coin.png', 'decimals' => 6],
-                                'USDCx'         => ['policy' => '1f3aec8bfe7ea4fe14c5f121e2a92e301afe414147860d557cac7e34', 'logo' => '/storage/logos/usdcx-coin.png', 'decimals' => 6],
-                                'HOSKY'         => ['policy' => 'a0028f350aaabe0545fdcb56b039bfb08e4bb4d8c4d7c3c7d481c235', 'logo' => '/storage/logos/hosky-coin.png', 'decimals' => 0],
-                                'NIGHT'         => ['policy' => '0691b2fecca1ac4f53cb6dfb00b7013e561d1f34403b957cbb5af1fa', 'logo' => '/storage/logos/night-coin.png', 'decimals' => 6],
-                                'SNEK'          => ['policy' => '279c909f348e533da5808898f87f9a14bb2c3dfbbacccd631d927a3f', 'logo' => '/storage/logos/snek-coin.png', 'decimals' => 0],
+                                'USDCx'         => ['policy' => '1f3aec8bfe7ea4fe14c5f121e2a92e301afe414147860d557cac7e34', 'logo' => '/storage/logos/usdcx-coin.png', 'decimals' => 6],                                
                                 'DjedMicroUSD'  => ['policy' => '8db269c3ec630e06ae29f74bc39edd1f87c819f1056206e879a1cd61', 'logo' => '/storage/logos/djed-coin.png', 'decimals' => 6],
                                 'Wechselstuben' => ['policy' => '8dfd68762a95e06f3d66c04f2a688241767e8ea934a4144b4915a681', 'logo' => '/storage/logos/wechselstuben-logo.png', 'decimals' => str_starts_with($asset->asset_hex, '0014df10') ? 6 : 0]
                             ];
@@ -202,16 +199,7 @@ class TransferController extends Controller
                         
                         } else if ($fingerprint == 'asset16fq594uun90f2jajmecjcdt4jnsnq7r3jdqsw5') {
                             $step_size = 10000;  // USDA
-                        
-                        } else if ($fingerprint == 'asset17q7r59zlc3dgw0venc80pdv566q6yguw03f0d9') {
-                            $step_size = 10000;  // HOSKY
-                        
-                        } else if ($fingerprint == 'asset1wd3llgkhsw6etxf2yca6cgk9ssrpva3wf0pq9a') {
-                            $step_size = 10000;  // NIGHT
-
-                        } else if ($fingerprint == 'asset108xu02ckwrfc8qs9d97mgyh4kn8gdu9w8f5sxk') {
-                            $step_size = 1000;   // SNEK
-                        
+                                                                        
                         } else if ($fingerprint == 'asset1945pt2n8zutnygk8qyjh83fmu55a9jnwzfdphr') {
                             $step_size = 1000;   // CHKS
                         }

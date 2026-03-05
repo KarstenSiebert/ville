@@ -301,12 +301,12 @@ onMounted(() => {
                                 </td>
                             </tr>
                             <tr v-if="!sortedUsers.length">
-                                <td colspan="6" class="text-center py-4 text-gray-500">
+                                <td colspan="8" class="text-center py-4 text-gray-500">
                                     {{ $t('no_users_found') }}
                                 </td>
                             </tr>
                         </tbody>
-                        <tfoot class="bg-gray-50 dark:bg-gray-800">
+                        <tfoot v-if="sortedUsers.length" class="bg-gray-50 dark:bg-gray-800">
                             <tr>
                                 <td class="px-4 py-2 font-semibold text-gray-700 dark:text-gray-300">
                                     {{ $t('total_value') }}
