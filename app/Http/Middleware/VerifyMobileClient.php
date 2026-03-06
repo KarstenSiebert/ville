@@ -141,30 +141,42 @@ class VerifyMobileClient
 
             // Only transfer to users, if they have been created and are new to the market
 
-            /*
-            if ($isNewUser || $isNewSubscriber) {
+            $shadowWallet   = Wallet::where('user_id', $shadow->id)->where('user_type', 'SHADOW')->where('type', 'available')->first();
+            $operatorWallet = Wallet::where('user_id', $publisher->user_id)->where('type', 'available')->first();
 
-                if ($market->max_subscribers && $market->max_subscribers > $market->subscribers()->count()) {
-                                        
-                    $shadowWallet   = Wallet::where('user_id', $shadow->id)->where('user_type', 'SHADOW')->where('type', 'available')->first();
-                    $operatorWallet = Wallet::where('user_id', $publisher->user_id)->where('type', 'available')->first();
+            if (!empty($operatorWallet) && !empty($shadowWallet)) {
+             
+                $recentTransferExists = Transfer::where('from_wallet_id', $operatorWallet->id)
+                        ->where('to_wallet_id', $shadowWallet->id)
+                        ->where('note', 'MARKET ACCESS')
+                        ->whereNull('deleted_at')
+                        ->where('created_at', '>=', Carbon::now()->subWeek())
+                        ->exists();
+
+                if ($isNewUser || $isNewSubscriber || !$recentTransferExists) {
+
+                    if ($market->max_subscribers && $market->max_subscribers > $market->subscribers()->count()) {
+                                                           
+                        $baseToken = $market->baseToken;
+
+                        // $userValue = intval(floor($market->b / $market->max_subscribers));
+
+                        // We give a fixed value of 10 base tokens per week
+
+                        $userValue = 10;
+
+                        $sum = bcmul($userValue, bcpow("10", (string) $baseToken->decimals));
                     
-                    $baseToken = $market->baseToken;
-                    $userValue = intval(floor($market->b / $market->max_subscribers));
-
-                    $sum = bcmul($userValue, bcpow("10", (string) $baseToken->decimals));
-                    
-                    if ($sum > 0) {
-
-                        $available = $operatorWallet->tokenWallets()->where('token_id', $baseToken->id)->sum(DB::raw('quantity - reserved_quantity'));
+                        if ($sum > 0) {
+                            $available = $operatorWallet->tokenWallets()->where('token_id', $baseToken->id)->sum(DB::raw('quantity - reserved_quantity'));
                         
-                        if (!empty($operatorWallet) && !empty($shadowWallet) && $this->isLessOrEqual($sum, $available, $baseToken->decimals)) {
-                            Transfer::execute($operatorWallet, $shadowWallet, $baseToken, $sum, 'internal', 0, 'MARKET ACCESS', false);
+                            if ($this->isLessOrEqual($sum, $available, $baseToken->decimals)) {
+                                Transfer::execute($operatorWallet, $shadowWallet, $baseToken, $sum, 'internal', 0, 'MARKET ACCESS', false);
+                            }
                         }
-                    }              
+                    }
                 }
-            } 
-            */           
+            }
 
             return $shadow;
         });

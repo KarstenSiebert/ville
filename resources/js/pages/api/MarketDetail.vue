@@ -704,7 +704,6 @@ async function fetchTrades(reset = false) {
 function renderPriceChart(lastLabels: string[]) {
     if (!chartPrice.value) return;
 
-
     const data = updatePriceChartWithLabels(lastLabels);
 
     if (chartPriceInstance) {
