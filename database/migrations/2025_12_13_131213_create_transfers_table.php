@@ -26,6 +26,10 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('CREATE INDEX idx_transfers_wallets_created ON transfers (from_wallet_id, to_wallet_id, created_at) WHERE deleted_at IS NULL');
+        }
     }
 
     /**
