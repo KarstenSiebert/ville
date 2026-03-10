@@ -578,7 +578,7 @@ watch(
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div v-for="market in filteredMarkets" :key="market.id"
-                    class="bg-white dark:bg-gray-800 p-4 outcome-hover rounded-lg shadow flex flex-col gap-2 transition-all duration-200">
+                    class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow flex flex-col gap-2 transition-all duration-200">
 
                     <!-- Title & Status -->
                     <div
@@ -612,7 +612,7 @@ watch(
 
                     <!-- Outcomes -->
                     <div class="flex flex-col gap-2 mb-2">
-                        <div v-for="o in market.outcomes" :key="o.id"
+                        <div v-for="(o, index) in market.outcomes" :key="o.id"
                             class="flex flex-col gap-1 pt-2 border-t border-gray-200 dark:border-gray-700">
                             <div class="flex items-center gap-2">
                                 <component :is="o.link ? 'a' : 'span'" :href="o.link || null" target="_blank"
@@ -637,7 +637,7 @@ watch(
                                 <button
                                     class="px-2 py-1 text-xs rounded text-white transition bg-blue-600 hover:bg-blue-700 cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
                                     :disabled="market.status !== 'OPEN' || o.buyAmount <= 0 || !canBuy(o) || !authUser"
-                                    @click="buyOutcome(market, o)">
+                                    :class="[outcomeColor(index)]" @click="buyOutcome(market, o)">
                                     {{ $t('vote') }}
                                 </button>
 
