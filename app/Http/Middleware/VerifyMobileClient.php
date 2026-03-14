@@ -150,7 +150,7 @@ class VerifyMobileClient
                         ->where('to_wallet_id', $shadowWallet->id)
                         ->where('note', 'MARKET ACCESS')
                         ->whereNull('deleted_at')
-                        ->where('created_at', '>=', Carbon::now()->subWeek())
+                        ->where('created_at', '>=', Carbon::now()->subDay())
                         ->exists();
 
                 if ($isNewUser || $isNewSubscriber || !$recentTransferExists) {
@@ -163,7 +163,7 @@ class VerifyMobileClient
 
                         // We give a fixed value of 10 base tokens per week
 
-                        $userValue = 10;
+                        $userValue = 2;
 
                         $sum = bcmul($userValue, bcpow("10", (string) $baseToken->decimals));
                     
