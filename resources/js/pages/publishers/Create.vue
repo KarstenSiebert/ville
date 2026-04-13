@@ -96,7 +96,6 @@ interface FormData {
     name: string;
     user_id: number;
     description: string;
-    processing: boolean;
 
     settings: {
         max_markets: number | string,
@@ -114,7 +113,6 @@ const form = useForm<FormData>({
     name: '',
     user_id: 0,
     description: '',
-    processing: false,
 
     settings: {
         max_markets: 100,
@@ -196,7 +194,7 @@ function submitForm() {
 
                     <div class="flex-1">
                         <label id="nameLabel" class="block text-sm text-left font-medium mb-1">{{ $t('name')
-                        }}*</label>
+                            }}*</label>
                         <input v-model="form.name" type="text" maxlength="255"
                             class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
                         <div class="h-5 text-red-500 text-sm"> {{ errors.name || form.errors.name }}</div>
@@ -204,7 +202,7 @@ function submitForm() {
 
                     <div class="relative flex-1">
                         <label id="selectOwner" class="block text-sm text-left font-medium mb-1">{{ $t('select_owner')
-                        }}*</label>
+                            }}*</label>
                         <input type="text" :placeholder="$t('type_to_search_user')" v-model="userInput"
                             @input="handleInput(userInput)"
                             class="w-full px-2 py-1.5 text-sm rounded border bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" />
@@ -234,7 +232,7 @@ function submitForm() {
 
                     <div class=" flex-1">
                         <label id="rateLimit" class="block text-sm text-left font-medium mb-1">{{ $t('rate_limit')
-                        }}*</label>
+                            }}*</label>
                         <input v-model.number="form.settings.rate_limit" type="number" min="1" step="1" max="1000"
                             class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
                         <div class="h-5 text-red-500 text-sm">{{ form.errors["settings.rate_limit"] }}</div>
@@ -242,7 +240,7 @@ function submitForm() {
 
                     <div class=" flex-1">
                         <label id="maxMarkets" class="block text-sm text-left font-medium mb-1">{{ $t('max_markets')
-                        }}*</label>
+                            }}*</label>
                         <input v-model.number="form.settings.max_markets" type="number" min="1" step="1" max="100"
                             class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
                         <div class="h-5 text-red-500 text-sm">{{ form.errors["settings.max_markets"] }}</div>
@@ -250,7 +248,7 @@ function submitForm() {
 
                     <div class=" flex-1">
                         <label id="maxShadows" class="block text-sm text-left font-medium mb-1">{{ $t('max_shadows')
-                        }}*</label>
+                            }}*</label>
                         <input v-model.number="form.settings.max_shadows" type="number" min="1" step="1" max="1000000"
                             class="rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 w-full p-2" />
                         <div class="h-5 text-red-500 text-sm">{{ form.errors["settings.max_shadows"] }}</div>
